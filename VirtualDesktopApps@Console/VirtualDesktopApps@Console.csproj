@@ -42,14 +42,29 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="InteractiveUnit.cs" />
-    <Compile Include="Main.cs" />
+    <Compile Include="VSystem\InteractiveUnit.cs" />
+    <Compile Include="VSystem\Main.cs" />
+    <Compile Include="SubProgram\Notepad\Notepad.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SubProgram.cs" />
-    <Compile Include="Window.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="VSystem\SubProgram.cs" />
+    <Compile Include="VSystem\Window.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SubProgram\Notepad\Appearance_Notepad.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

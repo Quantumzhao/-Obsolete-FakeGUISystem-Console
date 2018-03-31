@@ -12,7 +12,9 @@ namespace VirtualDesktopApps_Console
 		{
 			initiation();
 
-			VSystem.Test();
+			runNotepadTest();
+
+			//VSystem.Test();
 
 			VSystem.RenderAll();
 
@@ -33,6 +35,11 @@ namespace VirtualDesktopApps_Console
 				}
 			}
 		}
+
+		private static void runNotepadTest()
+		{
+			SubProgramCollection<Notepad>.AddNewProg(new Notepad());
+		}
 	}
 
 	class VSystem
@@ -52,15 +59,13 @@ namespace VirtualDesktopApps_Console
 					/*--POTENTIAL BUGS FROM HERE--*/
 					while (Display[i, j].Layer[k] == ' ')
 					{
-						if (k != Display[i, j].Layer.Capacity - 1)
+						if (k != Display[i, j].Layer.Count - 1)
 						{
 							k++;
 						}
 						else
-						{
-							k--;
-
-							return;
+						{							
+							break;
 						}
 					}
 					/*--END MARKING--*/
@@ -79,10 +84,7 @@ namespace VirtualDesktopApps_Console
 			Console.Write("╝");
 		}
 
-		public static void AddNewTask()
-		{
-
-		}
+		
 
 		static public void Test()
 		{
@@ -96,8 +98,10 @@ namespace VirtualDesktopApps_Console
 		}
 	}
 
-	class SubProgramCollection<T>
+	class SubProgramCollection<T> where T : SubProgram
 	{
+		public static SubProgramCollection<T> subProgramCollection = new SubProgramCollection<T>();
+
 		private static List<T> SubProgColle = new List<T>();
 
 		public T this[int index]
@@ -112,6 +116,21 @@ namespace VirtualDesktopApps_Console
 				SubProgColle[index] = value;
 			}
 		}
+
+		public static void AddNewProg(T subProgram)
+		{
+			SubProgColle.Add(subProgram);
+
+			SubProgColle[SubProgColle.Count - 1].ProgramID = SubProgColle.Count - 1;
+
+			for (int j = 0; j < VSystem.Height; j++)
+			{
+				for (int i = 0; i < VSystem.Width; i++)
+				{
+					VSystem.Display[i, j].Layer.Add(' ');
+				}
+			}
+		}
 	}
 
 	class Pixel
@@ -119,11 +138,8 @@ namespace VirtualDesktopApps_Console
 		public List<char> Layer { get; set; } = new List<char>();
 
 		public Pixel()
-		{
-			for (int i = 0; i < 3; i++)
-			{
-				Layer.Add(' ');
-			}			
+		{			
+			Layer.Add(' ');						
 		}
 	}
 

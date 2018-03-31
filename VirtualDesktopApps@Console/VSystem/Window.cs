@@ -8,6 +8,10 @@ namespace VirtualDesktopApps_Console
 {
 	class Window
 	{
+		public int AnchorX { get; set; } = 2;
+		public int AnchorY { get; set; } = 2;
 
+		public int Width { get; set; } = 67;
+		public int Height { get; set; } = 27;
 	}
 }
