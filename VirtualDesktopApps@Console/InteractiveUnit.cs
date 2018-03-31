@@ -6,10 +6,28 @@ using System.Threading.Tasks;
 
 namespace VirtualDesktopApps_Console
 {
-	class Program
+	class Button
 	{
-		static void Main(string[] args)
-		{
-		}
+
+	}
+
+	class TitleBar : Button
+	{
+
+	}
+
+	class MenuItem : Button
+	{
+
+	}
+
+	class TextBox : Button
+	{
+
+	}
+
+	class Pointer
+	{
+
 	}
 }
