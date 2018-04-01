@@ -8,7 +8,8 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VirtualDesktopApps_Console.Properties {
+namespace VirtualDesktopApps_Console.Properties
+{
     using System;
     
     
@@ -22,23 +23,26 @@ namespace VirtualDesktopApps_Console.Properties {
     [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    internal class Resources {
+    internal class Resources
+	{
         
         private static global::System.Resources.ResourceManager resourceMan;
         
         private static global::System.Globalization.CultureInfo resourceCulture;
         
         [global::System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
-        internal Resources() {
-        }
+        internal Resources() { }
         
         /// <summary>
         ///   返回此类使用的缓存的 ResourceManager 实例。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Resources.ResourceManager ResourceManager {
-            get {
-                if (object.ReferenceEquals(resourceMan, null)) {
+        internal static global::System.Resources.ResourceManager ResourceManager
+		{
+            get
+			{
+                if (object.ReferenceEquals(resourceMan, null))
+				{
                     global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("VirtualDesktopApps_Console.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
@@ -51,11 +55,15 @@ namespace VirtualDesktopApps_Console.Properties {
         ///   重写当前线程的 CurrentUICulture 属性。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
-        internal static global::System.Globalization.CultureInfo Culture {
-            get {
+        internal static global::System.Globalization.CultureInfo Culture
+		{
+            get
+			{
                 return resourceCulture;
             }
-            set {
+
+            set
+			{
                 resourceCulture = value;
             }
         }
@@ -70,8 +78,10 @@ namespace VirtualDesktopApps_Console.Properties {
         ///│                                                                │
         ///│                                    [字符串的其余部分被截断]&quot;; 的本地化字符串。
         /// </summary>
-        internal static string Appearance_Notepad {
-            get {
+        internal static string Appearance_Notepad
+		{
+            get
+			{
                 return ResourceManager.GetString("Appearance_Notepad", resourceCulture);
             }
         }

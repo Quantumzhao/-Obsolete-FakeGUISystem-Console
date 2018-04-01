@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SupplementaryClassLibraryForStringManipulation;
 
 namespace VirtualDesktopApps_Console
 {
@@ -12,7 +13,9 @@ namespace VirtualDesktopApps_Console
 		{
 			initiation();
 
-			runNotepadTest();
+			VSystem.KeyPressHandler(Console.ReadKey());
+
+			//runNotepadTest();
 
 			//VSystem.Test();
 
@@ -34,11 +37,15 @@ namespace VirtualDesktopApps_Console
 					VSystem.Display[i, j] = new Pixel();
 				}
 			}
+
+			runNotepadTest();
 		}
 
 		private static void runNotepadTest()
 		{
 			SubProgramCollection<Notepad>.AddNewProg(new Notepad());
+
+			VSystem.KeyPressHandler = SubProgram.KeyPressHandler;
 		}
 	}
 
@@ -49,6 +56,9 @@ namespace VirtualDesktopApps_Console
 
 		public static Pixel[,] Display { get; set; } = new Pixel[Width, Height];
 
+		public delegate void KeyPressDelegate(ConsoleKeyInfo key);
+		public static KeyPressDelegate KeyPressHandler;
+
 		static public void RenderAll()
 		{
 			for (int j = 0; j < Height; j++)
@@ -56,7 +66,7 @@ namespace VirtualDesktopApps_Console
 				for (int i = 0; i < Width; i++)
 				{
 					int k = 0;
-					/*--POTENTIAL BUGS FROM HERE--*/
+					
 					while (Display[i, j].Layer[k] == ' ')
 					{
 						if (k != Display[i, j].Layer.Count - 1)
@@ -68,7 +78,7 @@ namespace VirtualDesktopApps_Console
 							break;
 						}
 					}
-					/*--END MARKING--*/
+
 					Console.Write(Display[i, j].Layer[k]);
 				}
 
@@ -83,9 +93,7 @@ namespace VirtualDesktopApps_Console
 			}
 			Console.Write("╝");
 		}
-
 		
-
 		static public void Test()
 		{
 			for (int i = 0; i < Width; i++)
@@ -100,8 +108,6 @@ namespace VirtualDesktopApps_Console
 
 	class SubProgramCollection<T> where T : SubProgram
 	{
-		public static SubProgramCollection<T> subProgramCollection = new SubProgramCollection<T>();
-
 		private static List<T> SubProgColle = new List<T>();
 
 		public T this[int index]
@@ -117,19 +123,42 @@ namespace VirtualDesktopApps_Console
 			}
 		}
 
-		public static void AddNewProg(T subProgram)
+		public static void AddNewProg(T subProgram)                                                //Create a new specific subprogram instance
 		{
 			SubProgColle.Add(subProgram);
 
 			SubProgColle[SubProgColle.Count - 1].ProgramID = SubProgColle.Count - 1;
 
-			for (int j = 0; j < VSystem.Height; j++)
+			for (int j = 0; j < VSystem.Height; j++)                                               //Create a new layer for the new subprogram
 			{
 				for (int i = 0; i < VSystem.Width; i++)
 				{
 					VSystem.Display[i, j].Layer.Add(' ');
 				}
 			}
+		}
+	}
+
+	class InteractiveUnitsCollection<T> where T : Button
+	{
+		private static List<T> interactiveUnitsCollection = new List<T>();
+
+		public T this[int index]
+		{
+			get
+			{
+				return interactiveUnitsCollection[index];
+			}
+
+			set
+			{
+				interactiveUnitsCollection[index] = value;
+			}
+		}
+
+		public static void AddNewComponent(T component)
+		{
+			interactiveUnitsCollection.Add(component);
 		}
 	}
 

@@ -6,9 +6,19 @@ using System.Threading.Tasks;
 
 namespace VirtualDesktopApps_Console
 {
-	class Button
+	abstract class Button
 	{
 
+	}
+
+	class PopUpMenu
+	{
+		public bool Visibility { get; set; }
+
+		public void GetApearance()
+		{
+
+		}
 	}
 
 	class TitleBar : Button
@@ -27,6 +37,11 @@ namespace VirtualDesktopApps_Console
 	}
 
 	class Pointer
+	{
+
+	}
+
+	class PopUpMenu_Files : PopUpMenu
 	{
 
 	}

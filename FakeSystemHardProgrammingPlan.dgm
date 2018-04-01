@@ -1,0 +1,187 @@
+﻿<XtraSerializer version="17.2.6.0">
+  <Items>
+    <Item1 ItemKind="DiagramRoot" SelectedStencils="BasicShapes, BasicFlowchartShapes">
+      <Children>
+        <Item1 Position="-750,290" Size="580,510" Background="#00CCCCCC" StrokeThickness="5" StrokeId="Black_2" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item2 Position="-1450,50" Size="1900,780" Background="#00CCCCCC" StrokeThickness="5" StrokeId="Black_2" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item3 Position="50,110" Size="390,120" Padding="8,8,8,8" FontSize="18" Shape="StandardContainers.Classic" Header="ThreadingsCollection" ShowHeader="true" HeaderPadding="8,8,8,8" ItemKind="DiagramContainer" />
+        <Item4 Position="-1440,110" Size="1290,710" Background="#00CCCCCC" StrokeThickness="5" StrokeId="Black_2" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item5 Position="-760,170" Size="600,640" Background="#00CCCCCC" StrokeThickness="5" StrokeId="Black_2" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item6 Position="650,50" Size="1360,1940" Padding="8,8,8,8" FontSize="18" Shape="StandardContainers.Classic" Header="SubProgramCollection" ShowHeader="true" HeaderPadding="8,8,8,8" ItemKind="DiagramContainer" />
+        <Item7 Position="720,110" Size="1220,1870" Background="#FFD8DAEB" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item8 Position="720,110" Size="150,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="SubProgram" ItemKind="DiagramShape" />
+        <Item9 Position="730,150" Size="1200,1820" Background="#FFD8DAEB" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item10 Position="730,150" Size="110,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Notepad" ItemKind="DiagramShape" />
+        <Item11 Position="740,190" Size="960,1270" Background="#FFDEB4B4" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item12 Position="740,190" Size="100,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Window" ItemKind="DiagramShape" />
+        <Item13 Position="-750,180" Size="340,50" Background="#FFD8DAEB" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item14 Position="-750,190" Size="150,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="BufferMatrix" ItemKind="DiagramShape" />
+        <Item15 Position="-740,570" Size="340,120" Padding="8,8,8,8" FontSize="18" Shape="StandardContainers.Classic" Header="WindowsLayerCollection" ShowHeader="true" HeaderPadding="8,8,8,8" ItemKind="DiagramContainer" />
+        <Item16 Position="-670,630" Size="200,50" Background="#FFDEB4B4" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item17 Position="-670,630" Size="100,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Window" ItemKind="DiagramShape" />
+        <Item18 Position="-740,700" Size="340,90" Background="#FFD8DAEB" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item19 Position="-740,700" Size="150,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Background" ItemKind="DiagramShape" />
+        <Item20 Position="-740,300" Size="340,260" Background="#FFD8DAEB" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item21 Position="-740,310" Size="150,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="FocusCursor" ItemKind="DiagramShape" />
+        <Item22 Position="-1430,170" Size="250,200" Background="#FFDEB4B4" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item23 Position="-1430,170" Size="100,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Console" ItemKind="DiagramShape" />
+        <Item24 Position="-1430,120" Size="280,50" FontFamily="Segoe UI Black" FontSize="24" Background="#00FFFFFF" Foreground="#FF000000" StrokeThickness="0" Content="RenderOnScreen" ItemKind="DiagramShape" />
+        <Item25 Position="-760,120" Size="280,50" FontFamily="Segoe UI Black" FontWeight="Normal" FontSize="24" Background="#00FFFFFF" Foreground="#FF000000" StrokeThickness="0" Content="ProcessGraphicUI" ItemKind="DiagramShape" />
+        <Item26 Position="750,230" Size="940,1220" Padding="8,8,8,8" FontSize="18" Shape="StandardContainers.Classic" Header="InteractiveUnitsCollection" ShowHeader="true" HeaderPadding="8,8,8,8" ItemKind="DiagramContainer" />
+        <Item27 Position="1700,190" Size="220,160" ThemeStyleId="Variant3" BackgroundId="Accent5_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item28 Position="1700,190" Size="110,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Property" ItemKind="DiagramShape" />
+        <Item29 Position="1710,230" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Accent5_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item30 Position="1710,240" Size="100,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Position" ItemKind="DiagramShape" />
+        <Item31 Position="1710,290" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Accent5_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item32 Position="1710,300" Size="50,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Size" ItemKind="DiagramShape" />
+        <Item33 Position="1700,350" Size="220,100" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item34 Position="1700,350" Size="100,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Method" ItemKind="DiagramShape" />
+        <Item35 Position="1710,390" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item36 Position="1710,400" Size="170,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="GetApperance" ItemKind="DiagramShape" />
+        <Item37 Position="1460,290" Size="220,160" ThemeStyleId="Variant3" BackgroundId="Accent5_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item38 Position="1460,290" Size="110,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Property" ItemKind="DiagramShape" />
+        <Item39 Position="1470,330" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Accent5_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item40 Position="1470,340" Size="100,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Position" ItemKind="DiagramShape" />
+        <Item41 Position="1470,390" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Accent5_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item42 Position="1470,400" Size="50,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Size" ItemKind="DiagramShape" />
+        <Item43 Position="1460,450" Size="220,100" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item44 Position="1460,450" Size="100,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Method" ItemKind="DiagramShape" />
+        <Item45 Position="1470,490" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item46 Position="1470,500" Size="200,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="ChngBkgrndColr" ItemKind="DiagramShape" />
+        <Item47 Position="760,290" Size="700,1150" Background="#FFDEDEB4" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item48 Position="760,290" Size="80,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Button" ItemKind="DiagramShape" />
+        <Item49 Position="770,330" Size="460,100" Background="#FFDEDEB4" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item50 Position="770,330" Size="90,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="TitleBar" ItemKind="DiagramShape" />
+        <Item51 Position="1230,330" Size="220,100" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item52 Position="1230,330" Size="100,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Method" ItemKind="DiagramShape" />
+        <Item53 Position="1240,370" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item54 Position="1240,380" Size="200,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="MoveWindow" ItemKind="DiagramShape" />
+        <Item55 Position="770,440" Size="460,370" Background="#FFDEDEB4" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item56 Position="770,440" Size="120,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="MenuItem" ItemKind="DiagramShape" />
+        <Item57 Position="770,1270" Size="460,160" Background="#FFDEDEB4" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item58 Position="770,1280" Size="100,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="TextBox" ItemKind="DiagramShape" />
+        <Item59 Position="980,480" Size="220,100" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item60 Position="980,480" Size="100,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Method" ItemKind="DiagramShape" />
+        <Item61 Position="990,520" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item62 Position="990,530" Size="150,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="PopUpMenu" ItemKind="DiagramShape" />
+        <Item63 Position="780,480" Size="200,100" Background="#FFDEDEB4" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item64 Position="780,480" Size="40,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="File" ItemKind="DiagramShape" />
+        <Item65 Position="780,590" Size="200,100" Background="#FFDEDEB4" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item66 Position="780,590" Size="50,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Edit" ItemKind="DiagramShape" />
+        <Item67 Position="780,700" Size="200,100" Background="#FFDEDEB4" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item68 Position="780,700" Size="60,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Help" ItemKind="DiagramShape" />
+        <Item69 Position="980,590" Size="220,100" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item70 Position="990,630" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item71 Position="990,640" Size="200,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="FoQsShftToTxtBx" ItemKind="DiagramShape" />
+        <Item72 Position="980,590" Size="100,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Method" ItemKind="DiagramShape" />
+        <Item73 Position="770,820" Size="460,440" Background="#FFDEDEB4" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item74 Position="770,820" Size="210,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="PopUpMenu_Files" ItemKind="DiagramShape" />
+        <Item75 Position="780,860" Size="440,390" Padding="8,8,8,8" FontSize="18" Shape="StandardContainers.Classic" Header="InteractiveUnitsCollection" ShowHeader="true" HeaderPadding="8,8,8,8" ItemKind="DiagramContainer" />
+        <Item76 Position="790,920" Size="200,100" Background="#FFDEDEB4" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item77 Position="790,920" Size="60,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Save" ItemKind="DiagramShape" />
+        <Item78 Position="990,920" Size="220,100" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item79 Position="1000,960" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item80 Position="1000,970" Size="100,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="SaveFile" ItemKind="DiagramShape" />
+        <Item81 Position="990,920" Size="100,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Method" ItemKind="DiagramShape" />
+        <Item82 Position="790,1030" Size="200,100" Background="#FFDEDEB4" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item83 Position="790,1030" Size="70,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Open" ItemKind="DiagramShape" />
+        <Item84 Position="990,1030" Size="220,100" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item85 Position="1000,1070" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item86 Position="1000,1080" Size="160,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="OpenNewFile" ItemKind="DiagramShape" />
+        <Item87 Position="990,1030" Size="100,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Method" ItemKind="DiagramShape" />
+        <Item88 Position="790,1140" Size="200,100" Background="#FFDEDEB4" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item89 Position="790,1140" Size="70,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Close" ItemKind="DiagramShape" />
+        <Item90 Position="990,1140" Size="220,100" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item91 Position="1000,1180" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item92 Position="1000,1190" Size="150,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="CloseFile" ItemKind="DiagramShape" />
+        <Item93 Position="990,1140" Size="100,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Method" ItemKind="DiagramShape" />
+        <Item94 Position="1230,1270" Size="220,160" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item95 Position="1240,1310" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item96 Position="1240,1320" Size="130,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="InputString" ItemKind="DiagramShape" />
+        <Item97 Position="1230,1270" Size="100,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Method" ItemKind="DiagramShape" />
+        <Item98 Position="1240,1370" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item99 Position="1240,1380" Size="150,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="MoveCursor" ItemKind="DiagramShape" />
+        <Item100 Position="-730,630" Size="50,50" Background="#FFD8DAEB" Angle="90" Shape="BasicShapes.Triangle" Parameters="" ItemKind="DiagramShape" />
+        <Item101 Position="-460,630" Size="50,50" Background="#FFD8DAEB" Angle="-90" Shape="BasicShapes.Triangle" Parameters="" ItemKind="DiagramShape" />
+        <Item102 Position="660,110" Size="50,50" Background="#FFD8DAEB" Angle="90" Shape="BasicShapes.Triangle" Parameters="" ItemKind="DiagramShape" />
+        <Item103 Position="1950,110" Size="50,50" Background="#FFD8DAEB" Angle="-90" Shape="BasicShapes.Triangle" Parameters="" ItemKind="DiagramShape" />
+        <Item104 Position="740,1470" Size="960,380" Background="#FFDEB4B4" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item105 Position="740,1470" Size="80,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Thread" ItemKind="DiagramShape" />
+        <Item106 Position="1700,1570" Size="220,280" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item107 Position="1700,1570" Size="100,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Method" ItemKind="DiagramShape" />
+        <Item108 Position="1710,1610" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item109 Position="1710,1620" Size="150,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="_Constructor" ItemKind="DiagramShape" />
+        <Item110 Position="1710,1670" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item111 Position="1710,1680" Size="150,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="RegisterTID" ItemKind="DiagramShape" />
+        <Item112 Position="-1440,60" Size="340,50" FontFamily="Segoe UI Black" FontSize="24" Background="#00FFFFFF" Foreground="#FF000000" StrokeThickness="0" Content="GraphicUserInterface" ItemKind="DiagramShape" />
+        <Item113 Position="-1180,270" Size="220,100" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item114 Position="-1170,310" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item115 Position="-1170,320" Size="100,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="ReadKey" ItemKind="DiagramShape" />
+        <Item116 Position="-1180,270" Size="100,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Method" ItemKind="DiagramShape" />
+        <Item117 Position="-1180,170" Size="220,100" ThemeStyleId="Variant3" BackgroundId="Accent5_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item118 Position="-1180,170" Size="110,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Property" ItemKind="DiagramShape" />
+        <Item119 Position="-1170,210" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Accent5_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item120 Position="-1170,220" Size="160,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="CursorVisible" ItemKind="DiagramShape" />
+        <Item121 Position="-750,240" Size="210,50" FontFamily="Segoe UI Black" FontWeight="Normal" FontSize="24" Background="#00FFFFFF" Foreground="#FF000000" StrokeThickness="0" Content="PreFabLayers" ItemKind="DiagramShape" />
+        <Item122 Position="-400,300" Size="220,100" ThemeStyleId="Variant3" BackgroundId="Accent5_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item123 Position="-400,300" Size="110,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Property" ItemKind="DiagramShape" />
+        <Item124 Position="-390,340" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Accent5_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item125 Position="-390,350" Size="160,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="CurrentFocus" ItemKind="DiagramShape" />
+        <Item126 Position="-400,400" Size="220,160" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item127 Position="-400,400" Size="100,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Method" ItemKind="DiagramShape" />
+        <Item128 Position="-390,440" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item129 Position="-390,450" Size="200,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="ToPreviousFocus" ItemKind="DiagramShape" />
+        <Item130 Position="-390,500" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item131 Position="-390,510" Size="150,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="ToNextFocus" ItemKind="DiagramShape" />
+        <Item132 Position="120,170" Size="250,50" Background="#FFDEB4B4" ThemeStyleId="Variant3" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item133 Position="120,170" Size="100,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Thread" ItemKind="DiagramShape" />
+        <Item134 Position="380,170" Size="50,50" Background="#FFD8DAEB" Angle="-90" Shape="BasicShapes.Triangle" Parameters="" ItemKind="DiagramShape" />
+        <Item135 Position="60,170" Size="50,50" Background="#FFD8DAEB" Angle="90" Shape="BasicShapes.Triangle" Parameters="" ItemKind="DiagramShape" />
+        <Item136 Position="-1450,0" Size="120,50" FontFamily="Segoe UI Black" FontSize="24" Background="#00FFFFFF" Foreground="#FF000000" StrokeThickness="0" Content="System" ItemKind="DiagramShape" />
+        <Item137 Position="1710,1730" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item138 Position="1710,1740" Size="60,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Start" ItemKind="DiagramShape" />
+        <Item139 Position="1700,1470" Size="220,100" ThemeStyleId="Variant3" BackgroundId="White_2" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item140 Position="1700,1470" Size="110,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Delegate" ItemKind="DiagramShape" />
+        <Item141 Position="1710,1510" Size="200,50" ThemeStyleId="Variant3" BackgroundId="White_2" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item142 Position="1710,1520" Size="200,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="CurrntPrcss_Prog" ItemKind="DiagramShape" />
+        <Item143 Position="1710,1790" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item144 Position="1710,1800" Size="70,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Abort" ItemKind="DiagramShape" />
+        <Item145 StrokeThickness="2" BeginItemPointIndex="1" EndItemPointIndex="3" Points="-950,335 -950,100 -140,100 -140,290" Type="OrgChart" Content="With EventArgument" ItemKind="DiagramConnector" BeginItem="113" EndItem="146" BeginPoint="-970,335" EndPoint="50,290" KeepMiddlePoints="true" />
+        <Item146 StrokeThickness="3" ForegroundId="Black" StrokeId="Black" EndArrow="FilledDot" BeginItemPointIndex="3" EndItemPointIndex="0" Points="490,835 490,842.5 -393,842.5 -393,630 -570,630" ItemKind="DiagramConnector" BeginPoint="740,835" EndPoint="-570,640" KeepMiddlePoints="true" />
+        <Item147 Position="50,240" Size="390,100" ThemeStyleId="Variant3" BackgroundId="White_2" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item148 Position="50,240" Size="200,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="KeyPressHandler" ItemKind="DiagramShape" />
+        <Item149 StrokeThickness="4" StrokeId="Black" EndArrow="FilledDot" BeginItemPointIndex="3" EndItemPointIndex="0" Points="460,1660 460,160 245,160" ItemKind="DiagramConnector" BeginItem="103" EndItem="131" BeginPoint="740,1660" EndPoint="245,170" />
+        <Item150 Position="740,1860" Size="960,100" ThemeStyleId="Variant3" BackgroundId="White_2" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item151 Position="740,1860" Size="200,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="KeyPressHandler" ItemKind="DiagramShape" />
+        <Item152 StrokeThickness="2" BeginItemPointIndex="3" EndItemPointIndex="3" Points="480,1910 480,305" ItemKind="DiagramConnector" BeginItem="149" EndItem="47" BeginPoint="740,1910" EndPoint="760,305" KeepMiddlePoints="true" />
+        <Item153 StrokeThickness="2" BeginItemPointIndex="1" EndItemPointIndex="3" Points="470,290 470,1875" Content="WithEventArgument" ItemKind="DiagramConnector" BeginItem="146" EndItem="150" BeginPoint="440,290" EndPoint="740,1875" KeepMiddlePoints="true" />
+        <Item154 StrokeThickness="2" BeginItemPointIndex="1" EndItemPointIndex="-1" Points="1450,395 1450,255" ItemKind="DiagramConnector" BeginItem="52" EndItem="29" BeginPoint="1440,395" EndPoint="1710,255" KeepMiddlePoints="true" />
+        <Item155 StrokeThickness="2" BeginItemPointIndex="1" EndItemPointIndex="3" Points="1450,395 1450,280 1680,280 1680,415" Type="OrgChart" ItemKind="DiagramConnector" BeginItem="52" EndItem="34" BeginPoint="1440,395" EndPoint="1710,415" KeepMiddlePoints="true" />
+        <Item156 StrokeThickness="2" BeginItemPointIndex="1" EndItemPointIndex="3" Points="2020,415 2020,40 490,40 490,623 -770,623 -770,645" ItemKind="DiagramConnector" BeginItem="34" EndItem="16" BeginPoint="1910,415" EndPoint="-670,645" KeepMiddlePoints="true" />
+        <Item157 StrokeThickness="2" BeginItemPointIndex="1" EndItemPointIndex="3" Points="-140,655 -140,300 -130,300 -130,90 -770,90 -770,205" ItemKind="DiagramConnector" BeginItem="15" EndItem="12" BeginPoint="-470,655" EndPoint="-750,205" KeepMiddlePoints="true" />
+        <Item158 Position="50,350" Size="390,100" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item159 Position="50,350" Size="100,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Method" ItemKind="DiagramShape" />
+        <Item160 Position="60,390" Size="370,50" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item161 Position="60,400" Size="90,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Render" ItemKind="DiagramShape" />
+        <Item162 StrokeThickness="4" EndArrow="FilledDot" BeginItemPointIndex="1" EndItemPointIndex="3" Points="43,205 43,415" ItemKind="DiagramConnector" BeginItem="12" EndItem="159" BeginPoint="-410,205" EndPoint="60,415" />
+        <Item163 StrokeThickness="2" BeginItemPointIndex="1" EndItemPointIndex="3" Points="500,400 500,270 470,270 470,40 -1320,40 -1320,60 -1460,60 -1460,185" ItemKind="DiagramConnector" BeginItem="157" EndItem="22" BeginPoint="440,400" EndPoint="-1430,185" KeepMiddlePoints="true" />
+        <Item164 Position="1230,820" Size="220,100" ThemeStyleId="Variant3" BackgroundId="Accent5_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item165 Position="1230,820" Size="110,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Property" ItemKind="DiagramShape" />
+        <Item166 Position="1240,860" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Accent5_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item167 Position="1240,870" Size="110,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Visiblility" ItemKind="DiagramShape" />
+        <Item168 Position="1230,920" Size="220,100" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item169 Position="1230,920" Size="100,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Method" ItemKind="DiagramShape" />
+        <Item170 Position="1240,960" Size="200,50" ThemeStyleId="Variant3" BackgroundId="Dark_1" Shape="BasicShapes.Rectangle" ItemKind="DiagramShape" />
+        <Item171 Position="1240,970" Size="180,30" FontFamily="Microsoft YaHei UI" FontWeight="Normal" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="GetAppearance" ItemKind="DiagramShape" />
+        <Item172 Position="790,950" Size="200,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Inherites: Button" ItemKind="DiagramShape" />
+        <Item173 Position="790,1060" Size="200,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Inherites: Button" ItemKind="DiagramShape" />
+        <Item174 Position="790,1170" Size="200,30" FontFamily="Microsoft YaHei UI" FontSize="18" Background="#00FFFFFF" StrokeThickness="0" ForegroundId="Black_3" Content="Inherites: Button" ItemKind="DiagramShape" />
+        <Item175 StrokeThickness="2" BeginItemPointIndex="1" EndItemPointIndex="3" Points="1220,545 1220,985" Type="OrgChart" ItemKind="DiagramConnector" BeginItem="60" EndItem="170" BeginPoint="1190,545" EndPoint="1240,985" KeepMiddlePoints="true" />
+        <Item176 StrokeThickness="2" BeginItemPointIndex="1" EndItemPointIndex="-1" Points="2020,985" ItemKind="DiagramConnector" BeginItem="169" BeginPoint="1440,985" EndPoint="2020,410" />
+        <Item177 StrokeThickness="2" BeginItemPointIndex="1" EndItemPointIndex="-1" Points="2020,1335" ItemKind="DiagramConnector" BeginItem="94" BeginPoint="1440,1335" EndPoint="2020,980" />
+        <Item178 StrokeThickness="2" BeginItemPointIndex="1" EndItemPointIndex="3" Points="1220,545 1220,885" Type="OrgChart" ItemKind="DiagramConnector" BeginItem="60" EndItem="166" BeginPoint="1190,545" EndPoint="1240,885" KeepMiddlePoints="true" />
+        <Item179 StrokeThickness="2" BeginItemPointIndex="1" EndItemPointIndex="3" Points="1453,655 1453,515" ItemKind="DiagramConnector" BeginItem="69" EndItem="44" BeginPoint="1190,655" EndPoint="1470,515" />
+      </Children>
+    </Item1>
+  </Items>
+</XtraSerializer>

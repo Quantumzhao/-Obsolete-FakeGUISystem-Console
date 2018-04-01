@@ -9,5 +9,7 @@ namespace VirtualDesktopApps_Console
 	abstract class SubProgram
 	{
 		public int ProgramID { get; set; }
+
+		public static VSystem.KeyPressDelegate KeyPressHandler;
 	}
 }

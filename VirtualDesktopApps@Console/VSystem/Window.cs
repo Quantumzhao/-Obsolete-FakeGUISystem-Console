@@ -13,5 +13,15 @@ namespace VirtualDesktopApps_Console
 
 		public int Width { get; set; } = 67;
 		public int Height { get; set; } = 27;
+
+		public Window()
+		{
+			InteractiveUnitsCollection<TitleBar>.AddNewComponent(new TitleBar());
+		}
+
+		public void GetAppearance(AvailableProgs program)
+		{
+
+		}
 	}
 }

@@ -8,14 +8,11 @@ namespace VirtualDesktopApps_Console
 {
 	class Notepad : SubProgram
 	{
-		public void InitWindow()
-		{
-			
-		}
+		public Window Window_Component { get; set; }
 
 		public Notepad()
 		{
-			InitWindow();
+			Window_Component.GetAppearance(AvailableProgs.Notepad);
 		}
 	}
 }
