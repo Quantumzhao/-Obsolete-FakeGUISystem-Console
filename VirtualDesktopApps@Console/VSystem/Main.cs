@@ -13,7 +13,7 @@ namespace VirtualDesktopApps_Console
 		{
 			initiation();
 
-			VSystem.KeyPressHandler(Console.ReadKey());
+			//VSystem.KeyPressHandler(Console.ReadKey());
 
 			//runNotepadTest();
 
@@ -26,6 +26,9 @@ namespace VirtualDesktopApps_Console
 
 		private static void initiation()
 		{
+			Console.BackgroundColor = ConsoleColor.White;
+			Console.ForegroundColor = ConsoleColor.Black;
+
 			Console.WindowWidth  = Console.LargestWindowWidth;
 			Console.WindowHeight = Console.LargestWindowHeight;
 			Console.CursorVisible = false;
@@ -43,7 +46,9 @@ namespace VirtualDesktopApps_Console
 
 		private static void runNotepadTest()
 		{
-			SubProgramCollection<Notepad>.AddNewProg(new Notepad());
+			SubProgramCollectionClass<Notepad>.AddNewProg(new Notepad());
+			
+			SubProgramCollectionClass<Notepad>.SubprogramCollection[SubProgramCollectionClass<Notepad>.SubprogramCollection.Count - 1].Window_Component.GetAppearance(AvailableProgs.Notepad);
 
 			VSystem.KeyPressHandler = SubProgram.KeyPressHandler;
 		}
@@ -57,6 +62,7 @@ namespace VirtualDesktopApps_Console
 		public static Pixel[,] Display { get; set; } = new Pixel[Width, Height];
 
 		public delegate void KeyPressDelegate(ConsoleKeyInfo key);
+
 		public static KeyPressDelegate KeyPressHandler;
 
 		static public void RenderAll()
@@ -106,28 +112,15 @@ namespace VirtualDesktopApps_Console
 		}
 	}
 
-	class SubProgramCollection<T> where T : SubProgram
+	class SubProgramCollectionClass<T> where T : SubProgram
 	{
-		private static List<T> SubProgColle = new List<T>();
-
-		public T this[int index]
-		{
-			get
-			{
-				return SubProgColle[index];
-			}
-
-			set
-			{
-				SubProgColle[index] = value;
-			}
-		}
+		public static List<T> SubprogramCollection { get; set; } = new List<T>();
 
 		public static void AddNewProg(T subProgram)                                                //Create a new specific subprogram instance
 		{
-			SubProgColle.Add(subProgram);
+			SubprogramCollection.Add(subProgram);
 
-			SubProgColle[SubProgColle.Count - 1].ProgramID = SubProgColle.Count - 1;
+			SubprogramCollection[SubprogramCollection.Count - 1].ProgramID = SubprogramCollection.Count - 1;
 
 			for (int j = 0; j < VSystem.Height; j++)                                               //Create a new layer for the new subprogram
 			{
@@ -139,27 +132,9 @@ namespace VirtualDesktopApps_Console
 		}
 	}
 
-	class InteractiveUnitsCollection<T> where T : Button
+	class InteractiveUnitsCollectionClass<T> where T : Button
 	{
-		private static List<T> interactiveUnitsCollection = new List<T>();
-
-		public T this[int index]
-		{
-			get
-			{
-				return interactiveUnitsCollection[index];
-			}
-
-			set
-			{
-				interactiveUnitsCollection[index] = value;
-			}
-		}
-
-		public static void AddNewComponent(T component)
-		{
-			interactiveUnitsCollection.Add(component);
-		}
+		public static List<T> InteractiveUnitsCollection { get; set; } = new List<T>();
 	}
 
 	class Pixel
@@ -170,6 +145,18 @@ namespace VirtualDesktopApps_Console
 		{			
 			Layer.Add(' ');						
 		}
+	}
+	
+	interface IEntity
+	{
+		int AnchorX { get; set; }
+		int AnchorY { get; set; }
+
+		int Width { get; set; }
+		int Height { get; set; }
+
+		bool IsSelected { get; set; }
+		bool IsFocused { get; set; }
 	}
 
 	enum AvailableProgs

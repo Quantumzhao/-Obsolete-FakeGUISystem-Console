@@ -8,11 +8,11 @@ namespace VirtualDesktopApps_Console
 {
 	class Notepad : SubProgram
 	{
-		public Window Window_Component { get; set; }
-
 		public Notepad()
 		{
-			Window_Component.GetAppearance(AvailableProgs.Notepad);
+			InteractiveUnitsCollectionClass<MenuItem_Edit>.InteractiveUnitsCollection.Add(new MenuItem_Edit());
+			InteractiveUnitsCollectionClass<MenuItem_File>.InteractiveUnitsCollection.Add(new MenuItem_File());
+			InteractiveUnitsCollectionClass<MenuItem_Help>.InteractiveUnitsCollection.Add(new MenuItem_Help());
 		}
 	}
 }
