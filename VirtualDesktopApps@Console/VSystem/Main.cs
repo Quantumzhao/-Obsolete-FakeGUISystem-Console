@@ -49,8 +49,10 @@ namespace VirtualDesktopApps_Console
 			SubProgramCollectionClass<Notepad>.AddNewProg(new Notepad());
 			
 			SubProgramCollectionClass<Notepad>.SubprogramCollection[SubProgramCollectionClass<Notepad>.SubprogramCollection.Count - 1].Window_Component.GetAppearance(AvailableProgs.Notepad);
-
+			
 			VSystem.KeyPressHandler = SubProgram.KeyPressHandler;
+
+
 		}
 	}
 
@@ -135,6 +137,13 @@ namespace VirtualDesktopApps_Console
 	class InteractiveUnitsCollectionClass<T> where T : Button
 	{
 		public static List<T> InteractiveUnitsCollection { get; set; } = new List<T>();
+
+		public static List<List<T>> CollectionOfIUC = new List<List<T>>();
+
+		public static void AddCollection(List<T> interactiveUnitsCollection)
+		{
+			CollectionOfIUC.Add(interactiveUnitsCollection);
+		}
 	}
 
 	class Pixel
@@ -145,6 +154,11 @@ namespace VirtualDesktopApps_Console
 		{			
 			Layer.Add(' ');						
 		}
+	}
+
+	class FocusCursor
+	{
+
 	}
 	
 	interface IEntity

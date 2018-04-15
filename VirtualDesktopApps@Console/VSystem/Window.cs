@@ -19,27 +19,21 @@ namespace VirtualDesktopApps_Console
 		public bool IsSelected { get; set; }
 		public bool IsFocused { get; set; }
 
+		public delegate void GetAppearanceDelegate();
+		public GetAppearanceDelegate GetAppearanceHandler;
+
 		public Window()
 		{
+			
+
 			InteractiveUnitsCollectionClass<TitleBar>.InteractiveUnitsCollection.Add(new TitleBar());
 		}
 
 		public void GetAppearance(AvailableProgs program)
 		{
-			StreamReader streamReader = new StreamReader("Appearance_Notepad.txt");
+			GetAppearanceHandler();
 
-			string currentLine;
-
-			for (int j = 1; j <= Height; j++)
-			{
-				currentLine = streamReader.ReadLine();
-
-				for (int i = 1; i <= Width; i++)
-				{
-					VSystem.Display[i, j].Layer[VSystem.Display[i, j].Layer.Count - 1] = 
-						Convert.ToChar(StringManipulation.Mid(currentLine, i, 1));
-				}
-			}
+			GetAppearanceHandler = null;						
 		}
 	}
 }
