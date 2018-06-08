@@ -126,17 +126,6 @@ namespace VirtualDesktopApps_Console
 		}
 	}
 
-	class InteractiveUnitsCollectionClass<T> where T : Button
-	{
-		public static List<T> InteractiveUnitsCollection { get; set; } = new List<T>();
-		public static List<List<T>> CollectionOfIUC = new List<List<T>>();
-
-		public static void AddCollection(List<T> interactiveUnitsCollection)
-		{
-			CollectionOfIUC.Add(interactiveUnitsCollection);
-		}
-	}
-
 	class Pixel
 	{
 		public List<char> Layer { get; set; } = new List<char>();

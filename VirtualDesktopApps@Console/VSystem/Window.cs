@@ -12,21 +12,18 @@ namespace VirtualDesktopApps_Console
 	{
 		public int AnchorX { get; set; } = 2;
 		public int AnchorY { get; set; } = 2;
-
 		public int Width { get; set; } = 66;
 		public int Height { get; set; } = 27;
-
 		public bool IsSelected { get; set; }
 		public bool IsFocused { get; set; }
+		public List<Button> InteractiveUnitsCollection { get; set; } = new List<Button>();
 
 		public delegate void GetAppearanceDelegate();
 		public GetAppearanceDelegate GetAppearanceHandler;
 
 		public Window()
 		{
-			
-
-			InteractiveUnitsCollectionClass<TitleBar>.InteractiveUnitsCollection.Add(new TitleBar());
+			InteractiveUnitsCollection.Add(new TitleBar());
 		}
 
 		public void GetAppearance(AvailableProgs program)

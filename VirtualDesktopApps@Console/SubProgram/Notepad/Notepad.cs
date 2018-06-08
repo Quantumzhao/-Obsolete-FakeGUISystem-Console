@@ -11,9 +11,9 @@ namespace VirtualDesktopApps_Console
 	{
 		public Notepad()
 		{
-			InteractiveUnitsCollectionClass<MenuItem_Edit>.InteractiveUnitsCollection.Add(new MenuItem_Edit());
-			InteractiveUnitsCollectionClass<MenuItem_File>.InteractiveUnitsCollection.Add(new MenuItem_File());
-			InteractiveUnitsCollectionClass<MenuItem_Help>.InteractiveUnitsCollection.Add(new MenuItem_Help());
+			Window_Component.InteractiveUnitsCollection.Add(new MenuItem_Edit<Notepad>());
+			Window_Component.InteractiveUnitsCollection.Add(new MenuItem_File<Notepad>());
+			Window_Component.InteractiveUnitsCollection.Add(new MenuItem_Help<Notepad>());
 
 			Window_Component.GetAppearanceHandler = GetWindowAppearance_Notepad;
 		}

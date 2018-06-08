@@ -63,17 +63,23 @@ namespace VirtualDesktopApps_Console
 		
 	}
 
-	class MenuItem_File : MenuItem
+	class MenuItem_File<T> : MenuItem where T : SubProgram
 	{
+		public void PopUpMenu(T subProgram)
+		{
 
+		}
 	}
 
-	class MenuItem_Edit : MenuItem
+	class MenuItem_Edit<T> : MenuItem where T : SubProgram
 	{
+		public void FocusShiftToTextBox(T subProgram)
+		{
 
+		}
 	}
 
-	class MenuItem_Help : MenuItem
+	class MenuItem_Help<T> : MenuItem where T : SubProgram
 	{
 
 	}
