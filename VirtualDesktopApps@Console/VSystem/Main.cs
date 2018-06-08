@@ -14,13 +14,10 @@ namespace VirtualDesktopApps_Console
 			initiation();
 
 			//VSystem.KeyPressHandler(Console.ReadKey());
-
 			//runNotepadTest();
-
 			//VSystem.Test();
 
 			VSystem.RenderAll();
-
 			Console.ReadKey();
 		}
 
@@ -28,7 +25,6 @@ namespace VirtualDesktopApps_Console
 		{
 			Console.BackgroundColor = ConsoleColor.White;
 			Console.ForegroundColor = ConsoleColor.Black;
-
 			Console.WindowWidth  = Console.LargestWindowWidth;
 			Console.WindowHeight = Console.LargestWindowHeight;
 			Console.CursorVisible = false;
@@ -47,9 +43,7 @@ namespace VirtualDesktopApps_Console
 		private static void runNotepadTest()
 		{
 			SubProgramCollectionClass<Notepad>.AddNewProg(new Notepad());
-			
-			SubProgramCollectionClass<Notepad>.SubprogramCollection[SubProgramCollectionClass<Notepad>.SubprogramCollection.Count - 1].Window_Component.GetAppearance(AvailableProgs.Notepad);
-			
+			SubProgramCollectionClass<Notepad>.SubprogramCollection[SubProgramCollectionClass<Notepad>.SubprogramCollection.Count - 1].Window_Component.GetAppearance(AvailableProgs.Notepad);			
 			VSystem.KeyPressHandler = SubProgram.KeyPressHandler;
 
 
@@ -60,7 +54,6 @@ namespace VirtualDesktopApps_Console
 	{
 		public const int Width = 125;
 		public const int Height = 50;
-
 		public static Pixel[,] Display { get; set; } = new Pixel[Width, Height];
 
 		public delegate void KeyPressDelegate(ConsoleKeyInfo key);
@@ -91,7 +84,6 @@ namespace VirtualDesktopApps_Console
 				}
 
 				Console.Write("║");
-
 				Console.WriteLine();
 			}
 
@@ -137,7 +129,6 @@ namespace VirtualDesktopApps_Console
 	class InteractiveUnitsCollectionClass<T> where T : Button
 	{
 		public static List<T> InteractiveUnitsCollection { get; set; } = new List<T>();
-
 		public static List<List<T>> CollectionOfIUC = new List<List<T>>();
 
 		public static void AddCollection(List<T> interactiveUnitsCollection)
@@ -165,10 +156,8 @@ namespace VirtualDesktopApps_Console
 	{
 		int AnchorX { get; set; }
 		int AnchorY { get; set; }
-
 		int Width { get; set; }
 		int Height { get; set; }
-
 		bool IsSelected { get; set; }
 		bool IsFocused { get; set; }
 	}
