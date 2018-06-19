@@ -9,6 +9,8 @@ namespace VirtualDesktopApps_Console
 {
 	class Launcher
 	{
+		public static ConsoleKeyInfo KeyPressed;
+
 		static void Main(string[] args)
 		{
 			initiation();
@@ -18,7 +20,10 @@ namespace VirtualDesktopApps_Console
 			//VSystem.Test();
 
 			VSystem.RenderAll();
-			Console.ReadKey();
+
+			KeyPressed = Console.ReadKey();
+
+			runNotepadTest();
 		}
 
 		private static void initiation()
@@ -28,6 +33,7 @@ namespace VirtualDesktopApps_Console
 			Console.WindowWidth  = Console.LargestWindowWidth;
 			Console.WindowHeight = Console.LargestWindowHeight;
 			Console.CursorVisible = false;
+			VSystem.KeyPressHandler = VSystem.InputParser;
 						
 			for (int i = 0; i < VSystem.Width; i++)
 			{
@@ -35,18 +41,18 @@ namespace VirtualDesktopApps_Console
 				{
 					VSystem.Display[i, j] = new Pixel();
 				}
-			}
-
-			runNotepadTest();
+			}			
 		}
 
 		private static void runNotepadTest()
 		{
 			SubProgramCollectionClass<Notepad>.AddNewProg(new Notepad());
-			SubProgramCollectionClass<Notepad>.SubprogramCollection[SubProgramCollectionClass<Notepad>.SubprogramCollection.Count - 1].Window_Component.GetAppearance(AvailableProgs.Notepad);			
-			VSystem.KeyPressHandler = SubProgram.KeyPressHandler;
+			SubProgramCollectionClass<Notepad>.SubprogramCollection[SubProgramCollectionClass<Notepad>.
+				SubprogramCollection.Count - 1].Window_Component.GetAppearance(AvailableProgs.Notepad);
+			VSystem.KeyPressHandler = SubProgramCollectionClass<Notepad>.
+				SubprogramCollection[SubProgramCollectionClass<Notepad>.SubprogramCollection.Count - 1].KeyPressHandler;
 
-
+			VSystem.KeyPressHandler(KeyPressed);
 		}
 	}
 
@@ -94,7 +100,7 @@ namespace VirtualDesktopApps_Console
 			Console.Write("╝");
 		}
 		
-		static public void Test()
+		public static void Test()
 		{
 			for (int i = 0; i < Width; i++)
 			{
@@ -103,6 +109,30 @@ namespace VirtualDesktopApps_Console
 					Display[i, j].Layer[0] = ' ';
 				}
 			}
+		}
+
+		public static void InputParser(ConsoleKeyInfo keyPressed)
+		{
+			if (keyPressed.Key == ConsoleKey.Escape)
+			{
+				FocusCursor.BackwardToLowerHierarchy();
+			}
+			else
+			{
+				if (keyPressed.Key == ConsoleKey.Tab)
+				{
+					FocusCursor.ForwardToHigherHierarchy();
+				}
+				else
+				{
+					GetFocusedSubProgram().KeyPressHandler(keyPressed);
+				}
+			}
+		}
+
+		public static SubProgram GetFocusedSubProgram()
+		{
+			return new Notepad();
 		}
 	}
 
@@ -138,7 +168,25 @@ namespace VirtualDesktopApps_Console
 
 	class FocusCursor
 	{
+		public static void ForwardToHigherHierarchy()
+		{
+			
+		}
 
+		public static void BackwardToLowerHierarchy()
+		{
+
+		}
+		
+		public static void ToPreviousFocus()
+		{
+
+		}
+
+		public static void ToNextFocus()
+		{
+
+		}
 	}
 	
 	interface IEntity

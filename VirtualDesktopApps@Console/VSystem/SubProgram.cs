@@ -12,7 +12,7 @@ namespace VirtualDesktopApps_Console
 
 		public Window Window_Component { get; set; } = new Window();
 
-		public static VSystem.KeyPressDelegate KeyPressHandler;
+		public VSystem.KeyPressDelegate KeyPressHandler;
 
 		public SubProgram()
 		{

@@ -15,9 +15,28 @@ namespace VirtualDesktopApps_Console
 		public int Height { get; set; }
 
 		public bool IsSelected { get; set; }
-		public bool IsFocused { get; set; }
+		private bool isFocused;
+		public bool IsFocused
+		{
+			get
+			{
+				return isFocused;
+			}
+			set
+			{
+				if (isFocused == value)
+				{
+					return;
+				}
+				else
+				{
+					isFocused = value;
+					GetAppearance(value);
+				}
+			}
+		}
 
-
+		public abstract void GetAppearance(bool isFocused);
 	}
 
 	class PopUpMenu : IEntity
@@ -55,17 +74,28 @@ namespace VirtualDesktopApps_Console
 
 	class TitleBar : Button
 	{
+		public override void GetAppearance(bool isFocused)
+		{
 
+		}
 	}
 
 	class MenuItem : Button
 	{
-		
+		public override void GetAppearance(bool isFocused)
+		{
+
+		}
 	}
 
 	class MenuItem_File<T> : MenuItem where T : SubProgram
 	{
 		public void PopUpMenu(T subProgram)
+		{
+			
+		}
+
+		public override void GetAppearance(bool isFocused)
 		{
 
 		}
@@ -86,7 +116,10 @@ namespace VirtualDesktopApps_Console
 
 	class TextBox : Button
 	{
+		public override void GetAppearance(bool isFocused)
+		{
 
+		}
 	}
 
 	class Pointer
