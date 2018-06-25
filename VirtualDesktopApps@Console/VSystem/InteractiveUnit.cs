@@ -49,6 +49,7 @@ namespace VirtualDesktopApps_Console
 
 		public bool IsSelected { get; set; }
 		public bool IsFocused { get; set; }
+		public bool IsComponentFocused { get; set; }
 
 		public bool IsVisible { get; set; }
 

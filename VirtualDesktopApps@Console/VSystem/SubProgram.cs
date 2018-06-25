@@ -12,6 +12,8 @@ namespace VirtualDesktopApps_Console
 
 		public Window Window_Component { get; set; } = new Window();
 
+		public bool IsComponentocused { get; set; }
+
 		public VSystem.KeyPressDelegate KeyPressHandler;
 
 		public SubProgram()

@@ -49,8 +49,8 @@ namespace VirtualDesktopApps_Console
 			SubProgramCollectionClass<Notepad>.AddNewProg(new Notepad());
 			SubProgramCollectionClass<Notepad>.SubprogramCollection[SubProgramCollectionClass<Notepad>.
 				SubprogramCollection.Count - 1].Window_Component.GetAppearance(AvailableProgs.Notepad);
-			VSystem.KeyPressHandler = SubProgramCollectionClass<Notepad>.
-				SubprogramCollection[SubProgramCollectionClass<Notepad>.SubprogramCollection.Count - 1].KeyPressHandler;
+			SubProgramCollectionClass<Notepad>.SubprogramCollection[SubProgramCollectionClass<Notepad>.
+				SubprogramCollection.Count - 1].KeyPressHandler = VSystem.KeyPressHandler;
 
 			VSystem.KeyPressHandler(KeyPressed);
 		}
@@ -132,7 +132,7 @@ namespace VirtualDesktopApps_Console
 
 		public static SubProgram GetFocusedSubProgram()
 		{
-			return new Notepad();
+			return new Notepad();                                                                  //For Test Only
 		}
 	}
 
