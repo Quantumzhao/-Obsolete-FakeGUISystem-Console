@@ -20,5 +20,10 @@ namespace VirtualDesktopApps_Console
 		{
 			
 		}
+
+		public void InputParser()
+		{
+
+		}
 	}
 }

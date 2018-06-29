@@ -15,6 +15,8 @@ namespace VirtualDesktopApps_Console
 		{
 			initiation();
 
+			runNotepadTest();
+
 			//VSystem.KeyPressHandler(Console.ReadKey());
 			//runNotepadTest();
 			//VSystem.Test();
@@ -23,7 +25,10 @@ namespace VirtualDesktopApps_Console
 
 			KeyPressed = Console.ReadKey();
 
-			runNotepadTest();
+			VSystem.InputParser(KeyPressed);
+
+			VSystem.KeyPressHandler();
+
 		}
 
 		private static void initiation()
@@ -33,7 +38,6 @@ namespace VirtualDesktopApps_Console
 			Console.WindowWidth  = Console.LargestWindowWidth;
 			Console.WindowHeight = Console.LargestWindowHeight;
 			Console.CursorVisible = false;
-			VSystem.KeyPressHandler = VSystem.InputParser;
 						
 			for (int i = 0; i < VSystem.Width; i++)
 			{
@@ -51,8 +55,6 @@ namespace VirtualDesktopApps_Console
 				SubprogramCollection.Count - 1].Window_Component.GetAppearance(AvailableProgs.Notepad);
 			SubProgramCollectionClass<Notepad>.SubprogramCollection[SubProgramCollectionClass<Notepad>.
 				SubprogramCollection.Count - 1].KeyPressHandler = VSystem.KeyPressHandler;
-
-			VSystem.KeyPressHandler(KeyPressed);
 		}
 	}
 
@@ -62,7 +64,7 @@ namespace VirtualDesktopApps_Console
 		public const int Height = 50;
 		public static Pixel[,] Display { get; set; } = new Pixel[Width, Height];
 
-		public delegate void KeyPressDelegate(ConsoleKeyInfo key);
+		public delegate void KeyPressDelegate();
 
 		public static KeyPressDelegate KeyPressHandler;
 
@@ -112,21 +114,24 @@ namespace VirtualDesktopApps_Console
 		}
 
 		public static void InputParser(ConsoleKeyInfo keyPressed)
-		{
-			if (keyPressed.Key == ConsoleKey.Escape)
+		{			
+			switch (keyPressed.Key)
 			{
-				FocusCursor.BackwardToLowerHierarchy();
-			}
-			else
-			{
-				if (keyPressed.Key == ConsoleKey.Tab)
-				{
-					FocusCursor.ForwardToHigherHierarchy();
-				}
-				else
-				{
-					GetFocusedSubProgram().KeyPressHandler(keyPressed);
-				}
+				case ConsoleKey.Escape:
+					KeyPressHandler = FocusCursor.BackwardToLowerHierarchy;
+					break;
+
+				case ConsoleKey.Enter:
+					KeyPressHandler = FocusCursor.ForwardToHigherHierarchy;
+					break;
+
+				case ConsoleKey.Tab:
+					KeyPressHandler = FocusCursor.ToNextFocus;
+					break;
+
+				default:
+					KeyPressHandler = GetFocusedSubProgram().KeyPressHandler;
+					break;
 			}
 		}
 
