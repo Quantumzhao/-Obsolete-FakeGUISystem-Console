@@ -35,5 +35,10 @@ namespace VirtualDesktopApps_Console
 				}
 			}
 		}
+
+		public override void ParseAndExecute()
+		{
+
+		}
 	}
 }

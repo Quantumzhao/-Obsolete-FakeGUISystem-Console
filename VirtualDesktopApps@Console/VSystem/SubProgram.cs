@@ -16,14 +16,6 @@ namespace VirtualDesktopApps_Console
 
 		public VSystem.KeyPressDelegate KeyPressHandler;
 
-		public SubProgram()
-		{
-			
-		}
-
-		public void ParseAndExecute()
-		{
-
-		}
+		public abstract void ParseAndExecute();
 	}
 }

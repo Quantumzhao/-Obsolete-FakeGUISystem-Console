@@ -59,8 +59,7 @@ namespace VirtualDesktopApps_Console
 			/*--For Test Only--*/
 			AnchorX = 2;
 			AnchorY = 2;
-
-
+			
 		}
 
 		public void GetAppearance()

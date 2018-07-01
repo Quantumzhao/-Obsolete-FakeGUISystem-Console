@@ -9,7 +9,7 @@ namespace VirtualDesktopApps_Console
 {
 	class Launcher
 	{
-		public static ConsoleKeyInfo KeyPressed;
+		public static ConsoleKeyInfo KeyPressed { get; set; }
 
 		static void Main(string[] args)
 		{
@@ -25,9 +25,7 @@ namespace VirtualDesktopApps_Console
 
 			KeyPressed = Console.ReadKey();
 
-			VSystem.InputParser(KeyPressed);
-
-			VSystem.KeyPressHandler();
+			VSystem.ParseAndExecute(KeyPressed);
 
 		}
 
@@ -113,7 +111,7 @@ namespace VirtualDesktopApps_Console
 			}
 		}
 
-		public static void InputParser(ConsoleKeyInfo keyPressed)
+		public static void ParseAndExecute(ConsoleKeyInfo keyPressed)
 		{			
 			switch (keyPressed.Key)
 			{
@@ -146,6 +144,8 @@ namespace VirtualDesktopApps_Console
 					KeyPressHandler = GetFocusedSubProgram().ParseAndExecute;
 					break;
 			}
+
+			KeyPressHandler();
 		}
 
 		public static SubProgram GetFocusedSubProgram()
