@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SupplementaryClassLibraryForStringManipulation;
 
 namespace VirtualDesktopApps_Console
 {
@@ -117,6 +118,43 @@ namespace VirtualDesktopApps_Console
 
 	class TextBox : Button
 	{
+		private string content = "";
+		
+		public string ReadContent()
+		{
+			return content;
+		}
+
+		public void AppendContent(char input)
+		{
+			content += input.ToString();
+		}
+
+		public void DeleteContent()
+		{
+			content = StringManipulation.Mid(content, 1, (int)StringManipulation.Len(content) - 1);
+		}
+
+		public void DeleteAll()
+		{
+			content = "";
+		}
+
+		public void Select(int start, int end)
+		{
+
+		}
+
+		public void SelectAll()
+		{
+
+		}
+
+		public void MoveCursor()
+		{
+
+		}
+
 		public override void GetAppearance(bool isFocused)
 		{
 

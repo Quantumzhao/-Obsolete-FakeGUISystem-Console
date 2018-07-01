@@ -21,7 +21,7 @@ namespace VirtualDesktopApps_Console
 			
 		}
 
-		public void InputParser()
+		public void ParseAndExecute()
 		{
 
 		}

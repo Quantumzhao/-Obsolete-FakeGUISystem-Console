@@ -120,24 +120,37 @@ namespace VirtualDesktopApps_Console
 				case ConsoleKey.Escape:
 					KeyPressHandler = FocusCursor.BackwardToLowerHierarchy;
 					break;
+				case ConsoleKey.UpArrow:
+					KeyPressHandler = FocusCursor.BackwardToLowerHierarchy;
+					break;
 
 				case ConsoleKey.Enter:
+					KeyPressHandler = FocusCursor.ForwardToHigherHierarchy;
+					break;
+				case ConsoleKey.DownArrow:
 					KeyPressHandler = FocusCursor.ForwardToHigherHierarchy;
 					break;
 
 				case ConsoleKey.Tab:
 					KeyPressHandler = FocusCursor.ToNextFocus;
 					break;
+				case ConsoleKey.RightArrow:
+					KeyPressHandler = FocusCursor.ToNextFocus;
+					break;
+
+				case ConsoleKey.LeftArrow:
+					KeyPressHandler = FocusCursor.ToPreviousFocus;
+					break;
 
 				default:
-					KeyPressHandler = GetFocusedSubProgram().KeyPressHandler;
+					KeyPressHandler = GetFocusedSubProgram().ParseAndExecute;
 					break;
 			}
 		}
 
 		public static SubProgram GetFocusedSubProgram()
 		{
-			return new Notepad();                                                                  //For Test Only
+			return SubProgramCollectionClass<Notepad>.SubprogramCollection[0];                     //For Temporary Test Only
 		}
 	}
 
