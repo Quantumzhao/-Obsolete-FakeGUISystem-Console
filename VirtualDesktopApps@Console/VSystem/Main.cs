@@ -43,7 +43,7 @@ namespace VirtualDesktopApps_Console
 				{
 					VSystem.Display[i, j] = new Pixel();
 				}
-			}			
+			}
 		}
 
 		private static void runNotepadTest()
@@ -81,7 +81,7 @@ namespace VirtualDesktopApps_Console
 							k++;
 						}
 						else
-						{							
+						{
 							break;
 						}
 					}
@@ -180,7 +180,7 @@ namespace VirtualDesktopApps_Console
 
 		public Pixel()
 		{			
-			Layer.Add(' ');						
+			Layer.Add(' ');
 		}
 	}
 

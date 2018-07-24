@@ -30,7 +30,7 @@ namespace VirtualDesktopApps_Console
 		{
 			GetAppearanceHandler();
 
-			GetAppearanceHandler = null;						
+			GetAppearanceHandler = null;
 		}
 	}
 }
