@@ -14,31 +14,60 @@ namespace VirtualDesktopApps_Console
 			Window_Component.InteractiveUnitsCollection.Add(new MenuItem_Edit<Notepad>());
 			Window_Component.InteractiveUnitsCollection.Add(new MenuItem_File<Notepad>());
 			Window_Component.InteractiveUnitsCollection.Add(new MenuItem_Help<Notepad>());
+			Window_Component.InteractiveUnitsCollection.Add(new TextBox               ());
 
 			Window_Component.GetAppearanceHandler = GetWindowAppearance_Notepad;
+
+			Window_Component.InteractiveUnitsCollection[4].IsFocused  = true;
+			Window_Component.InteractiveUnitsCollection[4].IsSelected = true;
 		}
 
 		public void GetWindowAppearance_Notepad()
 		{
-			StreamReader streamReader = new StreamReader("Appearance_Notepad.txt");
-
-			string currentLine;
-
-			for (int j = 1; j <= Window_Component.Height; j++)
+			using (StreamReader streamReader = new StreamReader("Appearance_Notepad.txt"))
 			{
-				currentLine = streamReader.ReadLine();
+				string currentLine;
 
-				for (int i = 1; i <= Window_Component.Width; i++)
+				for (int j = 1; j <= Window_Component.Height; j++)
 				{
-					VSystem.Display[i, j].Layer[VSystem.Display[i, j].Layer.Count - 1] =
-						Convert.ToChar(StringManipulation.Mid(currentLine, i, 1));
+					currentLine = streamReader.ReadLine();
+
+					for (int i = 1; i <= Window_Component.Width; i++)
+					{
+						VSystem.Display[i - 1 + Window_Component.AnchorX, j - 1 + 
+							Window_Component.AnchorY].Layer[VSystem.Display[i - 1 + 
+							Window_Component.AnchorX, j - 1 + Window_Component.AnchorY].
+							Layer.Count - 1] = Convert.ToChar(StringManipulation.Mid(currentLine, i, 1));
+					}
 				}
 			}
 		}
 
-		public override void ParseAndExecute()
+		public override void ParseAndExecute(ConsoleKeyInfo keyPressed)
 		{
+			bool isKeyUsed = false;
 
+			switch (Window_Component.GetSelectedComponent().ToString())
+			{
+				case "VirtualDesktopApps_Console.TitleBar":
+					break;
+
+				case "VirtualDesktopApps_Console.TextBox":
+					isKeyUsed = ((TextBox)Window_Component.InteractiveUnitsCollection[4]).ParseAndExecute(keyPressed);
+					break;
+
+				default:
+					break;
+			}
+
+			if (!isKeyUsed)
+			{
+				switch (keyPressed)
+				{
+					default:
+						break;
+				}
+			}
 		}
 	}
 }

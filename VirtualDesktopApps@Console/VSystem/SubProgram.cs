@@ -12,10 +12,33 @@ namespace VirtualDesktopApps_Console
 
 		public Window Window_Component { get; set; } = new Window();
 
-		public bool IsComponentocused { get; set; }
+		private bool isComponentSelected = false;
+		public bool IsComponentSelected
+		{
+			get
+			{
+				return isComponentSelected;
+			}
 
-		public VSystem.KeyPressDelegate KeyPressHandler;
+			set
+			{
+				if (value == true)
+				{
+					VSystem.IsFocused = false;
 
-		public abstract void ParseAndExecute();
+					if (VSystem.GetFocusedSubProgram() != null)
+					{
+						VSystem.GetFocusedSubProgram().IsComponentSelected = false;
+					}
+					isComponentSelected = true;
+				}
+				else
+				{
+					isComponentSelected = false;
+				}
+			}
+		}
+
+		public abstract void ParseAndExecute(ConsoleKeyInfo keyPressed);
 	}
 }

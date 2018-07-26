@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using SupplementaryClassLibraryForStringManipulation;
 
@@ -15,27 +16,42 @@ namespace VirtualDesktopApps_Console
 		{
 			initiation();
 
-			runNotepadTest();
-
 			//VSystem.KeyPressHandler(Console.ReadKey());
 			//runNotepadTest();
 			//VSystem.Test();
 
 			VSystem.RenderAll();
 
+			runNotepadTest();
+
 			KeyPressed = Console.ReadKey();
+			Console.Clear();
 
 			VSystem.ParseAndExecute(KeyPressed);
+			VSystem.RenderAll();
 
+			Console.ReadKey();
+		}
+
+		private static void inputEliminator()
+		{
+			while (true)
+			{
+				Console.ReadKey();				
+
+				Console.Clear();
+			}
 		}
 
 		private static void initiation()
 		{
 			Console.BackgroundColor = ConsoleColor.White;
 			Console.ForegroundColor = ConsoleColor.Black;
-			Console.WindowWidth  = Console.LargestWindowWidth;
-			Console.WindowHeight = Console.LargestWindowHeight;
-			Console.CursorVisible = false;
+			Console.WindowWidth     = Console.LargestWindowWidth;
+			Console.WindowHeight    = Console.LargestWindowHeight;
+			Console.CursorVisible   = false;
+
+			VSystem.IsFocused       = true;
 						
 			for (int i = 0; i < VSystem.Width; i++)
 			{
@@ -48,23 +64,31 @@ namespace VirtualDesktopApps_Console
 
 		private static void runNotepadTest()
 		{
-			SubProgramCollectionClass<Notepad>.AddNewProg(new Notepad());
-			SubProgramCollectionClass<Notepad>.SubprogramCollection[SubProgramCollectionClass<Notepad>.
-				SubprogramCollection.Count - 1].Window_Component.GetAppearance(AvailableProgs.Notepad);
+			SubProgramCollectionClass<SubProgram>.AddNewSubprogram(new Notepad());
+			SubProgramCollectionClass<SubProgram>.SubprogramCollection[SubProgramCollectionClass<SubProgram>.
+				SubprogramCollection.Count - 1].Window_Component.GetAppearance();
+			/*
 			SubProgramCollectionClass<Notepad>.SubprogramCollection[SubProgramCollectionClass<Notepad>.
 				SubprogramCollection.Count - 1].KeyPressHandler = VSystem.KeyPressHandler;
+			*/
+
+			SubProgramCollectionClass<SubProgram>.SubprogramCollection[SubProgramCollectionClass<SubProgram>.
+				SubprogramCollection.Count - 1].IsComponentSelected = true;
+
 		}
 	}
 
 	class VSystem
 	{
-		public const int Width = 125;
+		public const int Width  = 125;
 		public const int Height = 50;
+
+		public static bool IsFocused { get; set; } = false;
 		public static Pixel[,] Display { get; set; } = new Pixel[Width, Height];
 
-		public delegate void KeyPressDelegate();
+		//public delegate void KeyPressDelegate();
 
-		public static KeyPressDelegate KeyPressHandler;
+		//public static KeyPressDelegate KeyPressHandler;
 
 		static public void RenderAll()
 		{
@@ -112,45 +136,60 @@ namespace VirtualDesktopApps_Console
 		}
 
 		public static void ParseAndExecute(ConsoleKeyInfo keyPressed)
-		{			
+		{
+			if (GetFocusedSubProgram() != null)
+			{
+				GetFocusedSubProgram().ParseAndExecute(keyPressed);
+
+				return;
+			}
+			/*
 			switch (keyPressed.Key)
 			{
 				case ConsoleKey.Escape:
-					KeyPressHandler = FocusCursor.BackwardToLowerHierarchy;
+					FocusCursor.BackwardToLowerHierarchy();
 					break;
 				case ConsoleKey.UpArrow:
-					KeyPressHandler = FocusCursor.BackwardToLowerHierarchy;
+					FocusCursor.BackwardToLowerHierarchy();
 					break;
 
 				case ConsoleKey.Enter:
-					KeyPressHandler = FocusCursor.ForwardToHigherHierarchy;
+					FocusCursor.ForwardToHigherHierarchy();
 					break;
 				case ConsoleKey.DownArrow:
-					KeyPressHandler = FocusCursor.ForwardToHigherHierarchy;
+					FocusCursor.ForwardToHigherHierarchy();
 					break;
 
 				case ConsoleKey.Tab:
-					KeyPressHandler = FocusCursor.ToNextFocus;
+					FocusCursor.ToNextFocus();
 					break;
 				case ConsoleKey.RightArrow:
-					KeyPressHandler = FocusCursor.ToNextFocus;
+					FocusCursor.ToNextFocus();
 					break;
 
 				case ConsoleKey.LeftArrow:
-					KeyPressHandler = FocusCursor.ToPreviousFocus;
+					FocusCursor.ToPreviousFocus();
 					break;
 
 				default:
-					KeyPressHandler = GetFocusedSubProgram().ParseAndExecute;
+					GetFocusedSubProgram().ParseAndExecute(k);
 					break;
 			}
+			*/
 
-			KeyPressHandler();
 		}
 
 		public static SubProgram GetFocusedSubProgram()
 		{
-			return SubProgramCollectionClass<Notepad>.SubprogramCollection[0];                     //For Temporary Test Only
+			for (int i = 0; i < SubProgramCollectionClass<SubProgram>.SubprogramCollection.Count; i++)
+			{
+				if (SubProgramCollectionClass<SubProgram>.SubprogramCollection[i].IsComponentSelected)
+				{
+					return SubProgramCollectionClass<SubProgram>.SubprogramCollection[i];
+				}
+			}
+
+			return null;
 		}
 	}
 
@@ -158,7 +197,7 @@ namespace VirtualDesktopApps_Console
 	{
 		public static List<T> SubprogramCollection { get; set; } = new List<T>();
 
-		public static void AddNewProg(T subProgram)                                                //Create a new specific subprogram instance
+		public static void AddNewSubprogram(T subProgram)                                                //Create a new specific subprogram instance
 		{
 			SubprogramCollection.Add(subProgram);
 

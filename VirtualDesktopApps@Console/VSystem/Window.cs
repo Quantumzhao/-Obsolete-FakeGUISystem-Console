@@ -26,11 +26,24 @@ namespace VirtualDesktopApps_Console
 			InteractiveUnitsCollection.Add(new TitleBar());
 		}
 
-		public void GetAppearance(AvailableProgs program)
+		public void GetAppearance()
 		{
 			GetAppearanceHandler();
 
 			GetAppearanceHandler = null;
+		}
+
+		public Button GetSelectedComponent()
+		{
+			for (int i = 0; i < InteractiveUnitsCollection.Count; i++)
+			{
+				if (InteractiveUnitsCollection[i].IsSelected)
+				{
+					return InteractiveUnitsCollection[i];
+				}
+			}
+
+			return null;
 		}
 	}
 }

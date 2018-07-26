@@ -117,8 +117,16 @@ namespace VirtualDesktopApps_Console
 
 	class TextBox : Button
 	{
+		public TextBox()
+		{
+			AnchorX = 2;
+			AnchorY = 4;
+		}
+
+		public Pointer Pointer_Component { get; set; } = new Pointer();
+
 		private string content = "";
-		
+
 		public string ReadContent()
 		{
 			return content;
@@ -158,11 +166,73 @@ namespace VirtualDesktopApps_Console
 		{
 
 		}
+
+		public bool ParseAndExecute(ConsoleKeyInfo keyPressed)
+		{
+			int ascii = StringManipulation.ToChar(keyPressed.KeyChar);
+
+			if ( ascii >= 32 || ascii <= 126)
+			{
+				AppendContent(keyPressed.KeyChar);
+			}
+			switch (keyPressed.Key)
+			{
+				case ConsoleKey.Backspace:
+					DeleteContent();
+					break;
+
+				case ConsoleKey.UpArrow:
+					Pointer_Component.MoveUp();
+					break;
+
+				case ConsoleKey.DownArrow:
+					Pointer_Component.MoveDown();
+					break;
+
+				case ConsoleKey.LeftArrow:
+					Pointer_Component.MoveLeft();
+					break;
+
+				case ConsoleKey.RightArrow:
+					Pointer_Component.MoveRight();
+					break;
+
+				case ConsoleKey.Escape:
+					break;
+
+				default:
+					break;
+			}
+
+			return true;
+		}
 	}
 
 	class Pointer
 	{
+		public int Position { get; set; } = 0;
 
+		public ConsoleColor PointerColor { get; set; } = ConsoleColor.Blue;
+
+		public void MoveUp()
+		{
+
+		}
+
+		public void MoveDown()
+		{
+
+		}
+
+		public void MoveLeft()
+		{
+
+		}
+
+		public void MoveRight()
+		{
+
+		}
 	}
 
 	class PopUpMenu_Files : PopUpMenu
