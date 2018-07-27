@@ -33,16 +33,6 @@ namespace VirtualDesktopApps_Console
 			Console.ReadKey();
 		}
 
-		private static void inputEliminator()
-		{
-			while (true)
-			{
-				Console.ReadKey();				
-
-				Console.Clear();
-			}
-		}
-
 		private static void initiation()
 		{
 			Console.BackgroundColor = ConsoleColor.White;
@@ -67,10 +57,6 @@ namespace VirtualDesktopApps_Console
 			SubProgramCollectionClass<SubProgram>.AddNewSubprogram(new Notepad());
 			SubProgramCollectionClass<SubProgram>.SubprogramCollection[SubProgramCollectionClass<SubProgram>.
 				SubprogramCollection.Count - 1].Window_Component.GetAppearance();
-			/*
-			SubProgramCollectionClass<Notepad>.SubprogramCollection[SubProgramCollectionClass<Notepad>.
-				SubprogramCollection.Count - 1].KeyPressHandler = VSystem.KeyPressHandler;
-			*/
 
 			SubProgramCollectionClass<SubProgram>.SubprogramCollection[SubProgramCollectionClass<SubProgram>.
 				SubprogramCollection.Count - 1].IsComponentSelected = true;
@@ -245,11 +231,22 @@ namespace VirtualDesktopApps_Console
 
 		}
 	}
+
+	class Coordinates
+	{
+		public Coordinates(int x = 0, int y = 0)
+		{
+			X = x;
+			Y = y;
+		}
+
+		public int X { get; set; }
+		public int Y { get; set; }
+	}
 	
 	interface IEntity
 	{
-		int AnchorX { get; set; }
-		int AnchorY { get; set; }
+		Coordinates Anchor { get; set; }
 		int Width { get; set; }
 		int Height { get; set; }
 		bool IsSelected { get; set; }

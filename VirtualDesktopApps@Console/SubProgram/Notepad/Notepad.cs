@@ -34,13 +34,15 @@ namespace VirtualDesktopApps_Console
 
 					for (int i = 1; i <= Window_Component.Width; i++)
 					{
-						VSystem.Display[i - 1 + Window_Component.AnchorX, j - 1 + 
-							Window_Component.AnchorY].Layer[VSystem.Display[i - 1 + 
-							Window_Component.AnchorX, j - 1 + Window_Component.AnchorY].
+						VSystem.Display[i - 1 + Window_Component.Anchor.X, j - 1 + 
+							Window_Component.Anchor.Y].Layer[VSystem.Display[i - 1 + 
+							Window_Component.Anchor.X, j - 1 + Window_Component.Anchor.Y].
 							Layer.Count - 1] = Convert.ToChar(StringManipulation.Mid(currentLine, i, 1));
 					}
 				}
 			}
+
+			((TextBox)Window_Component.InteractiveUnitsCollection[4]).GetAppearance();
 		}
 
 		public override void ParseAndExecute(ConsoleKeyInfo keyPressed)
@@ -49,9 +51,6 @@ namespace VirtualDesktopApps_Console
 
 			switch (Window_Component.GetSelectedComponent().ToString())
 			{
-				case "VirtualDesktopApps_Console.TitleBar":
-					break;
-
 				case "VirtualDesktopApps_Console.TextBox":
 					isKeyUsed = ((TextBox)Window_Component.InteractiveUnitsCollection[4]).ParseAndExecute(keyPressed);
 					break;

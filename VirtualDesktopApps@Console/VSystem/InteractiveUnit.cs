@@ -9,8 +9,7 @@ namespace VirtualDesktopApps_Console
 {
 	abstract class Button : IEntity
 	{
-		public int AnchorX { get; set; }
-		public int AnchorY { get; set; }
+		public Coordinates Anchor { get; set; } = new Coordinates();
 
 		public int Width { get; set; }
 		public int Height { get; set; }
@@ -32,18 +31,17 @@ namespace VirtualDesktopApps_Console
 				else
 				{
 					isFocused = value;
-					GetAppearance(value);
+					GetAppearance();
 				}
 			}
 		}
 
-		public abstract void GetAppearance(bool isFocused);
+		public abstract void GetAppearance();
 	}
 
 	class PopUpMenu : IEntity
 	{
-		public int AnchorX { get; set; }
-		public int AnchorY { get; set; }
+		public Coordinates Anchor { get; set; } = new Coordinates();
 
 		public int Width { get; set; } = 15;
 		public int Height { get; set; } = 7;
@@ -57,8 +55,8 @@ namespace VirtualDesktopApps_Console
 		public PopUpMenu()
 		{
 			/*--For Test Only--*/
-			AnchorX = 2;
-			AnchorY = 2;
+			Anchor.X = 2;
+			Anchor.Y = 2;
 			
 		}
 
@@ -75,7 +73,7 @@ namespace VirtualDesktopApps_Console
 
 	class TitleBar : Button
 	{
-		public override void GetAppearance(bool isFocused)
+		public override void GetAppearance()
 		{
 
 		}
@@ -83,7 +81,7 @@ namespace VirtualDesktopApps_Console
 
 	class MenuItem : Button
 	{
-		public override void GetAppearance(bool isFocused)
+		public override void GetAppearance()
 		{
 
 		}
@@ -96,7 +94,7 @@ namespace VirtualDesktopApps_Console
 			
 		}
 
-		public override void GetAppearance(bool isFocused)
+		public override void GetAppearance()
 		{
 
 		}
@@ -119,37 +117,50 @@ namespace VirtualDesktopApps_Console
 	{
 		public TextBox()
 		{
-			AnchorX = 2;
-			AnchorY = 4;
+			Anchor.X = 2;
+			Anchor.Y = 4;
+
+			content.Add("123456");
+
+			DisplayArea_Component.TextboxContentClone = content;
 		}
 
-		public Pointer Pointer_Component { get; set; } = new Pointer();
+		public TextboxDisplayArea DisplayArea_Component { get; set; } = new TextboxDisplayArea();
 
-		private string content = "";
+		private List<string> content = new List<string>();
 
-		public string ReadContent()
+		public List<string> ReadContent()
 		{
 			return content;
 		}
 
-		public void AppendContent(char input)
+		public void InsertContent(char input, int line, int position)
 		{
-			content += input.ToString();
+			try
+			{
+				content[line] = content[line].Insert(position, input.ToString());
+			}
+			catch(ArgumentOutOfRangeException) { }			
 		}
 
-		public void DeleteContent()
+		public void DeleteContent(int line, int position)
 		{
-			content = StringManipulation.Mid(content, 1, (int)StringManipulation.Len(content) - 1);
+			try
+			{
+				content[line] = content[line].Remove(position - 1, 1);
+			}
+			catch (ArgumentOutOfRangeException) { }
 		}
 
 		public void DeleteAll()
 		{
-			content = "";
+			content.Clear();
+			content.Add("");
 		}
 
 		public void Select(int start, int end)
 		{
-
+			
 		}
 
 		public void SelectAll()
@@ -162,76 +173,149 @@ namespace VirtualDesktopApps_Console
 
 		}
 
-		public override void GetAppearance(bool isFocused)
+		public override void GetAppearance()
 		{
+			for (int j = 0; j < content.Count - 1; j++)
+			{
+				for (int i = 0; i < content[j].Length; i++)
+				{
 
+				}
+			}
+
+			if (IsFocused)
+			{
+
+			}
+			else
+			{
+
+			}
 		}
 
 		public bool ParseAndExecute(ConsoleKeyInfo keyPressed)
 		{
 			int ascii = StringManipulation.ToChar(keyPressed.KeyChar);
 
-			if ( ascii >= 32 || ascii <= 126)
+			if ( ascii >= 32 && ascii <= 126)
 			{
-				AppendContent(keyPressed.KeyChar);
+				InsertContent(keyPressed.KeyChar, 0, 5);	//For Test Only
+
+				return true;
 			}
+
 			switch (keyPressed.Key)
 			{
 				case ConsoleKey.Backspace:
-					DeleteContent();
+					DeleteContent(0, 5);	//For Test Only
 					break;
 
 				case ConsoleKey.UpArrow:
-					Pointer_Component.MoveUp();
+					DisplayArea_Component.Pointer_Component.MoveUp();
 					break;
 
 				case ConsoleKey.DownArrow:
-					Pointer_Component.MoveDown();
+					DisplayArea_Component.Pointer_Component.MoveDown();
 					break;
 
 				case ConsoleKey.LeftArrow:
-					Pointer_Component.MoveLeft();
+					DisplayArea_Component.Pointer_Component.MoveLeft();
 					break;
 
 				case ConsoleKey.RightArrow:
-					Pointer_Component.MoveRight();
+					DisplayArea_Component.Pointer_Component.MoveRight();
 					break;
 
-				case ConsoleKey.Escape:
-					break;
+				//case ConsoleKey.Escape:
+					//break;
 
 				default:
-					break;
+					return false;
 			}
 
 			return true;
 		}
 	}
 
-	class Pointer
+	class TextboxDisplayArea
 	{
-		public int Position { get; set; } = 0;
+		public const int Width  = 66;
+		public const int Height = 23;
+
+		public Coordinates Anchor { get; set; } = new Coordinates();
+		public TextboxPointer Pointer_Component { get; set; } = new TextboxPointer();
+
+		public List<string> TextboxContentClone { get; set; }
+
+		private char[,] Content = new char[Width, Height];
+		public char[,] GetContent()
+		{
+			return Content;
+		}
+		public void SetContent()
+		{
+			int y = TextboxContentClone.Count;
+			int x = 0;
+			for (int i = 0; i < y; i++)
+			{
+				if (x > TextboxContentClone[i].Length)
+				{
+					x = TextboxContentClone[i].Length;
+				}
+			}
+
+			char[,] CharacterMap = new char[x, y];
+
+			for (int j = 0; j < y; j++)
+			{
+				for (int i = 0; i < x; i++)
+				{
+					if (i < TextboxContentClone[j].Length)
+					{
+						CharacterMap[i, j] = Convert.ToChar(StringManipulation.Mid(TextboxContentClone[j], i, 1));
+					}
+					else
+					{
+						CharacterMap[i, j] = ' ';
+					}
+				}
+			}
+
+			for (int j = 0; j < Height; j++)
+			{
+				for (int i = 0; i < Width; i++)
+				{
+					Content[i, j] = CharacterMap[i, j];
+				}
+			}
+		}
+	}
+
+	class TextboxPointer
+	{
+		public int Position { get; set; }
+		public int Line { get; set; } = 0;
 
 		public ConsoleColor PointerColor { get; set; } = ConsoleColor.Blue;
 
 		public void MoveUp()
 		{
-
+			Line--;
 		}
 
 		public void MoveDown()
 		{
-
+			Line++;
 		}
 
 		public void MoveLeft()
 		{
-
+			Position--;
 		}
 
 		public void MoveRight()
 		{
-
+			Position++;
 		}
 	}
 

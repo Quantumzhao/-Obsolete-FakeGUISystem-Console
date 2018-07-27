@@ -4,14 +4,12 @@ using System;
 using System.Text;
 using System.Threading.Tasks;
 using SupplementaryClassLibraryForStringManipulation;
-using VirtualDesktopApps_Console.Properties;
 
 namespace VirtualDesktopApps_Console
 {
 	class Window : IEntity
 	{
-		public int AnchorX { get; set; } = 2;
-		public int AnchorY { get; set; } = 2;
+		public Coordinates Anchor { get; set; } = new Coordinates(2, 2);
 		public int Width { get; set; } = 66;
 		public int Height { get; set; } = 27;
 		public bool IsSelected { get; set; }
