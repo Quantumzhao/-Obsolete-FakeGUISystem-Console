@@ -123,15 +123,32 @@ namespace VirtualDesktopApps_Console
 			content.Add("123456");
 
 			DisplayArea_Component.TextboxContentClone = content;
+
+			for (int i = 0; i < TextboxDisplayArea.Width; i++)
+			{
+				CharacterMap.Add(new List<char?>());
+
+				for (int j = 0; j < TextboxDisplayArea.Height; j++)
+				{
+					CharacterMap[i].Add(new char?());
+					CharacterMap[i][j] = null;
+				}
+			}
 		}
 
 		public TextboxDisplayArea DisplayArea_Component { get; set; } = new TextboxDisplayArea();
+
+		private List<List<char?>> CharacterMap = new List<List<char?>>();
 
 		private List<string> content = new List<string>();
 
 		public List<string> ReadContent()
 		{
 			return content;
+		}
+		public List<List<char?>> ReadCharMap()
+		{
+			return CharacterMap;
 		}
 
 		public void InsertContent(char input, int line, int position)
@@ -142,6 +159,10 @@ namespace VirtualDesktopApps_Console
 			}
 			catch(ArgumentOutOfRangeException) { }			
 		}
+		public void WriteCharMap(char input, int position, int line)
+		{
+			CharacterMap.Insert(position, new List<char?>());
+		}
 
 		public void DeleteContent(int line, int position)
 		{
@@ -150,6 +171,10 @@ namespace VirtualDesktopApps_Console
 				content[line] = content[line].Remove(position - 1, 1);
 			}
 			catch (ArgumentOutOfRangeException) { }
+		}
+		public void RemoveCharMap(int position, int line)
+		{
+
 		}
 
 		public void DeleteAll()
@@ -234,6 +259,12 @@ namespace VirtualDesktopApps_Console
 			}
 
 			return true;
+		}
+		
+		public void SetDisplayAreaContent()
+		{
+			DisplayArea_Component.TextboxContentClone = content;
+			SetDisplayAreaContent();
 		}
 	}
 
