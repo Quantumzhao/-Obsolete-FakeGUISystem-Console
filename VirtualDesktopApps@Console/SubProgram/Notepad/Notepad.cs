@@ -11,6 +11,8 @@ namespace VirtualDesktopApps_Console
 	{
 		public Notepad()
 		{
+			Window_Component = new Window(WindowWidth, WindowHeight);
+
 			Window_Component.InteractiveUnitsCollection.Add(new MenuItem_Edit<Notepad>());
 			Window_Component.InteractiveUnitsCollection.Add(new MenuItem_File<Notepad>());
 			Window_Component.InteractiveUnitsCollection.Add(new MenuItem_Help<Notepad>());
@@ -20,29 +22,46 @@ namespace VirtualDesktopApps_Console
 
 			Window_Component.InteractiveUnitsCollection[4].IsFocused  = true;
 			Window_Component.InteractiveUnitsCollection[4].IsSelected = true;
+
+			((TextBox)Window_Component.InteractiveUnitsCollection[4]).DisplayArea_Component.RenderBufferClone = RenderBuffer;
+
+			InitRenderBuffer();
 		}
 
-		public void GetWindowAppearance_Notepad()
+		public const int WindowWidth  = 66;
+		public const int WindowHeight = 27;
+
+		public char[,] RenderBuffer = new char[WindowWidth, WindowHeight];
+
+		private void InitRenderBuffer()
 		{
 			using (StreamReader streamReader = new StreamReader("Appearance_Notepad.txt"))
 			{
 				string currentLine;
 
-				for (int j = 1; j <= Window_Component.Height; j++)
+				for (int j = 0; j < Window_Component.Height; j++)
 				{
 					currentLine = streamReader.ReadLine();
 
-					for (int i = 1; i <= Window_Component.Width; i++)
+					for (int i = 0; i < Window_Component.Width; i++)
 					{
-						VSystem.Display[i - 1 + Window_Component.Anchor.X, j - 1 + 
-							Window_Component.Anchor.Y].Layer[VSystem.Display[i - 1 + 
-							Window_Component.Anchor.X, j - 1 + Window_Component.Anchor.Y].
-							Layer.Count - 1] = Convert.ToChar(StringManipulation.Mid(currentLine, i, 1));
+						RenderBuffer[i, j] = Convert.ToChar(StringManipulation.Mid(currentLine, i + 1, 1));
 					}
 				}
 			}
+		}
 
-			((TextBox)Window_Component.InteractiveUnitsCollection[4]).GetAppearance();
+		public void GetWindowAppearance_Notepad()
+		{
+			for (int j = 0; j < Window_Component.Height; j++)
+			{
+				for (int i = 0; i < Window_Component.Width; i++)
+				{
+					VSystem.Display[i + Window_Component.Anchor.X, j + Window_Component
+						.Anchor.Y].Layer[VSystem.Display[i + Window_Component.Anchor.X, j
+						+ Window_Component.Anchor.Y].Layer.Count - 1] = RenderBuffer[i, j];
+				}
+			}
 		}
 
 		public override void ParseAndExecute(ConsoleKeyInfo keyPressed)

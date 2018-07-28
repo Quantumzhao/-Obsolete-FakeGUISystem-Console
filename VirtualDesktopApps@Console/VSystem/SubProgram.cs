@@ -10,7 +10,7 @@ namespace VirtualDesktopApps_Console
 	{
 		public int ProgramID { get; set; }
 
-		public Window Window_Component { get; set; } = new Window();
+		public Window Window_Component { get; set; }
 
 		private bool isComponentSelected = false;
 		public bool IsComponentSelected

@@ -117,22 +117,27 @@ namespace VirtualDesktopApps_Console
 	{
 		public TextBox()
 		{
-			Anchor.X = 2;
-			Anchor.Y = 4;
+			Anchor.X = 1;
+			Anchor.Y = 3;
 
-			content.Add("123456");
+			DisplayArea_Component.CharacterMapClone = CharacterMap;
 
-			DisplayArea_Component.TextboxContentClone = content;
-
-			for (int i = 0; i < TextboxDisplayArea.Width; i++)
+			for (int j = 0; j < TextboxDisplayArea.Height; j++)
 			{
 				CharacterMap.Add(new List<char?>());
 
-				for (int j = 0; j < TextboxDisplayArea.Height; j++)
+				for (int i = 0; i < TextboxDisplayArea.Width; i++)
 				{
-					CharacterMap[i].Add(new char?());
-					CharacterMap[i][j] = null;
+					CharacterMap[j].Add(new char?());
+					CharacterMap[j][i] = null;
 				}
+			}
+
+			string str = "Hello, World";
+
+			for (int i = 1; i <= str.Length; i++)
+			{
+				CharacterMap[0][i - 1] = Convert.ToChar(StringManipulation.Mid(str, i, 1).ToString());
 			}
 		}
 
@@ -142,37 +147,34 @@ namespace VirtualDesktopApps_Console
 
 		private List<string> content = new List<string>();
 
-		public List<string> ReadContent()
-		{
-			return content;
-		}
 		public List<List<char?>> ReadCharMap()
 		{
 			return CharacterMap;
 		}
 
-		public void InsertContent(char input, int line, int position)
+		public void WriteCharMap(char input, int anchorY, int anchorX)
 		{
-			try
-			{
-				content[line] = content[line].Insert(position, input.ToString());
-			}
-			catch(ArgumentOutOfRangeException) { }			
-		}
-		public void WriteCharMap(char input, int position, int line)
-		{
-			CharacterMap.Insert(position, new List<char?>());
+			CharacterMap[anchorY].Insert(anchorX, input);
+
+			CharacterMap[anchorY].Remove(null);
 		}
 
-		public void DeleteContent(int line, int position)
+		public void RemoveCharMap(int anchorY, int anchorX)
 		{
-			try
+			if (anchorX == 0 && anchorY != 0)
 			{
-				content[line] = content[line].Remove(position - 1, 1);
+				MergeLine();
 			}
-			catch (ArgumentOutOfRangeException) { }
+
+			CharacterMap[anchorY].RemoveAt(anchorX);
+
+			if (CharacterMap[anchorY].Count < TextboxDisplayArea.Width)
+			{
+				CharacterMap[anchorY].Add(null);
+			}
 		}
-		public void RemoveCharMap(int position, int line)
+
+		public void MergeLine()
 		{
 
 		}
@@ -224,7 +226,7 @@ namespace VirtualDesktopApps_Console
 
 			if ( ascii >= 32 && ascii <= 126)
 			{
-				InsertContent(keyPressed.KeyChar, 0, 5);	//For Test Only
+				WriteCharMap(keyPressed.KeyChar, 0, 0);	//For Test Only
 
 				return true;
 			}
@@ -232,7 +234,7 @@ namespace VirtualDesktopApps_Console
 			switch (keyPressed.Key)
 			{
 				case ConsoleKey.Backspace:
-					DeleteContent(0, 5);	//For Test Only
+					RemoveCharMap(0, 1);	//For Test Only
 					break;
 
 				case ConsoleKey.UpArrow:
@@ -258,65 +260,54 @@ namespace VirtualDesktopApps_Console
 					return false;
 			}
 
+			DisplayArea_Component.SetRenderBuffer(Anchor.X, Anchor.Y);
+
 			return true;
-		}
-		
-		public void SetDisplayAreaContent()
-		{
-			DisplayArea_Component.TextboxContentClone = content;
-			SetDisplayAreaContent();
 		}
 	}
 
 	class TextboxDisplayArea
 	{
-		public const int Width  = 66;
+		public const int Width  = 64;
 		public const int Height = 23;
 
 		public Coordinates Anchor { get; set; } = new Coordinates();
 		public TextboxPointer Pointer_Component { get; set; } = new TextboxPointer();
 
-		public List<string> TextboxContentClone { get; set; }
+		public List<List<char?>> CharacterMapClone { get; set; }
+		public char[,] RenderBufferClone { get; set; }
 
-		private char[,] Content = new char[Width, Height];
-		public char[,] GetContent()
+		private char[,] ContentDisplayed = new char[Width, Height];
+		public char[,] GetContentDisplayed()
 		{
-			return Content;
+			return ContentDisplayed;
 		}
-		public void SetContent()
+		public void SetContentDisplayed()
 		{
-			int y = TextboxContentClone.Count;
-			int x = 0;
-			for (int i = 0; i < y; i++)
-			{
-				if (x > TextboxContentClone[i].Length)
-				{
-					x = TextboxContentClone[i].Length;
-				}
-			}
-
-			char[,] CharacterMap = new char[x, y];
-
-			for (int j = 0; j < y; j++)
-			{
-				for (int i = 0; i < x; i++)
-				{
-					if (i < TextboxContentClone[j].Length)
-					{
-						CharacterMap[i, j] = Convert.ToChar(StringManipulation.Mid(TextboxContentClone[j], i, 1));
-					}
-					else
-					{
-						CharacterMap[i, j] = ' ';
-					}
-				}
-			}
-
 			for (int j = 0; j < Height; j++)
 			{
 				for (int i = 0; i < Width; i++)
 				{
-					Content[i, j] = CharacterMap[i, j];
+					ContentDisplayed[i, j] = (char)CharacterMapClone[j + Anchor.Y][i + Anchor.X];
+				}
+			}
+		}
+
+		public void SetRenderBuffer(int textboxAnchorX, int textboxAnchorY)
+		{
+			for (int j = 0; j < Height; j++)
+			{
+				for (int i = 0; i < Width; i++)
+				{
+					if (CharacterMapClone[j][i] != null)
+					{
+						RenderBufferClone[i + textboxAnchorX, j + textboxAnchorY] = (char)CharacterMapClone[j][i];
+
+					}
+					else
+					{
+						RenderBufferClone[i + textboxAnchorX, j + textboxAnchorY] = ' ';
+					}
 				}
 			}
 		}
@@ -324,29 +315,28 @@ namespace VirtualDesktopApps_Console
 
 	class TextboxPointer
 	{
-		public int Position { get; set; }
-		public int Line { get; set; } = 0;
+		public Coordinates Anchor { get; set; } = new Coordinates();
 
 		public ConsoleColor PointerColor { get; set; } = ConsoleColor.Blue;
 
 		public void MoveUp()
 		{
-			Line--;
+			Anchor.Y--;
 		}
 
 		public void MoveDown()
 		{
-			Line++;
+			Anchor.Y++;
 		}
 
 		public void MoveLeft()
 		{
-			Position--;
+			Anchor.X--;
 		}
 
 		public void MoveRight()
 		{
-			Position++;
+			Anchor.X++;
 		}
 	}
 

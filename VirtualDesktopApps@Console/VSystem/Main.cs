@@ -28,6 +28,8 @@ namespace VirtualDesktopApps_Console
 			Console.Clear();
 
 			VSystem.ParseAndExecute(KeyPressed);
+			SubProgramCollectionClass<SubProgram>.SubprogramCollection[SubProgramCollectionClass<SubProgram>.
+				SubprogramCollection.Count - 1].Window_Component.GetAppearance();
 			VSystem.RenderAll();
 
 			Console.ReadKey();
@@ -55,12 +57,9 @@ namespace VirtualDesktopApps_Console
 		private static void runNotepadTest()
 		{
 			SubProgramCollectionClass<SubProgram>.AddNewSubprogram(new Notepad());
-			SubProgramCollectionClass<SubProgram>.SubprogramCollection[SubProgramCollectionClass<SubProgram>.
-				SubprogramCollection.Count - 1].Window_Component.GetAppearance();
 
 			SubProgramCollectionClass<SubProgram>.SubprogramCollection[SubProgramCollectionClass<SubProgram>.
 				SubprogramCollection.Count - 1].IsComponentSelected = true;
-
 		}
 	}
 

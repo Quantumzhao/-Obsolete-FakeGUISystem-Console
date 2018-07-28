@@ -10,8 +10,8 @@ namespace VirtualDesktopApps_Console
 	class Window : IEntity
 	{
 		public Coordinates Anchor { get; set; } = new Coordinates(2, 2);
-		public int Width { get; set; } = 66;
-		public int Height { get; set; } = 27;
+		public int Width { get; set; }
+		public int Height { get; set; }
 		public bool IsSelected { get; set; }
 		public bool IsFocused { get; set; }
 		public List<Button> InteractiveUnitsCollection { get; set; } = new List<Button>();
@@ -19,8 +19,11 @@ namespace VirtualDesktopApps_Console
 		public delegate void GetAppearanceDelegate();
 		public GetAppearanceDelegate GetAppearanceHandler;
 
-		public Window()
+		public Window(int width, int height)
 		{
+			Width  = width;
+			Height = height;
+
 			InteractiveUnitsCollection.Add(new TitleBar());
 		}
 
