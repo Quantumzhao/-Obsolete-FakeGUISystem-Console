@@ -16,17 +16,20 @@ namespace VirtualDesktopApps_Console
 		{
 			initiation();
 
-			VSystem.RenderAll();
 
 			runNotepadTest();
-
-			KeyPressed = Console.ReadKey();
-			Console.Clear();
-
-			VSystem.ParseAndExecute(KeyPressed);
 			VSystem.SubPrograms[VSystem.SubPrograms.Count - 1].Window_Component.GetAppearance();
 			VSystem.RenderAll();
 
+			while (true)
+			{
+				KeyPressed = Console.ReadKey();
+				Console.Clear();
+
+				VSystem.ParseAndExecute(KeyPressed);
+				VSystem.SubPrograms[VSystem.SubPrograms.Count - 1].Window_Component.GetAppearance();
+				VSystem.RenderAll();
+			}
 			Console.ReadKey();
 		}
 
@@ -71,7 +74,12 @@ namespace VirtualDesktopApps_Console
 				{
 					int k = 0;
 					
-					while (Layers[k][i, j].DisplayCharacter == null)
+					while 
+					(
+						(Layers[k][i, j].DisplayCharacter == null) && 
+						((Layers[k][i, j].ForegroundColor == ConsoleColor.Black) &&
+						(Layers[k][i, j].BackgroundColor == ConsoleColor.White))
+					)
 					{
 						if (k != Layers.Count - 1)
 						{

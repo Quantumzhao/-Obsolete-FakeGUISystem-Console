@@ -31,7 +31,7 @@ namespace VirtualDesktopApps_Console
 		{
 			GetAppearanceHandler();
 
-			GetAppearanceHandler = null;
+			//GetAppearanceHandler = null;	//This subprocess is removed merely for test
 		}
 
 		public Button GetSelectedComponent()

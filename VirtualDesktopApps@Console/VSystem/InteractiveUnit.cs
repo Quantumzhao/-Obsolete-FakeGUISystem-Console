@@ -115,7 +115,8 @@ namespace VirtualDesktopApps_Console
 			Anchor.X = 1;
 			Anchor.Y = 3;
 
-			DisplayArea_Component.CharacterMapClone = CharacterMap;
+			DisplayArea_Component.CharacterMapRef = CharacterMap;
+			DisplayArea_Component.Pointer_Component.TextboxAnchorRef = Anchor;
 
 			for (int j = 0; j < TextboxDisplayArea.Height; j++)
 			{
@@ -128,12 +129,14 @@ namespace VirtualDesktopApps_Console
 				}
 			}
 
+			/*
 			string str = "Hello, World";
 
 			for (int i = 1; i <= str.Length; i++)
 			{
 				CharacterMap[0][i - 1] = Convert.ToChar(StringManipulation.Mid(str, i, 1));
 			}
+			*/
 		}
 
 		public TextboxDisplayArea DisplayArea_Component { get; set; } = new TextboxDisplayArea();
@@ -174,7 +177,11 @@ namespace VirtualDesktopApps_Console
 
 		public void NewLine()
 		{
+			if (CharacterMap.Count >= TextboxDisplayArea.Height)
+			{
+				CharacterMap.Add(new List<char?>());
 
+			}
 		}
 
 		public void DeleteAll()
@@ -216,14 +223,28 @@ namespace VirtualDesktopApps_Console
 
 				if (ascii >= 32 && ascii <= 126)
 				{
-					WriteCharMap(keyPressed.KeyChar, 0, 0); //For Test Only
+					WriteCharMap
+						(
+						keyPressed.KeyChar, 
+						DisplayArea_Component.Pointer_Component.Anchor.Y, 
+						DisplayArea_Component.Pointer_Component.Anchor.X
+						);
+
+					if (DisplayArea_Component.Pointer_Component.Anchor.X != TextboxDisplayArea.Width)
+					{
+						DisplayArea_Component.Pointer_Component.MoveRight();
+					}
+					else
+					{
+						DisplayArea_Component.MoveRight();
+					}
 				}
 				else
 				{
 					switch (keyPressed.Key)
 					{
 						case ConsoleKey.Backspace:
-							RemoveCharMap(0, 1);    //For Test Only
+							RemoveCharMap(DisplayArea_Component.Pointer_Component.Anchor.Y, DisplayArea_Component.Pointer_Component.Anchor.X);    //For Test Only
 							break;
 
 						case ConsoleKey.Enter:
@@ -249,30 +270,19 @@ namespace VirtualDesktopApps_Console
 
 	class TextboxDisplayArea
 	{
+		public TextboxDisplayArea()
+		{
+
+		}
+
 		public const int Width  = 64;
 		public const int Height = 23;
 
 		public Coordinates Anchor { get; set; } = new Coordinates();
 		public TextboxPointer Pointer_Component { get; set; } = new TextboxPointer();
 
-		public List<List<char?>> CharacterMapClone { get; set; }
-		public char?[,] RenderBufferClone { get; set; }
-
-		private char[,] ContentDisplayed = new char[Width, Height];
-		public char[,] GetContentDisplayed()
-		{
-			return ContentDisplayed;
-		}
-		public void SetContentDisplayed()
-		{
-			for (int j = 0; j < Height; j++)
-			{
-				for (int i = 0; i < Width; i++)
-				{
-					ContentDisplayed[i, j] = (char)CharacterMapClone[j + Anchor.Y][i + Anchor.X];
-				}
-			}
-		}
+		public List<List<char?>> CharacterMapRef { get; set; }
+		public Pixel[,] RenderBufferRef { get; set; }
 
 		public void SetRenderBuffer(int textboxAnchorX, int textboxAnchorY)
 		{
@@ -280,7 +290,7 @@ namespace VirtualDesktopApps_Console
 			{
 				for (int i = 0; i < Width; i++)
 				{
-					RenderBufferClone[i + textboxAnchorX, j + textboxAnchorY] = CharacterMapClone[j][i];
+					RenderBufferRef[i + textboxAnchorX, j + textboxAnchorY].DisplayCharacter = CharacterMapRef[j][i];
 				}
 			}
 		}
@@ -300,7 +310,7 @@ namespace VirtualDesktopApps_Console
 
 		}
 
-		public void MOveRight()
+		public void MoveRight()
 		{
 
 		}
@@ -309,8 +319,11 @@ namespace VirtualDesktopApps_Console
 	class TextboxPointer
 	{
 		public Coordinates Anchor { get; set; } = new Coordinates();
+		public Coordinates TextboxAnchorRef { get; set; }
 
 		public ConsoleColor PointerColor { get; set; } = ConsoleColor.Blue;
+
+		public Pixel[,] RenderBufferRef { get; set; }
 
 		public bool ParseAndExecute(ConsoleKeyInfo keyPressed)
 		{
@@ -342,26 +355,41 @@ namespace VirtualDesktopApps_Console
 		public void MoveUp()
 		{
 			Anchor.Y--;
+
+			SetRenderBuffer(TextboxAnchorRef.X, TextboxAnchorRef.Y);
 		}
 
 		public void MoveDown()
 		{
 			Anchor.Y++;
+
+			SetRenderBuffer(TextboxAnchorRef.X, TextboxAnchorRef.Y);
 		}
 
 		public void MoveLeft()
 		{
+			SetRenderBuffer(TextboxAnchorRef.X, TextboxAnchorRef.Y);
+			RenderBufferRef[TextboxAnchorRef.X + Anchor.X + 1, TextboxAnchorRef.Y + Anchor.Y].ForegroundColor = ConsoleColor.Black;
+			RenderBufferRef[TextboxAnchorRef.X + Anchor.X + 1, TextboxAnchorRef.Y + Anchor.Y].BackgroundColor = ConsoleColor.White;
+
 			Anchor.X--;
+
 		}
 
 		public void MoveRight()
 		{
+			SetRenderBuffer(TextboxAnchorRef.X, TextboxAnchorRef.Y);
+			RenderBufferRef[TextboxAnchorRef.X + Anchor.X - 1, TextboxAnchorRef.Y + Anchor.Y].ForegroundColor = ConsoleColor.Black;
+			RenderBufferRef[TextboxAnchorRef.X + Anchor.X - 1, TextboxAnchorRef.Y + Anchor.Y].BackgroundColor = ConsoleColor.White;
+
 			Anchor.X++;
+
 		}
 
-		public void SetRenderBuffer(int PointerAnchorX, int PointerAnchorY)
+		public void SetRenderBuffer(int textboxAnchorX, int textboxAnchorY)
 		{
-
+			RenderBufferRef[textboxAnchorX + Anchor.X, textboxAnchorY + Anchor.Y].ForegroundColor = ConsoleColor.White;
+			RenderBufferRef[textboxAnchorX + Anchor.X, textboxAnchorY + Anchor.Y].BackgroundColor = ConsoleColor.Blue;
 		}
 	}
 
