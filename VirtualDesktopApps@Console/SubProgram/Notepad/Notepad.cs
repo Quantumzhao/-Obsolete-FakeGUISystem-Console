@@ -31,7 +31,7 @@ namespace VirtualDesktopApps_Console
 		public const int WindowWidth  = 66;
 		public const int WindowHeight = 27;
 
-		public char[,] RenderBuffer = new char[WindowWidth, WindowHeight];
+		public char?[,] RenderBuffer = new char?[WindowWidth, WindowHeight];
 
 		private void InitRenderBuffer()
 		{
@@ -57,9 +57,8 @@ namespace VirtualDesktopApps_Console
 			{
 				for (int i = 0; i < Window_Component.Width; i++)
 				{
-					VSystem.Display[i + Window_Component.Anchor.X, j + Window_Component
-						.Anchor.Y].Layer[VSystem.Display[i + Window_Component.Anchor.X, j
-						+ Window_Component.Anchor.Y].Layer.Count - 1] = RenderBuffer[i, j];
+					VSystem.Layers[ProgramID][i + Window_Component.Anchor.X, j + Window_Component
+						.Anchor.Y].DisplayCharacter = RenderBuffer[i, j];
 				}
 			}
 		}

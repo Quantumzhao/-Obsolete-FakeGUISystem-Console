@@ -16,10 +16,6 @@ namespace VirtualDesktopApps_Console
 		{
 			initiation();
 
-			//VSystem.KeyPressHandler(Console.ReadKey());
-			//runNotepadTest();
-			//VSystem.Test();
-
 			VSystem.RenderAll();
 
 			runNotepadTest();
@@ -28,8 +24,7 @@ namespace VirtualDesktopApps_Console
 			Console.Clear();
 
 			VSystem.ParseAndExecute(KeyPressed);
-			SubProgramCollectionClass<SubProgram>.SubprogramCollection[SubProgramCollectionClass<SubProgram>.
-				SubprogramCollection.Count - 1].Window_Component.GetAppearance();
+			VSystem.SubPrograms[VSystem.SubPrograms.Count - 1].Window_Component.GetAppearance();
 			VSystem.RenderAll();
 
 			Console.ReadKey();
@@ -44,22 +39,14 @@ namespace VirtualDesktopApps_Console
 			Console.CursorVisible   = false;
 
 			VSystem.IsFocused       = true;
-						
-			for (int i = 0; i < VSystem.Width; i++)
-			{
-				for (int j = 0; j < VSystem.Height; j++)
-				{
-					VSystem.Display[i, j] = new Pixel();
-				}
-			}
 		}
 
 		private static void runNotepadTest()
 		{
-			SubProgramCollectionClass<SubProgram>.AddNewSubprogram(new Notepad());
+			VSystem.SubPrograms.Add(new Notepad());
 
-			SubProgramCollectionClass<SubProgram>.SubprogramCollection[SubProgramCollectionClass<SubProgram>.
-				SubprogramCollection.Count - 1].IsComponentSelected = true;
+			VSystem.SubPrograms[VSystem.
+				SubPrograms.Count - 1].IsComponentSelected = true;
 		}
 	}
 
@@ -69,7 +56,8 @@ namespace VirtualDesktopApps_Console
 		public const int Height = 50;
 
 		public static bool IsFocused { get; set; } = false;
-		public static Pixel[,] Display { get; set; } = new Pixel[Width, Height];
+		public static LayerCollection Layers { get; set; } = new LayerCollection();
+		public static SubProgramCollection SubPrograms { get; set; } = new SubProgramCollection();
 
 		//public delegate void KeyPressDelegate();
 
@@ -83,9 +71,9 @@ namespace VirtualDesktopApps_Console
 				{
 					int k = 0;
 					
-					while (Display[i, j].Layer[k] == ' ')
+					while (Layers[k][i, j].DisplayCharacter == null)
 					{
-						if (k != Display[i, j].Layer.Count - 1)
+						if (k != Layers.Count - 1)
 						{
 							k++;
 						}
@@ -95,31 +83,31 @@ namespace VirtualDesktopApps_Console
 						}
 					}
 
-					Console.Write(Display[i, j].Layer[k]);
+					Console.BackgroundColor = Layers[k][i, j].BackgroundColor;
+					Console.ForegroundColor = Layers[k][i, j].ForegroundColor;
+					if (Layers[k][i, j].DisplayCharacter != null)
+					{
+						Console.Write(Layers[k][i, j].DisplayCharacter);
+					}
+					else
+					{
+						Console.Write(" ");
+					}
 				}
 
+				Console.BackgroundColor = ConsoleColor.White;
+				Console.ForegroundColor = ConsoleColor.Black;
 				Console.Write("║");
 				Console.WriteLine();
 			}
 
-			for (int i = 0; i < 125; i++)
+			for (int i = 0; i < Width; i++)
 			{
 				Console.Write("═");
 			}
 			Console.Write("╝");
 		}
 		
-		public static void Test()
-		{
-			for (int i = 0; i < Width; i++)
-			{
-				for (int j = 0; j < Height; j++)
-				{
-					Display[i, j].Layer[0] = ' ';
-				}
-			}
-		}
-
 		public static void ParseAndExecute(ConsoleKeyInfo keyPressed)
 		{
 			if (GetFocusedSubProgram() != null)
@@ -166,11 +154,11 @@ namespace VirtualDesktopApps_Console
 
 		public static SubProgram GetFocusedSubProgram()
 		{
-			for (int i = 0; i < SubProgramCollectionClass<SubProgram>.SubprogramCollection.Count; i++)
+			for (int i = 0; i < SubPrograms.Count; i++)
 			{
-				if (SubProgramCollectionClass<SubProgram>.SubprogramCollection[i].IsComponentSelected)
+				if (SubPrograms[i].IsComponentSelected)
 				{
-					return SubProgramCollectionClass<SubProgram>.SubprogramCollection[i];
+					return SubPrograms[i];
 				}
 			}
 
@@ -178,34 +166,113 @@ namespace VirtualDesktopApps_Console
 		}
 	}
 
-	class SubProgramCollectionClass<T> where T : SubProgram
+	class SubProgramCollection
 	{
-		public static List<T> SubprogramCollection { get; set; } = new List<T>();
+		private static List<SubProgram> SubPrograms { get; set; } = new List<SubProgram>();
 
-		public static void AddNewSubprogram(T subProgram)                                                //Create a new specific subprogram instance
+		public SubProgram this[int index]
 		{
-			SubprogramCollection.Add(subProgram);
+			get
+			{
+				return SubPrograms[index];
+			}
 
-			SubprogramCollection[SubprogramCollection.Count - 1].ProgramID = SubprogramCollection.Count - 1;
+			set
+			{
+				SubPrograms[index] = value;
+			}
+		}
 
-			for (int j = 0; j < VSystem.Height; j++)                                               //Create a new layer for the new subprogram
+		public int Count
+		{
+			get
+			{
+				return SubPrograms.Count;
+			}
+		}
+
+		public void Add(SubProgram subProgram)
+		{
+			SubPrograms.Add(subProgram);
+
+			SubPrograms[SubPrograms.Count - 1].ProgramID = SubPrograms.Count - 1;
+
+			VSystem.Layers.Add(new Layer());
+		}
+	}
+
+	class LayerCollection
+	{
+		public LayerCollection()
+		{
+			layers.Add(new Layer());
+		}
+
+		private List<Layer> layers= new List<Layer>();
+
+		public int Count
+		{
+			get
+			{
+				return layers.Count;
+			}
+		}
+
+		public Layer this[int index]
+		{
+			get
+			{
+				return layers[index];
+			}
+
+			set
+			{
+				layers[index] = value;
+			}
+		}
+
+		public void Add(Layer layer)
+		{
+			layers.Add(layer);
+		}
+	}
+
+	class Layer
+	{
+		public Layer()
+		{
+			for (int j = 0; j < VSystem.Height; j++)
 			{
 				for (int i = 0; i < VSystem.Width; i++)
 				{
-					VSystem.Display[i, j].Layer.Add(' ');
+					programLayer[i, j] = new Pixel();
 				}
+			}
+		}
+
+		private Pixel[,] programLayer= new Pixel[VSystem.Width, VSystem.Height];
+
+		public Pixel this[int x, int y]
+		{
+			get
+			{
+				return programLayer[x, y];
+			}
+
+			set
+			{
+				programLayer[x, y] = value;
 			}
 		}
 	}
 
 	class Pixel
 	{
-		public List<char> Layer { get; set; } = new List<char>();
+		public char? DisplayCharacter { get; set; } = null;
 
-		public Pixel()
-		{			
-			Layer.Add(' ');
-		}
+		public ConsoleColor ForegroundColor { get; set; } = ConsoleColor.Black;
+
+		public ConsoleColor BackgroundColor { get; set; } = ConsoleColor.White;
 	}
 
 	class FocusCursor

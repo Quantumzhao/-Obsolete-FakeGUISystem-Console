@@ -62,12 +62,7 @@ namespace VirtualDesktopApps_Console
 
 		public void GetAppearance()
 		{
-			for (int j = 1; j <= Height; j++)
-			{
 
-			}
-
-			VSystem.Display[2, 2].Layer[VSystem.Display[2, 2].Layer.Count - 1] = 'a';
 		}
 	}
 
@@ -137,15 +132,13 @@ namespace VirtualDesktopApps_Console
 
 			for (int i = 1; i <= str.Length; i++)
 			{
-				CharacterMap[0][i - 1] = Convert.ToChar(StringManipulation.Mid(str, i, 1).ToString());
+				CharacterMap[0][i - 1] = Convert.ToChar(StringManipulation.Mid(str, i, 1));
 			}
 		}
 
 		public TextboxDisplayArea DisplayArea_Component { get; set; } = new TextboxDisplayArea();
 
 		private List<List<char?>> CharacterMap = new List<List<char?>>();
-
-		private List<string> content = new List<string>();
 
 		public List<List<char?>> ReadCharMap()
 		{
@@ -179,10 +172,20 @@ namespace VirtualDesktopApps_Console
 
 		}
 
+		public void NewLine()
+		{
+
+		}
+
 		public void DeleteAll()
 		{
-			content.Clear();
-			content.Add("");
+			for (int j = 0; j < CharacterMap.Count; j++)
+			{
+				for (int i = 0; i < CharacterMap[j].Count; i++)
+				{
+					CharacterMap[j][i] = null;
+				}
+			}
 		}
 
 		public void Select(int start, int end)
@@ -202,65 +205,43 @@ namespace VirtualDesktopApps_Console
 
 		public override void GetAppearance()
 		{
-			for (int j = 0; j < content.Count - 1; j++)
-			{
-				for (int i = 0; i < content[j].Length; i++)
-				{
-
-				}
-			}
-
-			if (IsFocused)
-			{
-
-			}
-			else
-			{
-
-			}
+			
 		}
 
 		public bool ParseAndExecute(ConsoleKeyInfo keyPressed)
 		{
-			int ascii = StringManipulation.ToChar(keyPressed.KeyChar);
-
-			if ( ascii >= 32 && ascii <= 126)
+			if (!DisplayArea_Component.Pointer_Component.ParseAndExecute(keyPressed))
 			{
-				WriteCharMap(keyPressed.KeyChar, 0, 0);	//For Test Only
+				int ascii = StringManipulation.ToChar(keyPressed.KeyChar);
+
+				if (ascii >= 32 && ascii <= 126)
+				{
+					WriteCharMap(keyPressed.KeyChar, 0, 0); //For Test Only
+				}
+				else
+				{
+					switch (keyPressed.Key)
+					{
+						case ConsoleKey.Backspace:
+							RemoveCharMap(0, 1);    //For Test Only
+							break;
+
+						case ConsoleKey.Enter:
+							NewLine();
+							break;
+
+						//case ConsoleKey.Escape:
+						//break;
+
+						default:
+							return false;
+					}
+				}
+
+				DisplayArea_Component.SetRenderBuffer(Anchor.X, Anchor.Y);
 
 				return true;
 			}
-
-			switch (keyPressed.Key)
-			{
-				case ConsoleKey.Backspace:
-					RemoveCharMap(0, 1);	//For Test Only
-					break;
-
-				case ConsoleKey.UpArrow:
-					DisplayArea_Component.Pointer_Component.MoveUp();
-					break;
-
-				case ConsoleKey.DownArrow:
-					DisplayArea_Component.Pointer_Component.MoveDown();
-					break;
-
-				case ConsoleKey.LeftArrow:
-					DisplayArea_Component.Pointer_Component.MoveLeft();
-					break;
-
-				case ConsoleKey.RightArrow:
-					DisplayArea_Component.Pointer_Component.MoveRight();
-					break;
-
-				//case ConsoleKey.Escape:
-					//break;
-
-				default:
-					return false;
-			}
-
-			DisplayArea_Component.SetRenderBuffer(Anchor.X, Anchor.Y);
 
 			return true;
 		}
@@ -275,7 +256,7 @@ namespace VirtualDesktopApps_Console
 		public TextboxPointer Pointer_Component { get; set; } = new TextboxPointer();
 
 		public List<List<char?>> CharacterMapClone { get; set; }
-		public char[,] RenderBufferClone { get; set; }
+		public char?[,] RenderBufferClone { get; set; }
 
 		private char[,] ContentDisplayed = new char[Width, Height];
 		public char[,] GetContentDisplayed()
@@ -299,17 +280,29 @@ namespace VirtualDesktopApps_Console
 			{
 				for (int i = 0; i < Width; i++)
 				{
-					if (CharacterMapClone[j][i] != null)
-					{
-						RenderBufferClone[i + textboxAnchorX, j + textboxAnchorY] = (char)CharacterMapClone[j][i];
-
-					}
-					else
-					{
-						RenderBufferClone[i + textboxAnchorX, j + textboxAnchorY] = ' ';
-					}
+					RenderBufferClone[i + textboxAnchorX, j + textboxAnchorY] = CharacterMapClone[j][i];
 				}
 			}
+		}
+
+		public void MoveUp()
+		{
+
+		}
+
+		public void MoveDown()
+		{
+
+		}
+
+		public void MoveLeft()
+		{
+
+		}
+
+		public void MOveRight()
+		{
+
 		}
 	}
 
@@ -318,6 +311,33 @@ namespace VirtualDesktopApps_Console
 		public Coordinates Anchor { get; set; } = new Coordinates();
 
 		public ConsoleColor PointerColor { get; set; } = ConsoleColor.Blue;
+
+		public bool ParseAndExecute(ConsoleKeyInfo keyPressed)
+		{
+			switch (keyPressed.Key)
+			{
+				case ConsoleKey.UpArrow:
+					MoveUp();
+					break;
+
+				case ConsoleKey.DownArrow:
+					MoveDown();
+					break;
+
+				case ConsoleKey.LeftArrow:
+					MoveLeft();
+					break;
+
+				case ConsoleKey.RightArrow:
+					MoveRight();
+					break;
+
+				default:
+					return false;
+			}
+
+			return true;
+		}
 
 		public void MoveUp()
 		{
@@ -337,6 +357,11 @@ namespace VirtualDesktopApps_Console
 		public void MoveRight()
 		{
 			Anchor.X++;
+		}
+
+		public void SetRenderBuffer(int PointerAnchorX, int PointerAnchorY)
+		{
+
 		}
 	}
 
