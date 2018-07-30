@@ -84,7 +84,7 @@ namespace VirtualDesktopApps_Console
 
 			if (!isKeyUsed)
 			{
-				switch (keyPressed)
+				switch (keyPressed.Key)
 				{
 					default:
 						break;

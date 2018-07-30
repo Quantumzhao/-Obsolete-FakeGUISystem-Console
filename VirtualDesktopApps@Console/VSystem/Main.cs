@@ -30,7 +30,6 @@ namespace VirtualDesktopApps_Console
 				VSystem.SubPrograms[VSystem.SubPrograms.Count - 1].Window_Component.GetAppearance();
 				VSystem.RenderAll();
 			}
-			Console.ReadKey();
 		}
 
 		private static void initiation()
@@ -176,18 +175,18 @@ namespace VirtualDesktopApps_Console
 
 	class SubProgramCollection
 	{
-		private static List<SubProgram> SubPrograms { get; set; } = new List<SubProgram>();
+		private static List<SubProgram> subPrograms { get; set; } = new List<SubProgram>();
 
 		public SubProgram this[int index]
 		{
 			get
 			{
-				return SubPrograms[index];
+				return subPrograms[index];
 			}
 
 			set
 			{
-				SubPrograms[index] = value;
+				subPrograms[index] = value;
 			}
 		}
 
@@ -195,15 +194,15 @@ namespace VirtualDesktopApps_Console
 		{
 			get
 			{
-				return SubPrograms.Count;
+				return subPrograms.Count;
 			}
 		}
 
 		public void Add(SubProgram subProgram)
 		{
-			SubPrograms.Add(subProgram);
+			subPrograms.Add(subProgram);
 
-			SubPrograms[SubPrograms.Count - 1].ProgramID = SubPrograms.Count - 1;
+			subPrograms[subPrograms.Count - 1].ProgramID = subPrograms.Count - 1;
 
 			VSystem.Layers.Add(new Layer());
 		}

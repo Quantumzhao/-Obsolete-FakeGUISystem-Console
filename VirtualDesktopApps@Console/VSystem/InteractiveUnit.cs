@@ -162,7 +162,11 @@ namespace VirtualDesktopApps_Console
 				MergeLine();
 			}
 
-			CharacterMap[anchorY].RemoveAt(anchorX);
+			try
+			{
+				CharacterMap[anchorY].RemoveAt(anchorX);
+			}
+			catch { }
 
 			if (CharacterMap[anchorY].Count < TextboxDisplayArea.Width)
 			{
@@ -244,7 +248,17 @@ namespace VirtualDesktopApps_Console
 					switch (keyPressed.Key)
 					{
 						case ConsoleKey.Backspace:
-							RemoveCharMap(DisplayArea_Component.Pointer_Component.Anchor.Y, DisplayArea_Component.Pointer_Component.Anchor.X);    //For Test Only
+							RemoveCharMap(DisplayArea_Component.Pointer_Component.Anchor.Y, DisplayArea_Component.Pointer_Component.Anchor.X - 1);
+
+							if (DisplayArea_Component.Pointer_Component.Anchor.X != TextboxDisplayArea.Width)
+							{
+								DisplayArea_Component.Pointer_Component.MoveLeft();
+							}
+							else
+							{
+								DisplayArea_Component.MoveLeft();
+							}
+
 							break;
 
 						case ConsoleKey.Enter:
@@ -368,9 +382,9 @@ namespace VirtualDesktopApps_Console
 
 		public void MoveLeft()
 		{
-			SetRenderBuffer(TextboxAnchorRef.X, TextboxAnchorRef.Y);
-			RenderBufferRef[TextboxAnchorRef.X + Anchor.X + 1, TextboxAnchorRef.Y + Anchor.Y].ForegroundColor = ConsoleColor.Black;
-			RenderBufferRef[TextboxAnchorRef.X + Anchor.X + 1, TextboxAnchorRef.Y + Anchor.Y].BackgroundColor = ConsoleColor.White;
+			SetRenderBuffer(TextboxAnchorRef.X - 1, TextboxAnchorRef.Y);
+			RenderBufferRef[TextboxAnchorRef.X + Anchor.X, TextboxAnchorRef.Y + Anchor.Y].ForegroundColor = ConsoleColor.Black;
+			RenderBufferRef[TextboxAnchorRef.X + Anchor.X, TextboxAnchorRef.Y + Anchor.Y].BackgroundColor = ConsoleColor.White;
 
 			Anchor.X--;
 
