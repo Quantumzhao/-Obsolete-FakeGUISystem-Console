@@ -16,6 +16,8 @@ namespace VirtualDesktopApps_Console
 		public bool IsFocused { get; set; }
 		public List<Button> InteractiveUnitsCollection { get; set; } = new List<Button>();
 
+		public Pixel[,] RenderBuffer;
+
 		public delegate void GetAppearanceDelegate();
 		public GetAppearanceDelegate GetAppearanceHandler;
 
@@ -23,6 +25,8 @@ namespace VirtualDesktopApps_Console
 		{
 			Width  = width;
 			Height = height;
+
+			RenderBuffer = new Pixel[width, height];
 
 			InteractiveUnitsCollection.Add(new TitleBar());
 		}

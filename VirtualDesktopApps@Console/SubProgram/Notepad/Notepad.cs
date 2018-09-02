@@ -25,15 +25,13 @@ namespace VirtualDesktopApps_Console
 
 			InitRenderBuffer();
 
-			((TextBox)Window_Component.InteractiveUnitsCollection[4]).DisplayArea_Component.RenderBufferRef = RenderBuffer;
-			((TextBox)Window_Component.InteractiveUnitsCollection[4]).DisplayArea_Component.Pointer_Component.RenderBufferRef = RenderBuffer;
+			((TextBox)Window_Component.InteractiveUnitsCollection[4]).DisplayArea_Component.RenderBufferRef = Window_Component.RenderBuffer;
+			((TextBox)Window_Component.InteractiveUnitsCollection[4]).DisplayArea_Component.Pointer_Component.RenderBufferRef = Window_Component.RenderBuffer;
 
 		}
 
 		public const int WindowWidth  = 66;
-		public const int WindowHeight = 27;
-
-		public Pixel[,] RenderBuffer = new Pixel[WindowWidth, WindowHeight];
+		public const int WindowHeight = 27;		
 
 		private void InitRenderBuffer()
 		{
@@ -47,7 +45,7 @@ namespace VirtualDesktopApps_Console
 
 					for (int i = 0; i < Window_Component.Width; i++)
 					{
-						RenderBuffer[i, j] = new Pixel
+						Window_Component.RenderBuffer[i, j] = new Pixel
 						{
 							DisplayCharacter = Convert.ToChar(StringManipulation.Mid(currentLine, i + 1, 1))
 						};
@@ -63,7 +61,7 @@ namespace VirtualDesktopApps_Console
 				for (int i = 0; i < Window_Component.Width; i++)
 				{
 					VSystem.Layers[ProgramID][i + Window_Component.Anchor.X, j + Window_Component
-						.Anchor.Y] = RenderBuffer[i, j];
+						.Anchor.Y] = Window_Component.RenderBuffer[i, j];
 				}
 			}
 		}

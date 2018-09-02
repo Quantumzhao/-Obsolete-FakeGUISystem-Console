@@ -8,14 +8,13 @@ using SupplementaryClassLibraryForStringManipulation;
 
 namespace VirtualDesktopApps_Console
 {
-	class Launcher
+	public class Launcher
 	{
 		public static ConsoleKeyInfo KeyPressed { get; set; }
 
-		static void Main(string[] args)
+		public static void Main(string[] args)
 		{
 			initiation();
-
 			
 			runNotepadTest();
 			VSystem.SubPrograms[VSystem.SubPrograms.Count - 1].Window_Component.GetAppearance();
@@ -52,7 +51,7 @@ namespace VirtualDesktopApps_Console
 		}
 	}
 
-	class VSystem
+	public class VSystem
 	{
 		public const int Width  = 125;
 		public const int Height = 50;
@@ -166,6 +165,11 @@ namespace VirtualDesktopApps_Console
 			}
 
 			return null;
+		}
+
+		public void Start()
+		{
+			// For placeholder temporarily
 		}
 	}
 
