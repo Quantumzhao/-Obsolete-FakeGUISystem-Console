@@ -16,7 +16,7 @@ namespace VirtualDesktopApps_Console
 		{
 			initiation();
 
-
+			
 			runNotepadTest();
 			VSystem.SubPrograms[VSystem.SubPrograms.Count - 1].Window_Component.GetAppearance();
 			VSystem.RenderAll();
@@ -39,7 +39,7 @@ namespace VirtualDesktopApps_Console
 			Console.WindowWidth     = Console.LargestWindowWidth;
 			Console.WindowHeight    = Console.LargestWindowHeight;
 			Console.CursorVisible   = false;
-
+			
 			VSystem.IsFocused       = true;
 		}
 
@@ -60,10 +60,6 @@ namespace VirtualDesktopApps_Console
 		public static bool IsFocused { get; set; } = false;
 		public static LayerCollection Layers { get; set; } = new LayerCollection();
 		public static SubProgramCollection SubPrograms { get; set; } = new SubProgramCollection();
-
-		//public delegate void KeyPressDelegate();
-
-		//public static KeyPressDelegate KeyPressHandler;
 
 		static public void RenderAll()
 		{
@@ -210,6 +206,8 @@ namespace VirtualDesktopApps_Console
 
 	class LayerCollection
 	{
+		// The container of all layers
+
 		public LayerCollection()
 		{
 			layers.Add(new Layer());
@@ -284,6 +282,8 @@ namespace VirtualDesktopApps_Console
 
 	class FocusCursor
 	{
+		// An abstract object
+
 		public static void ForwardToHigherHierarchy()
 		{
 			
@@ -319,6 +319,8 @@ namespace VirtualDesktopApps_Console
 	
 	interface IEntity
 	{
+		// All interactive units must implement the following properties in order to function
+
 		Coordinates Anchor { get; set; }
 		int Width { get; set; }
 		int Height { get; set; }

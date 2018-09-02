@@ -153,6 +153,15 @@ namespace VirtualDesktopApps_Console
 			CharacterMap[anchorY].Insert(anchorX, input);
 
 			CharacterMap[anchorY].Remove(null);
+
+			if (DisplayArea_Component.Pointer_Component.Anchor.X != TextboxDisplayArea.Width)
+			{
+				DisplayArea_Component.Pointer_Component.MoveRight();
+			}
+			else
+			{
+				DisplayArea_Component.MoveRight();
+			}
 		}
 
 		public void RemoveCharMap(int anchorY, int anchorX)
@@ -234,14 +243,7 @@ namespace VirtualDesktopApps_Console
 						DisplayArea_Component.Pointer_Component.Anchor.X
 						);
 
-					if (DisplayArea_Component.Pointer_Component.Anchor.X != TextboxDisplayArea.Width)
-					{
-						DisplayArea_Component.Pointer_Component.MoveRight();
-					}
-					else
-					{
-						DisplayArea_Component.MoveRight();
-					}
+					
 				}
 				else
 				{
