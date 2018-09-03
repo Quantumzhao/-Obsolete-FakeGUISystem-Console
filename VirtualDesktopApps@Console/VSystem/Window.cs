@@ -7,14 +7,14 @@ using SupplementaryClassLibraryForStringManipulation;
 
 namespace VirtualDesktopApps_Console
 {
-	class Window : IEntity
+	public class Window : IEntity
 	{
 		public Coordinates Anchor { get; set; } = new Coordinates(2, 2);
 		public int Width { get; set; }
 		public int Height { get; set; }
 		public bool IsSelected { get; set; }
 		public bool IsFocused { get; set; }
-		public List<Button> InteractiveUnitsCollection { get; set; } = new List<Button>();
+		internal List<Button> InteractiveUnitsCollection { get; set; } = new List<Button>();
 
 		public Pixel[,] RenderBuffer;
 
@@ -38,7 +38,7 @@ namespace VirtualDesktopApps_Console
 			//GetAppearanceHandler = null;	//This subprocess is removed merely for test
 		}
 
-		public Button GetSelectedComponent()
+		internal Button GetSelectedComponent()
 		{
 			for (int i = 0; i < InteractiveUnitsCollection.Count; i++)
 			{

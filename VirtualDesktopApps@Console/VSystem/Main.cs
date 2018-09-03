@@ -60,7 +60,7 @@ namespace VirtualDesktopApps_Console
 		public static LayerCollection Layers { get; set; } = new LayerCollection();
 		public static SubProgramCollection SubPrograms { get; set; } = new SubProgramCollection();
 
-		static public void RenderAll()
+		public static void RenderAll()
 		{
 			for (int j = 0; j < Height; j++)
 			{
@@ -173,7 +173,7 @@ namespace VirtualDesktopApps_Console
 		}
 	}
 
-	class SubProgramCollection
+	public class SubProgramCollection
 	{
 		private static List<SubProgram> subPrograms { get; set; } = new List<SubProgram>();
 
@@ -208,7 +208,7 @@ namespace VirtualDesktopApps_Console
 		}
 	}
 
-	class LayerCollection
+	public class LayerCollection
 	{
 		// The container of all layers
 
@@ -246,7 +246,7 @@ namespace VirtualDesktopApps_Console
 		}
 	}
 
-	class Layer
+	public class Layer
 	{
 		public Layer()
 		{
@@ -275,7 +275,7 @@ namespace VirtualDesktopApps_Console
 		}
 	}
 
-	class Pixel
+	public class Pixel
 	{
 		public char? DisplayCharacter { get; set; } = null;
 
@@ -284,7 +284,7 @@ namespace VirtualDesktopApps_Console
 		public ConsoleColor BackgroundColor { get; set; } = ConsoleColor.White;
 	}
 
-	class FocusCursor
+	public class FocusCursor
 	{
 		// An abstract object
 
@@ -309,7 +309,7 @@ namespace VirtualDesktopApps_Console
 		}
 	}
 
-	class Coordinates
+	public class Coordinates
 	{
 		public Coordinates(int x = 0, int y = 0)
 		{

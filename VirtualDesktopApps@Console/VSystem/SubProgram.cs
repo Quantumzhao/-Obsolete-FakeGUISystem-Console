@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VirtualDesktopApps_Console
 {
-	abstract class SubProgram
+	public abstract class SubProgram
 	{
 		public int ProgramID { get; set; }
 

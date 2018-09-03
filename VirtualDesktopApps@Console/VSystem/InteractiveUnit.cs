@@ -298,15 +298,18 @@ namespace VirtualDesktopApps_Console
 		public TextboxPointer Pointer_Component { get; set; } = new TextboxPointer();
 
 		public List<List<char?>> CharacterMapRef { get; set; }
+		//The child component has a reference to its parent component, 
+		//	and the reference is set when its parent component initializes
+
 		public Pixel[,] RenderBufferRef { get; set; }
 
-		public void SetRenderBuffer(int textboxAnchorX, int textboxAnchorY)
+		public void SetRenderBuffer(int textboxAnchorX, int textboxAnchorY, ref Pixel[,] renderBuffer)
 		{
 			for (int j = 0; j < Height; j++)
 			{
 				for (int i = 0; i < Width; i++)
 				{
-					RenderBufferRef[i + textboxAnchorX, j + textboxAnchorY].DisplayCharacter = CharacterMapRef[j][i];
+					renderBuffer[i + textboxAnchorX, j + textboxAnchorY].DisplayCharacter = CharacterMapRef[j][i];
 				}
 			}
 		}

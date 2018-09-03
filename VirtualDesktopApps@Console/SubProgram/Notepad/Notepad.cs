@@ -7,7 +7,7 @@ using SupplementaryClassLibraryForStringManipulation;
 
 namespace VirtualDesktopApps_Console
 {
-	class Notepad : SubProgram
+	public class Notepad : SubProgram
 	{
 		public Notepad()
 		{
