@@ -303,13 +303,13 @@ namespace VirtualDesktopApps_Console
 
 		public Pixel[,] RenderBufferRef { get; set; }
 
-		public void SetRenderBuffer(int textboxAnchorX, int textboxAnchorY, ref Pixel[,] renderBuffer)
+		public void SetRenderBuffer(int textboxAnchorX, int textboxAnchorY)
 		{
 			for (int j = 0; j < Height; j++)
 			{
 				for (int i = 0; i < Width; i++)
 				{
-					renderBuffer[i + textboxAnchorX, j + textboxAnchorY].DisplayCharacter = CharacterMapRef[j][i];
+					RenderBufferRef[i + textboxAnchorX, j + textboxAnchorY].DisplayCharacter = CharacterMapRef[j][i];
 				}
 			}
 		}
