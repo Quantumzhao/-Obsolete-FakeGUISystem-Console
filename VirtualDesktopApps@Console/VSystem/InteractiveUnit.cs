@@ -288,7 +288,7 @@ namespace VirtualDesktopApps_Console
 	{
 		public TextboxDisplayArea()
 		{
-
+			
 		}
 
 		public const int Width  = 64;
