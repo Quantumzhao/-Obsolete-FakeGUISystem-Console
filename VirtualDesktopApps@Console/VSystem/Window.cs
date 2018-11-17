@@ -50,5 +50,10 @@ namespace VirtualDesktopApps_Console
 
 			return null;
 		}
+
+		public bool ParseAndExecute(ConsoleKeyInfo key)
+		{
+			throw new NotImplementedException();
+		}
 	}
 }

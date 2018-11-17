@@ -110,13 +110,13 @@ namespace VirtualDesktopApps_Console
 			Console.Write("╝");
 		}
 		
-		public static void ParseAndExecute(ConsoleKeyInfo keyPressed)
+		public static bool ParseAndExecute(ConsoleKeyInfo keyPressed)
 		{
 			if (GetFocusedSubProgram() != null)
 			{
 				GetFocusedSubProgram().ParseAndExecute(keyPressed);
 
-				return;
+				return true;
 			}
 			/*
 			switch (keyPressed.Key)
@@ -152,6 +152,7 @@ namespace VirtualDesktopApps_Console
 			}
 			*/
 
+			return false;
 		}
 
 		public static SubProgram GetFocusedSubProgram()
@@ -321,7 +322,7 @@ namespace VirtualDesktopApps_Console
 		public int Y { get; set; }
 	}
 	
-	interface IEntity
+	interface IEntity : IKeyEvent
 	{
 		// All interactive units must implement the following properties in order to function
 
@@ -330,6 +331,11 @@ namespace VirtualDesktopApps_Console
 		int Height { get; set; }
 		bool IsSelected { get; set; }
 		bool IsFocused { get; set; }
+	}
+
+	interface IKeyEvent
+	{
+		bool ParseAndExecute(ConsoleKeyInfo key);
 	}
 
 	enum AvailableProgs

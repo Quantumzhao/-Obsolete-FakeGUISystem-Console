@@ -37,6 +37,8 @@ namespace VirtualDesktopApps_Console
 		}
 
 		public abstract void GetAppearance();
+
+		public abstract bool ParseAndExecute(ConsoleKeyInfo key);
 	}
 
 	class PopUpMenu : IEntity
@@ -64,6 +66,11 @@ namespace VirtualDesktopApps_Console
 		{
 
 		}
+
+		public bool ParseAndExecute(ConsoleKeyInfo key)
+		{
+			throw new NotImplementedException();
+		}
 	}
 
 	class TitleBar : Button
@@ -72,6 +79,11 @@ namespace VirtualDesktopApps_Console
 		{
 
 		}
+
+		public override bool ParseAndExecute(ConsoleKeyInfo key)
+		{
+			throw new NotImplementedException();
+		}
 	}
 
 	class MenuItem : Button
@@ -79,6 +91,11 @@ namespace VirtualDesktopApps_Console
 		public override void GetAppearance()
 		{
 
+		}
+
+		public override bool ParseAndExecute(ConsoleKeyInfo key)
+		{
+			throw new NotImplementedException();
 		}
 	}
 
@@ -228,7 +245,7 @@ namespace VirtualDesktopApps_Console
 			
 		}
 
-		public bool ParseAndExecute(ConsoleKeyInfo keyPressed)
+		public override bool ParseAndExecute(ConsoleKeyInfo keyPressed)
 		{
 			if (!DisplayArea_Component.Pointer_Component.ParseAndExecute(keyPressed))
 			{
@@ -301,7 +318,7 @@ namespace VirtualDesktopApps_Console
 		//The child component has a reference to its parent component, 
 		//	and the reference is set when its parent component initializes
 
-		public Pixel[,] RenderBufferRef { get; set; }
+		public Pixel[,] RenderBuffer { get; set; }
 
 		public void SetRenderBuffer(int textboxAnchorX, int textboxAnchorY)
 		{
@@ -309,29 +326,29 @@ namespace VirtualDesktopApps_Console
 			{
 				for (int i = 0; i < Width; i++)
 				{
-					RenderBufferRef[i + textboxAnchorX, j + textboxAnchorY].DisplayCharacter = CharacterMapRef[j][i];
+					RenderBuffer[i + textboxAnchorX, j + textboxAnchorY].DisplayCharacter = CharacterMapRef[j][i];
 				}
 			}
 		}
 
 		public void MoveUp()
 		{
-
+			throw new NotImplementedException();
 		}
 
 		public void MoveDown()
 		{
-
+			throw new NotImplementedException();
 		}
 
 		public void MoveLeft()
 		{
-
+			throw new NotImplementedException();
 		}
 
 		public void MoveRight()
 		{
-
+			throw new NotImplementedException();
 		}
 	}
 

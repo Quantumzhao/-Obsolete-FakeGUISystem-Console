@@ -47,7 +47,7 @@ namespace VirtualDesktopApps_Console
 					{
 						Window_Component.RenderBuffer[i, j] = new Pixel
 						{
-							DisplayCharacter = Convert.ToChar(StringManipulation.Mid(currentLine, i + 1, 1))
+							DisplayCharacter = currentLine.ToCharArray()[i]
 						};
 					}
 				}
@@ -66,7 +66,7 @@ namespace VirtualDesktopApps_Console
 			}
 		}
 
-		public override void ParseAndExecute(ConsoleKeyInfo keyPressed)
+		public override bool ParseAndExecute(ConsoleKeyInfo keyPressed)
 		{
 			bool isKeyUsed = false;
 
@@ -77,6 +77,7 @@ namespace VirtualDesktopApps_Console
 					break;
 
 				default:
+					isKeyUsed = false;
 					break;
 			}
 
@@ -88,6 +89,8 @@ namespace VirtualDesktopApps_Console
 						break;
 				}
 			}
+
+			return isKeyUsed;
 		}
 	}
 }

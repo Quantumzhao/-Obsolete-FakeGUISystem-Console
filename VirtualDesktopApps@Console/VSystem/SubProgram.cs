@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace VirtualDesktopApps_Console
 {
-	public abstract class SubProgram
+	public abstract class SubProgram : IKeyEvent
 	{
 		public int ProgramID { get; set; }
 
@@ -39,6 +39,6 @@ namespace VirtualDesktopApps_Console
 			}
 		}
 
-		public abstract void ParseAndExecute(ConsoleKeyInfo keyPressed);
+		public abstract bool ParseAndExecute(ConsoleKeyInfo keyPressed);
 	}
 }
