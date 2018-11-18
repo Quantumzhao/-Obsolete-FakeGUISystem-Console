@@ -105,11 +105,5 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Birthday_Greetings\SupplementaryClassLibraryForStringManipulation\SupplementaryClassLibraryForStringManipulation.vbproj">
-      <Project>{ed5e8067-d3cc-469e-a79f-914693d84fcf}</Project>
-      <Name>SupplementaryClassLibraryForStringManipulation</Name>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

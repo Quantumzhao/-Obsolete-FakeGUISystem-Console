@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using SupplementaryClassLibraryForStringManipulation;
 
 namespace VirtualDesktopApps_Console
 {
@@ -17,7 +16,7 @@ namespace VirtualDesktopApps_Console
 			initiation();
 			
 			runNotepadTest();
-			VSystem.SubPrograms[VSystem.SubPrograms.Count - 1].Window_Component.GetAppearance();
+			VSystem.SubPrograms[VSystem.SubPrograms.Count - 1].Window_Component.GetRenderBuffer();
 			VSystem.RenderAll();
 
 			while (true)
@@ -26,7 +25,7 @@ namespace VirtualDesktopApps_Console
 				Console.Clear();
 
 				VSystem.ParseAndExecute(KeyPressed);
-				VSystem.SubPrograms[VSystem.SubPrograms.Count - 1].Window_Component.GetAppearance();
+				//VSystem.SubPrograms[VSystem.SubPrograms.Count - 1].Window_Component.GetRenderBuffer();
 				VSystem.RenderAll();
 			}
 		}
@@ -151,6 +150,20 @@ namespace VirtualDesktopApps_Console
 					break;
 			}
 			*/
+
+			SubProgram p = GetFocusedSubProgram();
+
+			Coordinates c = p.Window_Component.Anchor;
+
+			Pixel[,] tempRenderBuffer = p.GetRenderBuffer();
+
+			for (int j = 0; j < Height; j++)
+			{
+				for (int i = 0; i < Width; i++)
+				{
+					Layers[p.ProgramID][i + c.X, j + c.Y] = tempRenderBuffer[i, j];
+				}
+			}
 
 			return false;
 		}
@@ -331,6 +344,8 @@ namespace VirtualDesktopApps_Console
 		int Height { get; set; }
 		bool IsSelected { get; set; }
 		bool IsFocused { get; set; }
+		
+		Pixel[,] GetRenderBuffer();
 	}
 
 	interface IKeyEvent

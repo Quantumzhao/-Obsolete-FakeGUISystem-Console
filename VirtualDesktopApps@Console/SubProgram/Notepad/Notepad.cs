@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using SupplementaryClassLibraryForStringManipulation;
 
 namespace VirtualDesktopApps_Console
 {
@@ -16,17 +15,17 @@ namespace VirtualDesktopApps_Console
 			Window_Component.InteractiveUnitsCollection.Add(new MenuItem_Edit<Notepad>());
 			Window_Component.InteractiveUnitsCollection.Add(new MenuItem_File<Notepad>());
 			Window_Component.InteractiveUnitsCollection.Add(new MenuItem_Help<Notepad>());
-			Window_Component.InteractiveUnitsCollection.Add(new TextBox               ());
+			Window_Component.InteractiveUnitsCollection.Add(new TextBox           (1, 3));
 
-			Window_Component.GetAppearanceHandler = GetWindowAppearance_Notepad;
+			//Window_Component.GetRenderBufferHandler = GetRenderBuffer;
 
 			Window_Component.InteractiveUnitsCollection[4].IsFocused  = true;
 			Window_Component.InteractiveUnitsCollection[4].IsSelected = true;
 
 			InitRenderBuffer();
 
-			((TextBox)Window_Component.InteractiveUnitsCollection[4]).DisplayArea_Component.RenderBufferRef = Window_Component.RenderBuffer;
-			((TextBox)Window_Component.InteractiveUnitsCollection[4]).DisplayArea_Component.Pointer_Component.RenderBufferRef = Window_Component.RenderBuffer;
+			//((TextBox)Window_Component.InteractiveUnitsCollection[4]).DisplayArea_Component.RenderBufferRef = Window_Component.RenderBuffer;
+			//((TextBox)Window_Component.InteractiveUnitsCollection[4]).DisplayArea_Component.Pointer_Component.RenderBufferRef = Window_Component.RenderBuffer;
 
 		}
 
@@ -54,8 +53,24 @@ namespace VirtualDesktopApps_Console
 			}
 		}
 
-		public void GetWindowAppearance_Notepad()
+		public override Pixel[,] GetRenderBuffer()
 		{
+			for (int unit = 0; unit < Window_Component.InteractiveUnitsCollection.Count; unit++)
+			{
+				Button tempUnit = Window_Component.InteractiveUnitsCollection[unit];
+
+				Pixel[,] tempRenderBuffer = tempUnit.GetRenderBuffer();
+
+				for (int j = 0; j < tempRenderBuffer.GetLength(1); j++)
+				{
+					for (int i = 0; i < tempRenderBuffer.GetLength(0); i++)
+					{
+						Window_Component.RenderBuffer[tempUnit.Anchor.X + i, tempUnit.Anchor.Y + j]
+							= tempRenderBuffer[i, j];
+					}
+				}
+			}
+			/*
 			for (int j = 0; j < Window_Component.Height; j++)
 			{
 				for (int i = 0; i < Window_Component.Width; i++)
@@ -64,33 +79,23 @@ namespace VirtualDesktopApps_Console
 						.Anchor.Y] = Window_Component.RenderBuffer[i, j];
 				}
 			}
+			*/
+
+			return Window_Component.RenderBuffer;
 		}
 
 		public override bool ParseAndExecute(ConsoleKeyInfo keyPressed)
 		{
-			bool isKeyUsed = false;
-
-			switch (Window_Component.GetSelectedComponent().ToString())
+			if (Window_Component.GetSelectedComponent() != null)
 			{
-				case "VirtualDesktopApps_Console.TextBox":
-					isKeyUsed = ((TextBox)Window_Component.InteractiveUnitsCollection[4]).ParseAndExecute(keyPressed);
-					break;
-
-				default:
-					isKeyUsed = false;
-					break;
+					return Window_Component.ParseAndExecute(keyPressed);
 			}
 
-			if (!isKeyUsed)
-			{
-				switch (keyPressed.Key)
-				{
-					default:
-						break;
-				}
-			}
+			/*
+			 * Do something else
+			 */
 
-			return isKeyUsed;
+			return false;
 		}
 	}
 }

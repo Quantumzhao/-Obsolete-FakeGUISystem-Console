@@ -35,10 +35,16 @@ namespace VirtualDesktopApps_Console
 				else
 				{
 					isComponentSelected = false;
+
+					/* More codes coming this way
+					 * All of its components should be set "not selected"
+					 */
 				}
 			}
 		}
 
 		public abstract bool ParseAndExecute(ConsoleKeyInfo keyPressed);
+
+		public abstract Pixel[,] GetRenderBuffer();
 	}
 }

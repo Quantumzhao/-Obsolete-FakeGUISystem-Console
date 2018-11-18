@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using SupplementaryClassLibraryForStringManipulation;
 
 namespace VirtualDesktopApps_Console
 {
@@ -31,12 +30,15 @@ namespace VirtualDesktopApps_Console
 				else
 				{
 					isFocused = value;
-					GetAppearance();
 				}
 			}
 		}
 
-		public abstract void GetAppearance();
+		private Pixel[,] renderBuffer;
+		public virtual Pixel[,] GetRenderBuffer()
+		{
+			return new Pixel[Width, Height];
+		}
 
 		public abstract bool ParseAndExecute(ConsoleKeyInfo key);
 	}
@@ -54,17 +56,18 @@ namespace VirtualDesktopApps_Console
 
 		public bool IsVisible { get; set; }
 
+		private Pixel[,] renderBuffer;
+		public Pixel[,] GetRenderBuffer()
+		{
+			return new Pixel[Width, Height];
+		}
+
 		public PopUpMenu()
 		{
 			/*--For Test Only--*/
 			Anchor.X = 2;
 			Anchor.Y = 2;
 			
-		}
-
-		public void GetAppearance()
-		{
-
 		}
 
 		public bool ParseAndExecute(ConsoleKeyInfo key)
@@ -75,11 +78,6 @@ namespace VirtualDesktopApps_Console
 
 	class TitleBar : Button
 	{
-		public override void GetAppearance()
-		{
-
-		}
-
 		public override bool ParseAndExecute(ConsoleKeyInfo key)
 		{
 			throw new NotImplementedException();
@@ -88,11 +86,6 @@ namespace VirtualDesktopApps_Console
 
 	class MenuItem : Button
 	{
-		public override void GetAppearance()
-		{
-
-		}
-
 		public override bool ParseAndExecute(ConsoleKeyInfo key)
 		{
 			throw new NotImplementedException();
@@ -103,12 +96,7 @@ namespace VirtualDesktopApps_Console
 	{
 		public void PopUpMenu(T subProgram)
 		{
-			
-		}
-
-		public override void GetAppearance()
-		{
-
+			throw new NotImplementedException();
 		}
 	}
 
@@ -127,19 +115,19 @@ namespace VirtualDesktopApps_Console
 
 	class TextBox : Button
 	{
-		public TextBox()
+		public TextBox(int xPos, int yPos)
 		{
-			Anchor.X = 1;
-			Anchor.Y = 3;
+			Anchor.X = xPos;
+			Anchor.Y = yPos;
 
-			DisplayArea_Component.CharacterMapRef = CharacterMap;
-			DisplayArea_Component.Pointer_Component.TextboxAnchorRef = Anchor;
+			//DisplayArea_Component.CharacterMapRef = CharacterMap;
+			//DisplayArea_Component.Pointer_Component.TextboxAnchorRef = Anchor;
 
-			for (int j = 0; j < TextboxDisplayArea.Height; j++)
+			for (int j = 0; j < DisplayArea_Component.Height; j++)
 			{
 				CharacterMap.Add(new List<char?>());
 
-				for (int i = 0; i < TextboxDisplayArea.Width; i++)
+				for (int i = 0; i < DisplayArea_Component.Width; i++)
 				{
 					CharacterMap[j].Add(new char?());
 					CharacterMap[j][i] = null;
@@ -156,7 +144,7 @@ namespace VirtualDesktopApps_Console
 			*/
 		}
 
-		public TextboxDisplayArea DisplayArea_Component { get; set; } = new TextboxDisplayArea();
+		public TextboxDisplayArea DisplayArea_Component { get; set; } = new TextboxDisplayArea(64, 23);
 
 		private List<List<char?>> CharacterMap = new List<List<char?>>();
 
@@ -165,13 +153,15 @@ namespace VirtualDesktopApps_Console
 			return CharacterMap;
 		}
 
-		public void WriteCharMap(char input, int anchorY, int anchorX)
+		public void WriteCharMap(char input)
 		{
-			CharacterMap[anchorY].Insert(anchorX, input);
+			TextboxPointer pointerRef = DisplayArea_Component.Pointer_Component;
 
-			CharacterMap[anchorY].Remove(null);
+			CharacterMap[pointerRef.Anchor.Y].Insert(pointerRef.Anchor.X, input);
 
-			if (DisplayArea_Component.Pointer_Component.Anchor.X != TextboxDisplayArea.Width)
+			CharacterMap[pointerRef.Anchor.Y].Remove(null);
+			/*
+			if (pointerRef.Anchor.X != DisplayArea_Component.Width)
 			{
 				DisplayArea_Component.Pointer_Component.MoveRight();
 			}
@@ -179,6 +169,7 @@ namespace VirtualDesktopApps_Console
 			{
 				DisplayArea_Component.MoveRight();
 			}
+			*/
 		}
 
 		public void RemoveCharMap(int anchorY, int anchorX)
@@ -194,7 +185,7 @@ namespace VirtualDesktopApps_Console
 			}
 			catch { }
 
-			if (CharacterMap[anchorY].Count < TextboxDisplayArea.Width)
+			if (CharacterMap[anchorY].Count < DisplayArea_Component.Width)
 			{
 				CharacterMap[anchorY].Add(null);
 			}
@@ -207,10 +198,10 @@ namespace VirtualDesktopApps_Console
 
 		public void NewLine()
 		{
-			if (CharacterMap.Count >= TextboxDisplayArea.Height)
+			if (CharacterMap.Count >= DisplayArea_Component.Height)
 			{
 				CharacterMap.Add(new List<char?>());
-
+				/*More codes needed*/
 			}
 		}
 
@@ -240,27 +231,20 @@ namespace VirtualDesktopApps_Console
 
 		}
 
-		public override void GetAppearance()
+		public override Pixel[,] GetRenderBuffer()
 		{
-			
+			return DisplayArea_Component.GetRenderBuffer();
 		}
 
 		public override bool ParseAndExecute(ConsoleKeyInfo keyPressed)
 		{
-			if (!DisplayArea_Component.Pointer_Component.ParseAndExecute(keyPressed))
+			if (!DisplayArea_Component.ParseAndExecute(keyPressed, ref CharacterMap))
 			{
-				int ascii = StringManipulation.ToChar(keyPressed.KeyChar);
+				int ascii = keyPressed.KeyChar;
 
 				if (ascii >= 32 && ascii <= 126)
 				{
-					WriteCharMap
-						(
-						keyPressed.KeyChar, 
-						DisplayArea_Component.Pointer_Component.Anchor.Y, 
-						DisplayArea_Component.Pointer_Component.Anchor.X
-						);
-
-					
+					WriteCharMap(keyPressed.KeyChar);
 				}
 				else
 				{
@@ -269,7 +253,7 @@ namespace VirtualDesktopApps_Console
 						case ConsoleKey.Backspace:
 							RemoveCharMap(DisplayArea_Component.Pointer_Component.Anchor.Y, DisplayArea_Component.Pointer_Component.Anchor.X - 1);
 
-							if (DisplayArea_Component.Pointer_Component.Anchor.X != TextboxDisplayArea.Width)
+							if (DisplayArea_Component.Pointer_Component.Anchor.X != DisplayArea_Component.Width)
 							{
 								DisplayArea_Component.Pointer_Component.MoveLeft();
 							}
@@ -292,8 +276,6 @@ namespace VirtualDesktopApps_Console
 					}
 				}
 
-				DisplayArea_Component.SetRenderBuffer(Anchor.X, Anchor.Y);
-
 				return true;
 			}
 
@@ -303,32 +285,81 @@ namespace VirtualDesktopApps_Console
 
 	class TextboxDisplayArea
 	{
-		public TextboxDisplayArea()
+		public TextboxDisplayArea(int width, int height)
 		{
-			
+			Width = width;
+			Height = height;
+			renderBuffer = new Pixel[Width, Height];
 		}
 
-		public const int Width  = 64;
-		public const int Height = 23;
+		public int Width  { get; set; }
+		public int Height { get; set; }
 
 		public Coordinates Anchor { get; set; } = new Coordinates();
 		public TextboxPointer Pointer_Component { get; set; } = new TextboxPointer();
 
-		public List<List<char?>> CharacterMapRef { get; set; }
+		//public List<List<char?>> CharacterMapRef { get; set; }
 		//The child component has a reference to its parent component, 
 		//	and the reference is set when its parent component initializes
 
-		public Pixel[,] RenderBuffer { get; set; }
-
-		public void SetRenderBuffer(int textboxAnchorX, int textboxAnchorY)
+		private Pixel[,] renderBuffer;
+		public Pixel[,] GetRenderBuffer()
+		{
+			return renderBuffer;
+		}
+		public void SetRenderBuffer(ref List<List<char?>> CharacterMap)
 		{
 			for (int j = 0; j < Height; j++)
 			{
 				for (int i = 0; i < Width; i++)
 				{
-					RenderBuffer[i + textboxAnchorX, j + textboxAnchorY].DisplayCharacter = CharacterMapRef[j][i];
+					try
+					{
+						renderBuffer[i, j].DisplayCharacter = CharacterMap[j][i];
+					}
+					catch (IndexOutOfRangeException)
+					{
+						renderBuffer[i, j].DisplayCharacter = null;
+					}
 				}
 			}
+
+			TextboxPointer p = Pointer_Component;
+
+			renderBuffer[p.Anchor.X, p.Anchor.Y].BackgroundColor = p.PointerBackColor;
+			renderBuffer[p.Anchor.X, p.Anchor.Y].ForegroundColor = p.PointerForeColor;
+		}
+
+		public bool ParseAndExecute(ConsoleKeyInfo keyPressed, ref List<List<char?>> characterMap)
+		{
+			switch (Pointer_Component.ParseAndExecute(keyPressed, ref renderBuffer))
+			{
+				case 'w':
+					MoveUp();
+					break;
+
+				case 's':
+					MoveDown();
+					break;
+
+				case 'a':
+					MoveLeft();
+					break;
+
+				case 'd':
+					MoveRight();
+					break;
+
+				case 'n':
+					break;
+
+				case '0':
+					return false;
+			}
+
+			SetRenderBuffer(ref characterMap);
+
+			return true;
 		}
 
 		public void MoveUp()
@@ -355,78 +386,114 @@ namespace VirtualDesktopApps_Console
 	class TextboxPointer
 	{
 		public Coordinates Anchor { get; set; } = new Coordinates();
-		public Coordinates TextboxAnchorRef { get; set; }
+		//public Coordinates TextboxAnchorRef { get; set; }
 
-		public ConsoleColor PointerColor { get; set; } = ConsoleColor.Blue;
+		public ConsoleColor PointerBackColor { get; set; } = ConsoleColor.Blue;
+		public ConsoleColor PointerForeColor { get; set; } = ConsoleColor.White;
 
-		public Pixel[,] RenderBufferRef { get; set; }
-
-		public bool ParseAndExecute(ConsoleKeyInfo keyPressed)
+		public char ParseAndExecute(ConsoleKeyInfo keyPressed, ref Pixel[,] renderBuffer)
 		{
 			switch (keyPressed.Key)
 			{
+				/*
+				 * If pointer succeed in moving in whatever direction, it gives no feedback
+				 * If fail, then pass out the reason
+				 * "w" for up; "s" for down; "a" for left; "d" for right; "n" for "NO CHANGE"
+				 * "0" for not using the key
+				*/
+
 				case ConsoleKey.UpArrow:
-					MoveUp();
+					if (!MoveUp())
+						return 'w';
 					break;
 
 				case ConsoleKey.DownArrow:
-					MoveDown();
+					if (!MoveDown())
+						return 's';
 					break;
 
 				case ConsoleKey.LeftArrow:
-					MoveLeft();
+					if (!MoveLeft())
+						return 'a';
 					break;
 
 				case ConsoleKey.RightArrow:
-					MoveRight();
+					if (!MoveRight())
+						return 'd';
 					break;
 
 				default:
-					return false;
+					return '0';
 			}
 
-			return true;
+			return 'n';
 		}
 
-		public void MoveUp()
+		public bool MoveUp()
 		{
-			Anchor.Y--;
+			try
+			{
+				Anchor.Y--;
 
-			SetRenderBuffer(TextboxAnchorRef.X, TextboxAnchorRef.Y);
+				return true;
+			}
+			catch (IndexOutOfRangeException)
+			{
+				return false;
+			}
 		}
 
-		public void MoveDown()
+		public bool MoveDown()
 		{
-			Anchor.Y++;
+			try
+			{
+				Anchor.Y++;
 
-			SetRenderBuffer(TextboxAnchorRef.X, TextboxAnchorRef.Y);
+				return true;
+			}
+			catch (IndexOutOfRangeException)
+			{
+
+				return false;
+			}
 		}
 
-		public void MoveLeft()
+		public bool MoveLeft()
 		{
-			SetRenderBuffer(TextboxAnchorRef.X - 1, TextboxAnchorRef.Y);
-			RenderBufferRef[TextboxAnchorRef.X + Anchor.X, TextboxAnchorRef.Y + Anchor.Y].ForegroundColor = ConsoleColor.Black;
-			RenderBufferRef[TextboxAnchorRef.X + Anchor.X, TextboxAnchorRef.Y + Anchor.Y].BackgroundColor = ConsoleColor.White;
+			try
+			{
+				Anchor.X--;
 
-			Anchor.X--;
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
 
 		}
 
-		public void MoveRight()
+		public bool MoveRight()
 		{
-			SetRenderBuffer(TextboxAnchorRef.X, TextboxAnchorRef.Y);
-			RenderBufferRef[TextboxAnchorRef.X + Anchor.X - 1, TextboxAnchorRef.Y + Anchor.Y].ForegroundColor = ConsoleColor.Black;
-			RenderBufferRef[TextboxAnchorRef.X + Anchor.X - 1, TextboxAnchorRef.Y + Anchor.Y].BackgroundColor = ConsoleColor.White;
+			try
+			{
+				Anchor.X++;
 
-			Anchor.X++;
+				return true;
+			}
+			catch
+			{
+				return false;
+			}
 
 		}
-
-		public void SetRenderBuffer(int textboxAnchorX, int textboxAnchorY)
+		/*
+		public void SetRenderBuffer(ref Pixel[,] renderBuffer, int textboxAnchorX, int textboxAnchorY)
 		{
-			RenderBufferRef[textboxAnchorX + Anchor.X, textboxAnchorY + Anchor.Y].ForegroundColor = ConsoleColor.White;
-			RenderBufferRef[textboxAnchorX + Anchor.X, textboxAnchorY + Anchor.Y].BackgroundColor = ConsoleColor.Blue;
+			renderBuffer[textboxAnchorX + Anchor.X, textboxAnchorY + Anchor.Y].ForegroundColor = ConsoleColor.White;
+			renderBuffer[textboxAnchorX + Anchor.X, textboxAnchorY + Anchor.Y].BackgroundColor = ConsoleColor.Blue;
 		}
+		*/
 	}
 
 	class PopUpMenu_Files : PopUpMenu

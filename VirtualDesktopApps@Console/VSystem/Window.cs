@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System;
 using System.Text;
 using System.Threading.Tasks;
-using SupplementaryClassLibraryForStringManipulation;
 
 namespace VirtualDesktopApps_Console
 {
@@ -18,8 +17,8 @@ namespace VirtualDesktopApps_Console
 
 		public Pixel[,] RenderBuffer;
 
-		public delegate void GetAppearanceDelegate();
-		public GetAppearanceDelegate GetAppearanceHandler;
+		//public delegate Pixel[,] GetAppearanceDelegate();
+		//public GetAppearanceDelegate GetRenderBufferHandler;
 
 		public Window(int width, int height)
 		{
@@ -31,9 +30,9 @@ namespace VirtualDesktopApps_Console
 			InteractiveUnitsCollection.Add(new TitleBar());
 		}
 
-		public void GetAppearance()
+		public Pixel[,] GetRenderBuffer()
 		{
-			GetAppearanceHandler();
+			return RenderBuffer;
 
 			//GetAppearanceHandler = null;	//This subprocess is removed merely for test
 		}
@@ -53,7 +52,16 @@ namespace VirtualDesktopApps_Console
 
 		public bool ParseAndExecute(ConsoleKeyInfo key)
 		{
-			throw new NotImplementedException();
+			if (GetSelectedComponent() != null)
+			{
+				return GetSelectedComponent().ParseAndExecute(key);
+			}
+
+			/*
+			 * Do something else
+			 */
+
+			return false;
 		}
 	}
 }
