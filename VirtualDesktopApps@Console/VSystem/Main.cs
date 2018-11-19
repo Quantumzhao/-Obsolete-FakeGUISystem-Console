@@ -16,17 +16,18 @@ namespace VirtualDesktopApps_Console
 			initiation();
 			
 			runNotepadTest();
-			VSystem.SubPrograms[VSystem.SubPrograms.Count - 1].Window_Component.GetRenderBuffer();
-			VSystem.RenderAll();
+			//VSystem.SubPrograms[VSystem.SubPrograms.Count - 1].Window_Component.GetRenderBuffer();
+			//VSystem.RenderAll();
 
 			while (true)
 			{
+				VSystem.RenderAll();
+
 				KeyPressed = Console.ReadKey();
 				Console.Clear();
 
 				VSystem.ParseAndExecute(KeyPressed);
 				//VSystem.SubPrograms[VSystem.SubPrograms.Count - 1].Window_Component.GetRenderBuffer();
-				VSystem.RenderAll();
 			}
 		}
 
@@ -114,8 +115,6 @@ namespace VirtualDesktopApps_Console
 			if (GetFocusedSubProgram() != null)
 			{
 				GetFocusedSubProgram().ParseAndExecute(keyPressed);
-
-				return true;
 			}
 			/*
 			switch (keyPressed.Key)
@@ -165,7 +164,7 @@ namespace VirtualDesktopApps_Console
 				}
 			}
 
-			return false;
+			return true;
 		}
 
 		public static SubProgram GetFocusedSubProgram()
@@ -344,6 +343,7 @@ namespace VirtualDesktopApps_Console
 		int Height { get; set; }
 		bool IsSelected { get; set; }
 		bool IsFocused { get; set; }
+		string Name { get; set; }
 		
 		Pixel[,] GetRenderBuffer();
 	}

@@ -13,6 +13,8 @@ namespace VirtualDesktopApps_Console
 		public int Width { get; set; }
 		public int Height { get; set; }
 
+		public string Name { get; set; }
+
 		public bool IsSelected { get; set; }
 		private bool isFocused;
 		public bool IsFocused
@@ -49,6 +51,8 @@ namespace VirtualDesktopApps_Console
 
 		public int Width { get; set; } = 15;
 		public int Height { get; set; } = 7;
+
+		public string Name { get; set; }
 
 		public bool IsSelected { get; set; }
 		public bool IsFocused { get; set; }
@@ -276,6 +280,8 @@ namespace VirtualDesktopApps_Console
 					}
 				}
 
+				DisplayArea_Component.SetRenderBuffer(CharacterMap);
+
 				return true;
 			}
 
@@ -307,7 +313,7 @@ namespace VirtualDesktopApps_Console
 		{
 			return renderBuffer;
 		}
-		public void SetRenderBuffer(ref List<List<char?>> CharacterMap)
+		public void SetRenderBuffer(List<List<char?>> CharacterMap)
 		{
 			for (int j = 0; j < Height; j++)
 			{
@@ -356,8 +362,6 @@ namespace VirtualDesktopApps_Console
 				case '0':
 					return false;
 			}
-
-			SetRenderBuffer(ref characterMap);
 
 			return true;
 		}
