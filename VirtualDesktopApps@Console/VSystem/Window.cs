@@ -15,7 +15,7 @@ namespace VirtualDesktopApps_Console
 		public string Name { get; set; }
 		public bool IsHighlighted { get; set; }
 		public bool IsFocused { get; set; }
-		private ComponentsCollection components { get; set; } = new ComponentsCollection();
+		public ComponentsCollection Components { get; set; } = new ComponentsCollection();
 		private string url;
 
 		private Pixel[,] renderBuffer;
@@ -30,7 +30,7 @@ namespace VirtualDesktopApps_Console
 
 			renderBuffer = new Pixel[width, height];
 
-			components.Add(new TitleBar(), "TitleBar");
+			Components.Add(new TitleBar(), "TitleBar");
 
 			url = sourceFileUrl;
 
@@ -41,17 +41,15 @@ namespace VirtualDesktopApps_Console
 		{
 			using (StreamReader streamReader = new StreamReader(url))
 			{
-				string currentLine;
-
 				for (int j = 0; j < Height; j++)
 				{
-					currentLine = streamReader.ReadLine();
+					char[] currentCharArray = streamReader.ReadLine().ToCharArray();
 
 					for (int i = 0; i < Width; i++)
 					{
 						renderBuffer[i, j] = new Pixel
 						{
-							DisplayCharacter = currentLine.ToCharArray()[i]
+							DisplayCharacter = currentCharArray[i]
 						};
 					}
 				}
@@ -64,38 +62,30 @@ namespace VirtualDesktopApps_Console
 		}
 		public void SetRenderBuffer()
 		{
-			for (int k = 0; k < components.Count; k++)
+			for (int k = 0; k < Components.Count; k++)
 			{
-				Pixel[,] tempRenderBuffer = components[k].GetRenderBuffer();
+				Pixel[,] tempRenderBuffer = Components[k].GetRenderBuffer();
 
 				for (int j = 0; j < tempRenderBuffer.GetLength(1); j++)
 				{
 					for (int i = 0; i < tempRenderBuffer.GetLength(0); i++)
 					{
-						renderBuffer[components[k].Anchor.X + i, components[k].Anchor.Y + j]
+						renderBuffer[Components[k].Anchor.X + i, Components[k].Anchor.Y + j]
 							= tempRenderBuffer[i, j];
 					}
 				}
 			}
 		}
-
-		internal void AddComponent(Button component, string name = "")
-		{
-			components.Add(component, name);
-		}
-
-		internal Button GetComponent(string name)
-		{
-			return components[name];
-		}
 		
 		public bool ParseAndExecute(ConsoleKeyInfo key)
 		{
-			Button b = components.GetHighlighted();
+			Button b = Components.GetHighlighted();
 
 			if (b != null && b.ParseAndExecute(key))
 			{
 				SetRenderBuffer();
+
+				return true;
 			}
 
 			/*

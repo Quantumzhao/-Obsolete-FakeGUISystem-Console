@@ -19,6 +19,7 @@ namespace VirtualDesktopApps_Console
 
 			while (true)
 			{
+				VSystem.Layers[VSystem.GetFocusedSubProgram().ProgramID].Update();
 				VSystem.RenderAll();
 
 				KeyPressed = Console.ReadKey();
@@ -149,14 +150,6 @@ namespace VirtualDesktopApps_Console
 
 			Pixel[,] tempRenderBuffer = p.GetRenderBuffer();
 
-			for (int j = 0; j < Height; j++)
-			{
-				for (int i = 0; i < Width; i++)
-				{
-					Layers[p.ProgramID][i + c.X, j + c.Y] = tempRenderBuffer[i, j];
-				}
-			}
-
 			return true;
 		}
 
@@ -265,6 +258,8 @@ namespace VirtualDesktopApps_Console
 			}
 		}
 
+		public int Index { get; set; }
+
 		private Pixel[,] programLayer= new Pixel[VSystem.Width, VSystem.Height];
 
 		public Pixel this[int x, int y]
@@ -277,6 +272,32 @@ namespace VirtualDesktopApps_Console
 			set
 			{
 				programLayer[x, y] = value;
+			}
+		}
+
+		public void Update()
+		{
+			Window tempWindow = VSystem.SubPrograms[Index].Window_Component;
+
+			Pixel[,] graphBuffer = tempWindow.GetRenderBuffer();
+
+			int anchorX = tempWindow.Anchor.X;
+			int anchorY = tempWindow.Anchor.Y;
+
+			for (int j = 0; j < VSystem.Height; j++)
+			{
+				for (int i = 0; i < VSystem.Width; i++)
+				{
+					if (i >= anchorX && i < tempWindow.Width + anchorX &&
+						j >= anchorY && j < tempWindow.Height + anchorY)
+					{
+						this[i, j] = graphBuffer[i - anchorX, j - anchorY];
+					}
+					else if (!this[i, j].Equals(new Pixel()))
+					{
+						this[i, j] = new Pixel();
+					}
+				}
 			}
 		}
 	}

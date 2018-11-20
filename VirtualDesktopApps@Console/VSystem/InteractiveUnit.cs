@@ -9,7 +9,7 @@ namespace VirtualDesktopApps_Console
 {
 	delegate void ChangeHighLightDelegate();
 
-	class ComponentsCollection
+	public class ComponentsCollection
 	{
 		private List<Button> components { get; set; } = new List<Button>();
 		public Button this[int index]
@@ -24,6 +24,7 @@ namespace VirtualDesktopApps_Console
 				components[index] = value;
 			}
 		}
+		// Not recommended to use this as well
 		public Button this[string name]
 		{
 			get
@@ -58,14 +59,28 @@ namespace VirtualDesktopApps_Console
 			component.Name = name;
 			components.Add(component);
 		}
-
+		
 		public Button GetHighlighted()
 		{
 			return (from component in components
 					where component.IsHighlighted
 					select component).Single();
 		}
-
+		public void SetHighlighted(int index)
+		{
+			for (int i = 0; i < components.Count; i++)
+			{
+				if (i == index)
+				{
+					components[i].IsHighlighted = true;
+				}
+				else
+				{
+					components[i].IsHighlighted = false;
+				}
+			}
+		}
+		// though not recommended to use this
 		public void SetHighlighted(string name)
 		{
 			foreach (Button component in components)
@@ -82,7 +97,7 @@ namespace VirtualDesktopApps_Console
 		}
 	}
 
-	abstract class Button : IEntity
+	public abstract class Button : IEntity
 	{
 		public Coordinates Anchor { get; set; } = new Coordinates();
 
@@ -104,29 +119,36 @@ namespace VirtualDesktopApps_Console
 			{
 				if (value)
 				{
-					changeHighLightHandler();
+					//changeHighLightHandler();
 
-					isHighLighted = value;
+					IsFocused = true;
+					isHighLighted = true;
+				}
+				else
+				{
+					isHighLighted = false;
 				}
 			}
 		}
+
 		private bool isFocused;
-		// It needs to be changed to a more detailed structure
 		public bool IsFocused
 		{
 			get
 			{
 				return isFocused;
 			}
+
 			set
 			{
-				if (isFocused == value)
+				if (!value)
 				{
-					return;
+					IsHighlighted = false;
+					isFocused = false;
 				}
 				else
 				{
-					isFocused = value;
+					isFocused = true;
 				}
 			}
 		}
@@ -232,15 +254,6 @@ namespace VirtualDesktopApps_Console
 					CharacterMap[j][i] = null;
 				}
 			}
-
-			/*
-			string str = "Hello, World";
-
-			for (int i = 1; i <= str.Length; i++)
-			{
-				CharacterMap[0][i - 1] = Convert.ToChar(StringManipulation.Mid(str, i, 1));
-			}
-			*/
 		}
 
 		public TextboxDisplayArea DisplayArea_Component { get; set; } = new TextboxDisplayArea(64, 23);
@@ -257,6 +270,11 @@ namespace VirtualDesktopApps_Console
 			TextboxPointer pointerRef = DisplayArea_Component.Pointer_Component;
 
 			CharacterMap[pointerRef.Anchor.Y].Insert(pointerRef.Anchor.X, input);
+
+			if (!DisplayArea_Component.Pointer_Component.MoveRight(DisplayArea_Component.Width))
+			{
+				DisplayArea_Component.MoveRight();
+			}
 
 			CharacterMap[pointerRef.Anchor.Y].Remove(null);
 			/*
@@ -374,11 +392,9 @@ namespace VirtualDesktopApps_Console
 							return false;
 					}
 				}
-
-				DisplayArea_Component.SetRenderBuffer(CharacterMap);
-
-				return true;
 			}
+
+			DisplayArea_Component.SetRenderBuffer(CharacterMap);
 
 			return true;
 		}
@@ -391,6 +407,14 @@ namespace VirtualDesktopApps_Console
 			Width = width;
 			Height = height;
 			renderBuffer = new Pixel[Width, Height];
+
+			for (int j = 0; j < height; j++)
+			{
+				for (int i = 0; i < width; i++)
+				{
+					renderBuffer[i, j] = new Pixel();
+				}
+			}
 		}
 
 		public int Width  { get; set; }
@@ -421,6 +445,12 @@ namespace VirtualDesktopApps_Console
 					catch (IndexOutOfRangeException)
 					{
 						renderBuffer[i, j].DisplayCharacter = null;
+					}
+
+					if (renderBuffer[i, j].ForegroundColor == ConsoleColor.White)
+					{
+						renderBuffer[i, j].ForegroundColor = ConsoleColor.Black;
+						renderBuffer[i, j].BackgroundColor = ConsoleColor.White;
 					}
 				}
 			}
@@ -507,7 +537,7 @@ namespace VirtualDesktopApps_Console
 					break;
 
 				case ConsoleKey.DownArrow:
-					if (!MoveDown())
+					if (!MoveDown(renderBuffer.GetLength(1)))
 						return 's';
 					break;
 
@@ -517,7 +547,7 @@ namespace VirtualDesktopApps_Console
 					break;
 
 				case ConsoleKey.RightArrow:
-					if (!MoveRight())
+					if (!MoveRight(renderBuffer.GetLength(0)))
 						return 'd';
 					break;
 
@@ -530,69 +560,51 @@ namespace VirtualDesktopApps_Console
 
 		public bool MoveUp()
 		{
-			try
+			if (Anchor.Y > 0)
 			{
 				Anchor.Y--;
 
 				return true;
 			}
-			catch (IndexOutOfRangeException)
-			{
-				return false;
-			}
+
+			return false;
 		}
 
-		public bool MoveDown()
+		public bool MoveDown(int maxHeight)
 		{
-			try
+			if (Anchor.Y < maxHeight - 1)
 			{
 				Anchor.Y++;
 
 				return true;
 			}
-			catch (IndexOutOfRangeException)
-			{
 
-				return false;
-			}
+			return false;
 		}
 
 		public bool MoveLeft()
 		{
-			try
+			if (Anchor.X > 0)
 			{
 				Anchor.X--;
 
 				return true;
 			}
-			catch
-			{
-				return false;
-			}
 
+			return false;
 		}
 
-		public bool MoveRight()
+		public bool MoveRight(int maxWidth)
 		{
-			try
+			if (Anchor.X < maxWidth - 1)
 			{
 				Anchor.X++;
 
 				return true;
 			}
-			catch
-			{
-				return false;
-			}
 
+			return false;
 		}
-		/*
-		public void SetRenderBuffer(ref Pixel[,] renderBuffer, int textboxAnchorX, int textboxAnchorY)
-		{
-			renderBuffer[textboxAnchorX + Anchor.X, textboxAnchorY + Anchor.Y].ForegroundColor = ConsoleColor.White;
-			renderBuffer[textboxAnchorX + Anchor.X, textboxAnchorY + Anchor.Y].BackgroundColor = ConsoleColor.Blue;
-		}
-		*/
 	}
 
 	class PopUpMenu_Files : PopUpMenu

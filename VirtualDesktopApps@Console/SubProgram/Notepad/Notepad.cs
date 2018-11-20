@@ -16,16 +16,17 @@ namespace VirtualDesktopApps_Console
 			Window_Component = new Window(WindowWidth, WindowHeight, "Appearance_Notepad.txt")
 								   { Name = "Main"};
 
-			Window_Component.AddComponent(new MenuItem_Edit<Notepad>(), "Edit");
-			Window_Component.AddComponent(new MenuItem_File<Notepad>(), "File");
-			Window_Component.AddComponent(new MenuItem_Help<Notepad>(), "Help");
-			Window_Component.AddComponent(new TextBox(1, 3),         "TextBox");
+			Window_Component.Components.Add(new MenuItem_Edit<Notepad>(), "Edit");
+			Window_Component.Components.Add(new MenuItem_File<Notepad>(), "File");
+			Window_Component.Components.Add(new MenuItem_Help<Notepad>(), "Help");
+			Window_Component.Components.Add(new TextBox(1, 3),         "TextBox");
 
-			TextBox textBox = (TextBox)Window_Component.GetComponent("TextBox");
-
-			textBox.IsFocused  = true;
-			textBox.IsHighlighted = true;
 			Window_Component.IsHighlighted = true;
+
+			IsComponentSelected = true;
+
+			// This refers to the "TextBox" component
+			Window_Component.Components.SetHighlighted(4);			
 		}
 
 		public override Pixel[,] GetRenderBuffer()
