@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,6 +7,81 @@ using System.Threading.Tasks;
 
 namespace VirtualDesktopApps_Console
 {
+	delegate void ChangeHighLightDelegate();
+
+	class ComponentsCollection
+	{
+		private List<Button> components { get; set; } = new List<Button>();
+		public Button this[int index]
+		{
+			get
+			{
+				return components[index];
+			}
+
+			set
+			{
+				components[index] = value;
+			}
+		}
+		public Button this[string name]
+		{
+			get
+			{
+				return (from component in components
+						where component.Name.Equals(name)
+						select component).Single();
+			}
+
+			set
+			{
+				for (int i = 0; i < components.Count; i++)
+				{
+					if (components[i].Name.Equals("name"))
+					{
+						components[i] = value;
+					}
+				}
+			}
+		}
+
+		public int Count
+		{
+			get
+			{
+				return components.Count;
+			}
+		}
+
+		public void Add(Button component, string name)
+		{
+			component.Name = name;
+			components.Add(component);
+		}
+
+		public Button GetHighlighted()
+		{
+			return (from component in components
+					where component.IsHighlighted
+					select component).Single();
+		}
+
+		public void SetHighlighted(string name)
+		{
+			foreach (Button component in components)
+			{
+				if (component.Name.Equals(name))
+				{
+					component.IsHighlighted = true;
+				}
+				else
+				{
+					component.IsHighlighted = false;
+				}
+			}
+		}
+	}
+
 	abstract class Button : IEntity
 	{
 		public Coordinates Anchor { get; set; } = new Coordinates();
@@ -15,8 +91,27 @@ namespace VirtualDesktopApps_Console
 
 		public string Name { get; set; }
 
-		public bool IsSelected { get; set; }
+		private ChangeHighLightDelegate changeHighLightHandler;
+
+		bool isHighLighted;
+		public bool IsHighlighted
+		{
+			get
+			{
+				return isHighLighted;
+			}
+			set
+			{
+				if (value)
+				{
+					changeHighLightHandler();
+
+					isHighLighted = value;
+				}
+			}
+		}
 		private bool isFocused;
+		// It needs to be changed to a more detailed structure
 		public bool IsFocused
 		{
 			get
@@ -54,7 +149,7 @@ namespace VirtualDesktopApps_Console
 
 		public string Name { get; set; }
 
-		public bool IsSelected { get; set; }
+		public bool IsHighlighted { get; set; }
 		public bool IsFocused { get; set; }
 		public bool IsComponentFocused { get; set; }
 

@@ -14,10 +14,8 @@ namespace VirtualDesktopApps_Console
 		public static void Main(string[] args)
 		{
 			initiation();
-			
-			runNotepadTest();
-			//VSystem.SubPrograms[VSystem.SubPrograms.Count - 1].Window_Component.GetRenderBuffer();
-			//VSystem.RenderAll();
+
+			VSystem.SubPrograms.Add(new Notepad());
 
 			while (true)
 			{
@@ -38,16 +36,11 @@ namespace VirtualDesktopApps_Console
 			Console.WindowWidth     = Console.LargestWindowWidth;
 			Console.WindowHeight    = Console.LargestWindowHeight;
 			Console.CursorVisible   = false;
-			
+
+			// | I might intend to apply the same "Select & Focus" action to VSystem
+			// | Anyway, this will be fixed in the future. 
+			// V Just leave it untouched by now
 			VSystem.IsFocused       = true;
-		}
-
-		private static void runNotepadTest()
-		{
-			VSystem.SubPrograms.Add(new Notepad());
-
-			VSystem.SubPrograms[VSystem.
-				SubPrograms.Count - 1].IsComponentSelected = true;
 		}
 	}
 
@@ -341,7 +334,7 @@ namespace VirtualDesktopApps_Console
 		Coordinates Anchor { get; set; }
 		int Width { get; set; }
 		int Height { get; set; }
-		bool IsSelected { get; set; }
+		bool IsHighlighted { get; set; }
 		bool IsFocused { get; set; }
 		string Name { get; set; }
 		

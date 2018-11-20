@@ -16,25 +16,28 @@ namespace VirtualDesktopApps_Console
 			Window_Component = new Window(WindowWidth, WindowHeight, "Appearance_Notepad.txt")
 								   { Name = "Main"};
 
-			Window_Component.AddComponent(new MenuItem_Edit<Notepad> { Name = "Edit"});
-			Window_Component.AddComponent(new MenuItem_File<Notepad> { Name = "File"});
-			Window_Component.AddComponent(new MenuItem_Help<Notepad> { Name = "Help"});
-			Window_Component.AddComponent(new TextBox(1, 3)       { Name = "TextBox"});
+			Window_Component.AddComponent(new MenuItem_Edit<Notepad>(), "Edit");
+			Window_Component.AddComponent(new MenuItem_File<Notepad>(), "File");
+			Window_Component.AddComponent(new MenuItem_Help<Notepad>(), "Help");
+			Window_Component.AddComponent(new TextBox(1, 3),         "TextBox");
 
-			Window_Component.GetComponent("TextBox").IsFocused  = true;
-			Window_Component.GetComponent("TextBox").IsSelected = true;
+			TextBox textBox = (TextBox)Window_Component.GetComponent("TextBox");
+
+			textBox.IsFocused  = true;
+			textBox.IsHighlighted = true;
+			Window_Component.IsHighlighted = true;
 		}
 
 		public override Pixel[,] GetRenderBuffer()
 		{
-			return Window_Component.RenderBuffer;
+			return Window_Component.GetRenderBuffer();
 		}
 
 		public override bool ParseAndExecute(ConsoleKeyInfo keyPressed)
 		{
-			if (Window_Component.GetSelectedComponent() != null)
+			if (!Window_Component.ParseAndExecute(keyPressed))
 			{
-					return Window_Component.ParseAndExecute(keyPressed);
+				return false;
 			}
 
 			/*
