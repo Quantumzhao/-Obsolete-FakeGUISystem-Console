@@ -76,6 +76,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="VSystem\SubProgram.cs" />
+    <Compile Include="VSystem\Components\TextBox.cs" />
     <Compile Include="VSystem\Window.cs" />
   </ItemGroup>
   <ItemGroup>

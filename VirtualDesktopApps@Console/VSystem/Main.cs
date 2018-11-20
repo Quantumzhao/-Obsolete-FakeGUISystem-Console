@@ -25,9 +25,7 @@ namespace VirtualDesktopApps_Console
 				KeyPressed = Console.ReadKey();
 				Console.Clear();
 
-				VSystem.ParseAndExecute(KeyPressed);
-				//VSystem.SubPrograms[VSystem.SubPrograms.Count - 1].Window_Component.GetRenderBuffer();
-			}
+				VSystem.ParseAndExecute(KeyPressed);			}
 		}
 
 		private static void initiation()

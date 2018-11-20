@@ -20,9 +20,6 @@ namespace VirtualDesktopApps_Console
 
 		private Pixel[,] renderBuffer;
 
-		//public delegate Pixel[,] GetAppearanceDelegate();
-		//public GetAppearanceDelegate GetRenderBufferHandler;
-
 		public Window(int width, int height, string sourceFileUrl)
 		{
 			Width  = width;
