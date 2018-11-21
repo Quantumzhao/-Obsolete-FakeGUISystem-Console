@@ -26,7 +26,7 @@ namespace VirtualDesktopApps_Console
 
 			IsComponentSelected = true;
 
-			// This refers to the "TextBox" component
+			// This refers to the "TextBox" component  ▼
 			Window_Component.Components.SetHighlighted(4);			
 		}
 

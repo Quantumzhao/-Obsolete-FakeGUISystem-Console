@@ -44,7 +44,7 @@ namespace VirtualDesktopApps_Console
 
 			CharacterMap[pointerRef.Anchor.Y].Insert(pointerRef.Anchor.X, input);
 
-			if (!DisplayArea_Component.Pointer_Component.MoveRight(DisplayArea_Component.Width))
+			if (DisplayArea_Component.Pointer_Component.MoveRight(DisplayArea_Component, CharacterMap))
 			{
 				DisplayArea_Component.MoveRight(ref CharacterMap);
 			}
@@ -68,7 +68,7 @@ namespace VirtualDesktopApps_Console
 			// Deprecated
 			if (DisplayArea_Component.Pointer_Component.Anchor.X != DisplayArea_Component.Width)
 			{
-				DisplayArea_Component.Pointer_Component.MoveLeft();
+				DisplayArea_Component.Pointer_Component.MoveLeft(DisplayArea_Component, CharacterMap);
 			}
 			else
 			{
@@ -356,22 +356,22 @@ namespace VirtualDesktopApps_Console
 				*/
 
 				case ConsoleKey.UpArrow:
-					if (!MoveUp(parentComponent, characterMap))
+					if (MoveUp(parentComponent, characterMap))
 						return 'w';
 					break;
 
 				case ConsoleKey.DownArrow:
-					if (!MoveDown(parentComponent, characterMap))
+					if (MoveDown(parentComponent, characterMap))
 						return 's';
 					break;
 
 				case ConsoleKey.LeftArrow:
-					if (!MoveLeft(parentComponent, characterMap))
+					if (MoveLeft(parentComponent, characterMap))
 						return 'a';
 					break;
 
 				case ConsoleKey.RightArrow:
-					if (!MoveRight(parentComponent, characterMap))
+					if (MoveRight(parentComponent, characterMap))
 						return 'd';
 					break;
 
@@ -382,18 +382,6 @@ namespace VirtualDesktopApps_Console
 			return 'n';
 		}
 
-		public bool MoveUp()
-		{
-			if (Anchor.Y > 0)
-			{
-				Anchor.Y--;
-
-				return true;
-			}
-
-			return false;
-		}
-
 		/*                         --IMPORTANT NOTE--
 		 *              If any of the following returns a FALSE, 
 		 * it means that there is NO NEED to MOVE the display area component
@@ -401,30 +389,62 @@ namespace VirtualDesktopApps_Console
 		 *        Otherwise DO MOVE it, in the direction of the pointer
 		 */
 
-		public bool MoveDown(TextboxDisplayArea displayArea, List<List<char?>> characterMap)
+		public bool MoveUp(TextboxDisplayArea displayArea, List<List<char?>> characterMap)
 		{
-			// The case when pointer reaches the bottom of text block
-			if (Anchor.Y >= characterMap.Count - 1)
+			int absX = Anchor.X + displayArea.Anchor.X;
+			int absY = Anchor.Y + displayArea.Anchor.Y;
+
+			if (absY == 0)
 			{
 				return false;
 			}
-
-			/* If the pointer's horizontal position overwhelms the length of the following line, 
-			 * set to this
-			 * e.g. 
-			 * > The quick brown fox jumps over that lazy dog▄ <- Move the pointer
-			 * > Lorem Ipsum sed amit <-------------------------- To here
-			 */
-			if (Anchor.X > characterMap[Anchor.Y + 1].Count)
+			else
 			{
-				Anchor.X = characterMap[Anchor.Y + 1].Count;
+				if (absX > characterMap[absY - 1].Count - 1)
+				{
+					absX = characterMap[absY].Count - 1;
+				}
+
+				absY--;
 			}
 
-			// The case when the pointer reaches the boarder of display area
-			if (Anchor.Y < displayArea.Height - 1)
-			{
-				Anchor.Y++;
+			Anchor.X = absX - displayArea.Anchor.X;
+			Anchor.Y = absY - displayArea.Anchor.Y;
 
+			if (Anchor.X < displayArea.Width && Anchor.Y < displayArea.Height)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+
+		public bool MoveDown(TextboxDisplayArea displayArea, List<List<char?>> characterMap)
+		{
+			int absX = Anchor.X + displayArea.Anchor.X;
+			int absY = Anchor.Y + displayArea.Anchor.Y;
+
+			if (absY == characterMap.Count - 1)
+			{
+				return false;
+			}
+			else
+			{
+				if (absX > characterMap[absY + 1].Count - 1)
+				{
+					absX = characterMap[absY].Count;
+				}
+
+				absY++;
+			}
+
+			Anchor.X = absX - displayArea.Anchor.X;
+			Anchor.Y = absY - displayArea.Anchor.Y;
+
+			if (Anchor.X < displayArea.Width && Anchor.Y < displayArea.Height)
+			{
 				return false;
 			}
 			else
@@ -435,29 +455,72 @@ namespace VirtualDesktopApps_Console
 
 		public bool MoveLeft(TextboxDisplayArea displayArea, List<List<char?>> characterMap)
 		{
-			if (Anchor.X == characterMap[Anchor.Y].Count)
-			{
-				Anchor.X = 0;
+			int absX = Anchor.X + displayArea.Anchor.X;
+			int absY = Anchor.Y + displayArea.Anchor.Y;
 
-				if (!MoveDown(displayArea, characterMap))
+			if (absX == 0)
+			{
+				if (absY == 0)
 				{
-					Anchor.X = characterMap[Anchor.Y].Count;
+					return false;
+				}
+				else
+				{
+					absY--;
+					absX = characterMap[absY].Count;
 				}
 			}
-
-			
-		}
-
-		public bool MoveRight(int maxWidth)
-		{
-			if (Anchor.X < maxWidth - 1)
+			else
 			{
-				Anchor.X++;
-
-				return true;
+				absX--;
 			}
 
-			return false;
+			Anchor.X = absX - displayArea.Anchor.X;
+			Anchor.Y = absY - displayArea.Anchor.Y;
+
+			if (Anchor.X < displayArea.Width && Anchor.Y < displayArea.Height)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+
+		public bool MoveRight(TextboxDisplayArea displayArea, List<List<char?>> characterMap)
+		{
+			int absX = Anchor.X + displayArea.Anchor.X;
+			int absY = Anchor.Y + displayArea.Anchor.Y;
+
+			if (absX == characterMap[absY].Count)
+			{
+				if (absY == characterMap.Count - 1)
+				{
+					return false;
+				}
+				else
+				{
+					absX = 0;
+					absY++;
+				}
+			}
+			else
+			{
+				absX++;
+			}
+
+			Anchor.X = absX - displayArea.Anchor.X;
+			Anchor.Y = absY - displayArea.Anchor.Y;
+
+			if (Anchor.X < displayArea.Width && Anchor.Y < displayArea.Height)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
 		}
 	}
 }
