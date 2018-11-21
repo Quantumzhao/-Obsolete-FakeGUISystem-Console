@@ -12,10 +12,7 @@ namespace VirtualDesktopApps_Console
 		{
 			Anchor.X = xPos;
 			Anchor.Y = yPos;
-
-			//DisplayArea_Component.CharacterMapRef = CharacterMap;
-			//DisplayArea_Component.Pointer_Component.TextboxAnchorRef = Anchor;
-
+			/*
 			for (int j = 0; j < DisplayArea_Component.Height; j++)
 			{
 				CharacterMap.Add(new List<char?>());
@@ -26,6 +23,10 @@ namespace VirtualDesktopApps_Console
 					CharacterMap[j][i] = null;
 				}
 			}
+			*/
+			CharacterMap.Add(new List<char?>());
+			CharacterMap[0].Add(new char?());
+			DisplayArea_Component.SetRenderBuffer(CharacterMap);
 		}
 
 		public TextboxDisplayArea DisplayArea_Component { get; set; } = new TextboxDisplayArea(64, 23);
@@ -45,53 +46,65 @@ namespace VirtualDesktopApps_Console
 
 			if (!DisplayArea_Component.Pointer_Component.MoveRight(DisplayArea_Component.Width))
 			{
-				DisplayArea_Component.MoveRight();
+				DisplayArea_Component.MoveRight(ref CharacterMap);
 			}
 
 			CharacterMap[pointerRef.Anchor.Y].Remove(null);
-			/*
-			if (pointerRef.Anchor.X != DisplayArea_Component.Width)
-			{
-				DisplayArea_Component.Pointer_Component.MoveRight();
-			}
-			else
-			{
-				DisplayArea_Component.MoveRight();
-			}
-			*/
 		}
 
-		public void RemoveCharMap(int anchorY, int anchorX)
+		public void RemoveCharMap()
 		{
-			if (anchorX == 0 && anchorY != 0)
+			TextboxPointer p = DisplayArea_Component.Pointer_Component;
+
+			if (p.Anchor.X > 0)
+			{
+				CharacterMap[p.Anchor.Y].RemoveAt(p.Anchor.X - 1);
+			}
+			else
 			{
 				MergeLine();
 			}
 
-			try
+			// Deprecated
+			if (DisplayArea_Component.Pointer_Component.Anchor.X != DisplayArea_Component.Width)
 			{
-				CharacterMap[anchorY].RemoveAt(anchorX);
+				DisplayArea_Component.Pointer_Component.MoveLeft();
 			}
-			catch { }
-
-			if (CharacterMap[anchorY].Count < DisplayArea_Component.Width)
+			else
 			{
-				CharacterMap[anchorY].Add(null);
+				DisplayArea_Component.MoveLeft();
 			}
 		}
 
 		public void MergeLine()
 		{
+			TextboxPointer p = DisplayArea_Component.Pointer_Component;
 
+			List<char?> targetLine = CharacterMap[p.Anchor.Y - 1];
+
+			p.Anchor.X = targetLine.Count;
+
+			targetLine.AddRange(CharacterMap[p.Anchor.Y]);
+
+			CharacterMap.RemoveAt(p.Anchor.Y);
+
+			p.Anchor.Y--;
 		}
 
 		public void NewLine()
 		{
-			if (CharacterMap.Count >= DisplayArea_Component.Height)
-			{
-				CharacterMap.Add(new List<char?>());
-				/*More codes needed*/
-			}
+			TextboxPointer p = DisplayArea_Component.Pointer_Component;
+
+			List<char?> currentLine = CharacterMap[p.Anchor.Y];
+			List<char?> newLine = new List<char?>(currentLine.GetRange(
+				p.Anchor.X, currentLine.Count - p.Anchor.X));
+
+			currentLine.RemoveRange(p.Anchor.X, currentLine.Count - p.Anchor.X);
+
+			p.Anchor.Y++;
+			p.Anchor.X = 0;
+
+			CharacterMap.Insert(p.Anchor.Y, newLine);
 		}
 
 		public void DeleteAll()
@@ -140,17 +153,7 @@ namespace VirtualDesktopApps_Console
 					switch (keyPressed.Key)
 					{
 						case ConsoleKey.Backspace:
-							RemoveCharMap(DisplayArea_Component.Pointer_Component.Anchor.Y, DisplayArea_Component.Pointer_Component.Anchor.X - 1);
-
-							if (DisplayArea_Component.Pointer_Component.Anchor.X != DisplayArea_Component.Width)
-							{
-								DisplayArea_Component.Pointer_Component.MoveLeft();
-							}
-							else
-							{
-								DisplayArea_Component.MoveLeft();
-							}
-
+							RemoveCharMap();
 							break;
 
 						case ConsoleKey.Enter:
@@ -195,10 +198,6 @@ namespace VirtualDesktopApps_Console
 		public Coordinates Anchor { get; set; } = new Coordinates();
 		public TextboxPointer Pointer_Component { get; set; } = new TextboxPointer();
 
-		//public List<List<char?>> CharacterMapRef { get; set; }
-		//The child component has a reference to its parent component, 
-		//	and the reference is set when its parent component initializes
-
 		private Pixel[,] renderBuffer;
 		public Pixel[,] GetRenderBuffer()
 		{
@@ -206,23 +205,39 @@ namespace VirtualDesktopApps_Console
 		}
 		public void SetRenderBuffer(List<List<char?>> CharacterMap)
 		{
+			int numOfLine = CharacterMap.Count;
+
 			for (int j = 0; j < Height; j++)
 			{
-				for (int i = 0; i < Width; i++)
+				if (CharacterMap.Count > Anchor.Y + j)
 				{
-					try
+					int numOfChar = CharacterMap[j].Count;
+
+					for (int i = 0; i < Width; i++)
 					{
-						renderBuffer[i, j].DisplayCharacter = CharacterMap[j][i];
+
+						if (numOfChar > Anchor.X + i)
+						{
+							renderBuffer[i, j].DisplayCharacter = CharacterMap[j + Anchor.Y][i + Anchor.X];
+						}
+						else
+						{
+							renderBuffer[i, j].DisplayCharacter = null;
+						}
+
+						// Find the Pixel that the pointer WAS at and reset it
+						if (renderBuffer[i, j].BackgroundColor == ConsoleColor.Blue)
+						{
+							renderBuffer[i, j].ForegroundColor = ConsoleColor.Black;
+							renderBuffer[i, j].BackgroundColor = ConsoleColor.White;
+						}
 					}
-					catch (IndexOutOfRangeException)
+				}
+				else
+				{
+					for (int i = 0; i < Width; i++)
 					{
 						renderBuffer[i, j].DisplayCharacter = null;
-					}
-
-					if (renderBuffer[i, j].ForegroundColor == ConsoleColor.White)
-					{
-						renderBuffer[i, j].ForegroundColor = ConsoleColor.Black;
-						renderBuffer[i, j].BackgroundColor = ConsoleColor.White;
 					}
 				}
 			}
@@ -235,14 +250,14 @@ namespace VirtualDesktopApps_Console
 
 		public bool ParseAndExecute(ConsoleKeyInfo keyPressed, ref List<List<char?>> characterMap)
 		{
-			switch (Pointer_Component.ParseAndExecute(keyPressed, ref renderBuffer))
+			switch (Pointer_Component.ParseAndExecute(keyPressed, this, ref characterMap))
 			{
 				case 'w':
 					MoveUp();
 					break;
 
 				case 's':
-					MoveDown();
+					MoveDown(ref characterMap);
 					break;
 
 				case 'a':
@@ -250,7 +265,7 @@ namespace VirtualDesktopApps_Console
 					break;
 
 				case 'd':
-					MoveRight();
+					MoveRight(ref characterMap);
 					break;
 
 				case 'n':
@@ -263,36 +278,73 @@ namespace VirtualDesktopApps_Console
 			return true;
 		}
 
-		public void MoveUp()
+		public bool MoveUp()
 		{
-			throw new NotImplementedException();
+			if (Anchor.Y > 0)
+			{
+				Anchor.Y--;
+
+				return true;
+			}
+
+			return false;
 		}
 
-		public void MoveDown()
+		public bool MoveDown(ref List<List<char?>> characterMap)
 		{
-			throw new NotImplementedException();
+			if (Anchor.Y < characterMap.Count - 1)
+			{
+				Anchor.Y++;
+
+				return true;
+			}
+
+			return false;
 		}
 
-		public void MoveLeft()
+		public bool MoveLeft()
 		{
-			throw new NotImplementedException();
+			if (Anchor.X > 0)
+			{
+				Anchor.X--;
+
+				return true;
+			}
+
+			return false;
 		}
 
-		public void MoveRight()
+		public bool MoveRight(ref List<List<char?>> characterMap)
 		{
-			throw new NotImplementedException();
+			int maxWidth = 0;
+			foreach (var line in characterMap)
+			{
+				if (line.Count > maxWidth)
+				{
+					maxWidth = line.Count;
+				}
+			}
+
+			if (Anchor.X < maxWidth - 1)
+			{
+				Anchor.X++;
+
+				return true;
+			}
+
+			return false;
 		}
 	}
 
 	class TextboxPointer
 	{
 		public Coordinates Anchor { get; set; } = new Coordinates();
-		//public Coordinates TextboxAnchorRef { get; set; }
 
 		public ConsoleColor PointerBackColor { get; set; } = ConsoleColor.Blue;
 		public ConsoleColor PointerForeColor { get; set; } = ConsoleColor.White;
 
-		public char ParseAndExecute(ConsoleKeyInfo keyPressed, ref Pixel[,] renderBuffer)
+		public char ParseAndExecute(ConsoleKeyInfo keyPressed, 
+			TextboxDisplayArea parentComponent, ref List<List<char?>> characterMap)
 		{
 			switch (keyPressed.Key)
 			{
@@ -304,22 +356,22 @@ namespace VirtualDesktopApps_Console
 				*/
 
 				case ConsoleKey.UpArrow:
-					if (!MoveUp())
+					if (!MoveUp(parentComponent, characterMap))
 						return 'w';
 					break;
 
 				case ConsoleKey.DownArrow:
-					if (!MoveDown(renderBuffer.GetLength(1)))
+					if (!MoveDown(parentComponent, characterMap))
 						return 's';
 					break;
 
 				case ConsoleKey.LeftArrow:
-					if (!MoveLeft())
+					if (!MoveLeft(parentComponent, characterMap))
 						return 'a';
 					break;
 
 				case ConsoleKey.RightArrow:
-					if (!MoveRight(renderBuffer.GetLength(0)))
+					if (!MoveRight(parentComponent, characterMap))
 						return 'd';
 					break;
 
@@ -342,28 +394,58 @@ namespace VirtualDesktopApps_Console
 			return false;
 		}
 
-		public bool MoveDown(int maxHeight)
+		/*                         --IMPORTANT NOTE--
+		 *              If any of the following returns a FALSE, 
+		 * it means that there is NO NEED to MOVE the display area component
+		 * 
+		 *        Otherwise DO MOVE it, in the direction of the pointer
+		 */
+
+		public bool MoveDown(TextboxDisplayArea displayArea, List<List<char?>> characterMap)
 		{
-			if (Anchor.Y < maxHeight - 1)
+			// The case when pointer reaches the bottom of text block
+			if (Anchor.Y >= characterMap.Count - 1)
+			{
+				return false;
+			}
+
+			/* If the pointer's horizontal position overwhelms the length of the following line, 
+			 * set to this
+			 * e.g. 
+			 * > The quick brown fox jumps over that lazy dog▄ <- Move the pointer
+			 * > Lorem Ipsum sed amit <-------------------------- To here
+			 */
+			if (Anchor.X > characterMap[Anchor.Y + 1].Count)
+			{
+				Anchor.X = characterMap[Anchor.Y + 1].Count;
+			}
+
+			// The case when the pointer reaches the boarder of display area
+			if (Anchor.Y < displayArea.Height - 1)
 			{
 				Anchor.Y++;
 
+				return false;
+			}
+			else
+			{
 				return true;
 			}
-
-			return false;
 		}
 
-		public bool MoveLeft()
+		public bool MoveLeft(TextboxDisplayArea displayArea, List<List<char?>> characterMap)
 		{
-			if (Anchor.X > 0)
+			if (Anchor.X == characterMap[Anchor.Y].Count)
 			{
-				Anchor.X--;
+				Anchor.X = 0;
 
-				return true;
+				if (!MoveDown(displayArea, characterMap))
+				{
+					Anchor.X = characterMap[Anchor.Y].Count;
+				}
 			}
 
-			return false;
+			
 		}
 
 		public bool MoveRight(int maxWidth)

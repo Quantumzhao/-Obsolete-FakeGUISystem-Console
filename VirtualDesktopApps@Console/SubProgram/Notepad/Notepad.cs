@@ -22,6 +22,7 @@ namespace VirtualDesktopApps_Console
 			Window_Component.Components.Add(new TextBox(1, 3),         "TextBox");
 
 			Window_Component.IsHighlighted = true;
+			Window_Component.SetRenderBuffer();
 
 			IsComponentSelected = true;
 

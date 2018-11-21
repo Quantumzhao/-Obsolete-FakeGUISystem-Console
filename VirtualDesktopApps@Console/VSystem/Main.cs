@@ -10,7 +10,6 @@ namespace VirtualDesktopApps_Console
 	public class Launcher
 	{
 		public static ConsoleKeyInfo KeyPressed { get; set; }
-
 		public static void Main(string[] args)
 		{
 			initiation();
@@ -25,7 +24,8 @@ namespace VirtualDesktopApps_Console
 				KeyPressed = Console.ReadKey();
 				Console.Clear();
 
-				VSystem.ParseAndExecute(KeyPressed);			}
+				VSystem.ParseAndExecute(KeyPressed);//Console.Write(Window.count);
+			}
 		}
 
 		private static void initiation()
@@ -63,8 +63,8 @@ namespace VirtualDesktopApps_Console
 					while 
 					(
 						(Layers[k][i, j].DisplayCharacter == null) && 
-						((Layers[k][i, j].ForegroundColor == ConsoleColor.Black) &&
-						(Layers[k][i, j].BackgroundColor == ConsoleColor.White))
+						(Layers[k][i, j].ForegroundColor == ConsoleColor.Black) &&
+						(Layers[k][i, j].BackgroundColor == ConsoleColor.White)
 					)
 					{
 						if (k != Layers.Count - 1)

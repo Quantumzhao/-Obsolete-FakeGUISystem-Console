@@ -15,10 +15,10 @@ namespace VirtualDesktopApps_Console
 		public string Name { get; set; }
 		public bool IsHighlighted { get; set; }
 		public bool IsFocused { get; set; }
-		public ComponentsCollection Components { get; set; } = new ComponentsCollection();
 		private string url;
 
 		private Pixel[,] renderBuffer;
+		public ComponentsCollection Components { get; set; } = new ComponentsCollection();
 
 		public Window(int width, int height, string sourceFileUrl)
 		{

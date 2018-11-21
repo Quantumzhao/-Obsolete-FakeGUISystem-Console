@@ -11,7 +11,7 @@ namespace VirtualDesktopApps_Console
 
 	public class ComponentsCollection
 	{
-		private List<Button> components { get; set; } = new List<Button>();
+		private List<Button> components = new List<Button>();
 		public Button this[int index]
 		{
 			get
