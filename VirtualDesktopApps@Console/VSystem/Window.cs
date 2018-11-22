@@ -18,9 +18,9 @@ namespace VirtualDesktopApps_Console
 		private string url;
 
 		private Pixel[,] renderBuffer;
-		public ComponentsCollection Components { get; set; } = new ComponentsCollection();
+		public EntityCollection<Button> Components { get; set; } = new EntityCollection<Button>();
 
-		public Window(int width, int height, string sourceFileUrl)
+		public Window(int width = 66, int height = 27, string sourceFileUrl = "")
 		{
 			Width  = width;
 			Height = height;

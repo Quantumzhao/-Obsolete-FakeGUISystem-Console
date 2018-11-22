@@ -9,89 +9,41 @@ namespace VirtualDesktopApps_Console
 {
 	delegate void ChangeHighLightDelegate();
 
-	public class ComponentsCollection
+	public class EntityCollection<T> : AbstractCollection<T> where T : IEntity
 	{
-		private List<Button> components = new List<Button>();
-		public Button this[int index]
+		public T GetHighlighted()
 		{
-			get
-			{
-				return components[index];
-			}
-
-			set
-			{
-				components[index] = value;
-			}
-		}
-		// Not recommended to use this as well
-		public Button this[string name]
-		{
-			get
-			{
-				return (from component in components
-						where component.Name.Equals(name)
-						select component).Single();
-			}
-
-			set
-			{
-				for (int i = 0; i < components.Count; i++)
-				{
-					if (components[i].Name.Equals(name))
-					{
-						components[i] = value;
-					}
-				}
-			}
-		}
-
-		public int Count
-		{
-			get
-			{
-				return components.Count;
-			}
-		}
-
-		public void Add(Button component, string name)
-		{
-			component.Name = name;
-			components.Add(component);
-		}
-
-		public Button GetHighlighted()
-		{
-			return (from component in components
-					where component.IsHighlighted
-					select component).Single();
+			return (from element in collection
+					where element.IsHighlighted
+					select element).Single();
 		}
 		public void SetHighlighted(int index)
 		{
-			for (int i = 0; i < components.Count; i++)
+			for (int i = 0; i < collection.Count; i++)
 			{
 				if (i == index)
 				{
-					components[i].IsHighlighted = true;
+					collection[i].IsHighlighted = true;
 				}
 				else
 				{
-					components[i].IsHighlighted = false;
+					collection[i].IsHighlighted = false;
 				}
 			}
 		}
+
 		// though not recommended to use this
 		public void SetHighlighted(string name)
 		{
-			foreach (Button component in components)
+			foreach (T element in collection)
 			{
-				if (component.Name.Equals(name))
+				if (element.Name.Equals(name))
 				{
-					component.IsHighlighted = true;
+					element.IsHighlighted = true;
 				}
 				else
 				{
-					component.IsHighlighted = false;
+					element.IsHighlighted = false;
 				}
 			}
 		}

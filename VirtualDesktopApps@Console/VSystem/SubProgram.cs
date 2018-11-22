@@ -6,11 +6,13 @@ using System.Threading.Tasks;
 
 namespace VirtualDesktopApps_Console
 {
-	public abstract class SubProgram : IKeyEvent
+	public abstract class SubProgram : IKeyEvent, INameable
 	{
 		public int ProgramID { get; set; }
 
-		public Window Window_Component { get; set; }
+		public EntityCollection<Window> Windows { get; set; } = new EntityCollection<Window>();
+
+		public string Name { get; set; }
 
 		private bool isComponentSelected = false;
 		public bool IsComponentSelected
@@ -42,6 +44,7 @@ namespace VirtualDesktopApps_Console
 				}
 			}
 		}
+
 
 		public abstract bool ParseAndExecute(ConsoleKeyInfo keyPressed);
 

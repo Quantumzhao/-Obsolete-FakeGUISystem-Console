@@ -13,31 +13,31 @@ namespace VirtualDesktopApps_Console
 
 		public Notepad()
 		{
-			Window_Component = new Window(WindowWidth, WindowHeight, "Appearance_Notepad.txt")
-								   { Name = "Main"};
+			Windows.Add(new Window(66, 27, "Appearance_Notepad.txt")
+								   { Name = "Main"});
 
-			Window_Component.Components.Add(new MenuItem_Edit<Notepad>(), "Edit");
-			Window_Component.Components.Add(new MenuItem_File<Notepad>(), "File");
-			Window_Component.Components.Add(new MenuItem_Help<Notepad>(), "Help");
-			Window_Component.Components.Add(new TextBox(1, 3),         "TextBox");
+			Windows[0].Components.Add(new MenuItem_Edit<Notepad>(), "Edit");
+			Windows[0].Components.Add(new MenuItem_File<Notepad>(), "File");
+			Windows[0].Components.Add(new MenuItem_Help<Notepad>(), "Help");
+			Windows[0].Components.Add(new TextBox(1, 3),         "TextBox");
 
-			Window_Component.IsHighlighted = true;
-			Window_Component.SetRenderBuffer();
+			Windows[0].IsHighlighted = true;
+			Windows[0].SetRenderBuffer();
 
 			IsComponentSelected = true;
 
-			// This refers to the "TextBox" component  ▼
-			Window_Component.Components.SetHighlighted(4);			
+			// This refers to the "TextBox" component ▼
+			Windows[0].Components.SetHighlighted(4);			
 		}
 
 		public override Pixel[,] GetRenderBuffer()
 		{
-			return Window_Component.GetRenderBuffer();
+			return Windows[0].GetRenderBuffer();
 		}
 
 		public override bool ParseAndExecute(ConsoleKeyInfo keyPressed)
 		{
-			if (!Window_Component.ParseAndExecute(keyPressed))
+			if (!Windows[0].ParseAndExecute(keyPressed))
 			{
 				return false;
 			}

@@ -12,18 +12,7 @@ namespace VirtualDesktopApps_Console
 		{
 			Anchor.X = xPos;
 			Anchor.Y = yPos;
-			/*
-			for (int j = 0; j < DisplayArea_Component.Height; j++)
-			{
-				CharacterMap.Add(new List<char?>());
 
-				for (int i = 0; i < DisplayArea_Component.Width; i++)
-				{
-					CharacterMap[j].Add(new char?());
-					CharacterMap[j][i] = null;
-				}
-			}
-			*/
 			CharacterMap.Add(new List<char?>());
 			CharacterMap[0].Add(new char?());
 			DisplayArea_Component.SetRenderBuffer(CharacterMap);

@@ -15,6 +15,7 @@ namespace VirtualDesktopApps_Console
 			initiation();
 
 			VSystem.SubPrograms.Add(new Notepad());
+			VSystem.Layers.Add(new Layer());
 
 			while (true)
 			{
@@ -49,8 +50,8 @@ namespace VirtualDesktopApps_Console
 		public const int Height = 50;
 
 		public static bool IsFocused { get; set; } = false;
-		public static LayerCollection Layers { get; set; } = new LayerCollection();
-		public static SubProgramCollection SubPrograms { get; set; } = new SubProgramCollection();
+		public static AbstractCollection<Layer> Layers { get; set; } = new AbstractCollection<Layer>();
+		public static AbstractCollection<SubProgram> SubPrograms { get; set; } = new AbstractCollection<SubProgram>();
 
 		public static List<int[]> RenderBufferModificationQueue = new List<int[]>();
 
@@ -106,7 +107,50 @@ namespace VirtualDesktopApps_Console
 
 		public void RenderPartially()
 		{
+			for (int index = 0; index < RenderBufferModificationQueue.Count; index++)
+			{
+				Console.CursorLeft = RenderBufferModificationQueue[index][0];
+				Console.CursorTop = RenderBufferModificationQueue[index][1];
 
+				for (int j = 0; j < RenderBufferModificationQueue[index][3]; j++)
+				{
+					for (int i = 0; i < RenderBufferModificationQueue[index][2]; i++)
+					{
+						int k = 0;
+
+						while
+						(
+							(Layers[k][i, j].DisplayCharacter == null) &&
+							(Layers[k][i, j].ForegroundColor == ConsoleColor.Black) &&
+							(Layers[k][i, j].BackgroundColor == ConsoleColor.White)
+						)
+						{
+							if (k != Layers.Count - 1)
+							{
+								k++;
+							}
+							else
+							{
+								break;
+							}
+						}
+
+						Console.BackgroundColor = Layers[k][i, j].BackgroundColor;
+						Console.ForegroundColor = Layers[k][i, j].ForegroundColor;
+						if (Layers[k][i, j].DisplayCharacter != null)
+						{
+							Console.Write(Layers[k][i, j].DisplayCharacter);
+						}
+						else
+						{
+							Console.Write(" ");
+						}
+					}
+				}
+			}
+
+			Console.CursorLeft = 0;
+			Console.CursorTop  = 0;
 		}
 		
 		public static bool ParseAndExecute(ConsoleKeyInfo keyPressed)
@@ -149,11 +193,11 @@ namespace VirtualDesktopApps_Console
 			}
 			*/
 
-			SubProgram p = GetFocusedSubProgram();
+			//SubProgram p = GetFocusedSubProgram();
 
-			Coordinates c = p.Window_Component.Anchor;
+			//Coordinates c = p.Windows.GetHighlighted().Anchor;
 
-			Pixel[,] tempRenderBuffer = p.GetRenderBuffer();
+			//Pixel[,] tempRenderBuffer = p.GetRenderBuffer();
 
 			return true;
 		}
@@ -176,81 +220,8 @@ namespace VirtualDesktopApps_Console
 			// For placeholder temporarily
 		}
 	}
-
-	public class SubProgramCollection
-	{
-		private static List<SubProgram> subPrograms { get; set; } = new List<SubProgram>();
-
-		public SubProgram this[int index]
-		{
-			get
-			{
-				return subPrograms[index];
-			}
-
-			set
-			{
-				subPrograms[index] = value;
-			}
-		}
-
-		public int Count
-		{
-			get
-			{
-				return subPrograms.Count;
-			}
-		}
-
-		public void Add(SubProgram subProgram)
-		{
-			subPrograms.Add(subProgram);
-
-			subPrograms[subPrograms.Count - 1].ProgramID = subPrograms.Count - 1;
-
-			VSystem.Layers.Add(new Layer());
-		}
-	}
-
-	public class LayerCollection
-	{
-		// The container of all layers
-
-		public LayerCollection()
-		{
-			layers.Add(new Layer());
-		}
-
-		private List<Layer> layers= new List<Layer>();
-
-		public int Count
-		{
-			get
-			{
-				return layers.Count;
-			}
-		}
-
-		public Layer this[int index]
-		{
-			get
-			{
-				return layers[index];
-			}
-
-			set
-			{
-				layers[index] = value;
-			}
-		}
-
-		public void Add(Layer layer)
-		{
-			layers.Add(layer);
-		}
-	}
-
-	public class Layer
+	
+	public class Layer : INameable
 	{
 		public Layer()
 		{
@@ -262,6 +233,8 @@ namespace VirtualDesktopApps_Console
 				}
 			}
 		}
+
+		public string Name { get; set; }
 
 		public int Index { get; set; }
 
@@ -282,7 +255,7 @@ namespace VirtualDesktopApps_Console
 
 		public void Update()
 		{
-			Window tempWindow = VSystem.SubPrograms[Index].Window_Component;
+			Window tempWindow = VSystem.SubPrograms[Index].Windows.GetHighlighted();
 
 			Pixel[,] graphBuffer = tempWindow.GetRenderBuffer();
 
@@ -341,6 +314,38 @@ namespace VirtualDesktopApps_Console
 		}
 	}
 
+	public class AbstractCollection<T> where T : INameable
+	{
+		protected List<T> collection = new List<T>();
+
+		public T this[int index]
+		{
+			get
+			{
+				return collection[index];
+			}
+
+			set
+			{
+				collection[index] = value;
+			}
+		}
+
+		public int Count
+		{
+			get
+			{
+				return collection.Count;
+			}
+		}
+
+		public void Add(T element, string name = "")
+		{
+			element.Name = name.Equals("") ? $"{element.GetType().ToString()}{collection.Count}" : name;
+			collection.Add(element);
+		}
+	}
+
 	public class Coordinates
 	{
 		public Coordinates(int x = 0, int y = 0)
@@ -353,23 +358,31 @@ namespace VirtualDesktopApps_Console
 		public int Y { get; set; }
 	}
 	
-	interface IEntity : IKeyEvent
+	public interface IEntity : IKeyEvent, INameable, IFocusable
 	{
 		// All interactive units must implement the following properties in order to function
 
 		Coordinates Anchor { get; set; }
 		int Width { get; set; }
 		int Height { get; set; }
-		bool IsHighlighted { get; set; }
-		bool IsFocused { get; set; }
-		string Name { get; set; }
 		
 		Pixel[,] GetRenderBuffer();
 	}
 
-	interface IKeyEvent
+	public interface IKeyEvent
 	{
 		bool ParseAndExecute(ConsoleKeyInfo key);
+	}
+
+	public interface INameable
+	{
+		string Name { get; set; }
+	}
+
+	public interface IFocusable
+	{
+		bool IsHighlighted { get; set; }
+		bool IsFocused { get; set; }
 	}
 
 	enum AvailableProgs
