@@ -82,6 +82,7 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="Properties\app.manifest" />
+    <None Include="DocumentationAndSpecification.md" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="SubProgram\Notepad\Appearance_Notepad.txt">

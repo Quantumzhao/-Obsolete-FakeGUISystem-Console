@@ -52,6 +52,8 @@ namespace VirtualDesktopApps_Console
 		public static LayerCollection Layers { get; set; } = new LayerCollection();
 		public static SubProgramCollection SubPrograms { get; set; } = new SubProgramCollection();
 
+		public static List<int[]> RenderBufferModificationQueue = new List<int[]>();
+
 		public static void RenderAll()
 		{
 			for (int j = 0; j < Height; j++)
@@ -100,6 +102,11 @@ namespace VirtualDesktopApps_Console
 				Console.Write("═");
 			}
 			Console.Write("╝");
+		}
+
+		public void RenderPartially()
+		{
+
 		}
 		
 		public static bool ParseAndExecute(ConsoleKeyInfo keyPressed)
