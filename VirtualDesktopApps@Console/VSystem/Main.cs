@@ -14,33 +14,173 @@ namespace VirtualDesktopApps_Console
 		{
 			initiation();
 
+			#region TestAddNotepadInstanceToRuntime
+
 			VSystem.SubPrograms.Add(new Notepad());
 			VSystem.Layers.Add(new Layer());
 
-			while (true)
+			#endregion
+
+			try
 			{
-				VSystem.Layers[VSystem.GetFocusedSubProgram().ProgramID].Update();
-				VSystem.RenderAll();
+				while (true)
+				{
+					VSystem.Layers[VSystem.GetFocusedSubProgram().ProgramID].Update();
+					VSystem.RenderAll();
 
-				KeyPressed = Console.ReadKey();
-				Console.Clear();
+					KeyPressed = Console.ReadKey();
+					Console.Clear();
 
-				VSystem.ParseAndExecute(KeyPressed);//Console.Write(Window.count);
+					VSystem.ParseAndExecute(KeyPressed);
+				}
+			}
+			catch (Exception exception)
+			{
+				ShowMessage(EffectiveField.Global, MessageType.Error, "Unknown Error", true, exception);
+
+				throw exception;
 			}
 		}
 
 		private static void initiation()
 		{
-			Console.BackgroundColor = ConsoleColor.White;
-			Console.ForegroundColor = ConsoleColor.Black;
-			Console.WindowWidth     = Console.LargestWindowWidth;
-			Console.WindowHeight    = Console.LargestWindowHeight;
-			Console.CursorVisible   = false;
+			try
+			{
+				Console.BackgroundColor = ConsoleColor.White;
+				Console.ForegroundColor = ConsoleColor.Black;
+				Console.WindowWidth = Console.LargestWindowWidth;
+				Console.WindowHeight = Console.LargestWindowHeight;
+				Console.CursorVisible = false;
 
-			// | I might intend to apply the same "Select & Focus" action to VSystem
-			// | Anyway, this will be fixed in the future. 
-			// V Just leave it untouched by now
-			VSystem.IsFocused       = true;
+				// | I might intend to apply the same "Select & Focus" action to VSystem
+				// | Anyway, this will be fixed in the future. 
+				// V Just leave it untouched by now
+				VSystem.IsFocused = true;
+			}
+			catch (Exception exception)
+			{
+				ShowMessage(EffectiveField.Global, MessageType.Error, "Initiation Failed", true, exception);
+			}
+		}
+
+		private delegate void ShowErrorDelegate(params string[] messages);
+		public static void ShowMessage(
+			EffectiveField field, 
+			MessageType type, 
+			string message, 
+			bool showDetailedErrorInfo, 
+			Exception exception = null)
+		{
+			ShowErrorDelegate showErrorHandler;
+
+			switch (field)
+			{
+				case EffectiveField.Global:
+					showErrorHandler =
+						(string[] messages) =>
+						{
+							Console.Clear();
+							Console.SetCursorPosition(0, 0);
+						};
+					break;
+
+				case EffectiveField.local:
+
+					showErrorHandler =
+						(string[] messages) =>
+						{
+							throw new NotImplementedException();
+						};
+					break;
+
+				case EffectiveField.Toast:
+
+					showErrorHandler =
+						(string[] messages) =>
+						{
+							throw new NotImplementedException();
+						};
+					break;
+
+				case EffectiveField.Hint:
+
+					showErrorHandler =
+						(string[] messages) =>
+						{
+							throw new NotImplementedException();
+						};
+					break;
+
+				default:
+					showErrorHandler = null;
+					ShowMessage(EffectiveField.Global, MessageType.Error, "Invalid Command", false);
+					break;
+			}
+
+			switch (type)
+			{
+				case MessageType.Error:
+					Console.ForegroundColor = ConsoleColor.Red;
+					Console.BackgroundColor = ConsoleColor.White;
+
+					if (showDetailedErrorInfo)
+					{
+						try
+						{
+							showErrorHandler += Console.WriteLine;
+
+							showErrorHandler(
+								message,
+								exception.Message,
+								exception.InnerException.Message,
+								exception.TargetSite.ToString(),
+								exception.StackTrace,
+								exception.Source, 
+								exception.HResult.ToString(), 
+								exception.HelpLink);
+						}
+						catch (ArgumentNullException argumentNullException)
+						{
+							ShowMessage(
+								EffectiveField.Global,
+								MessageType.Error,
+								"",
+								true,
+								argumentNullException);
+						}						
+					}
+
+					break;
+
+				case MessageType.Warning:
+					Console.ForegroundColor = ConsoleColor.Yellow;
+					Console.BackgroundColor = ConsoleColor.White;
+					break;
+
+				case MessageType.Information:
+					Console.ForegroundColor = ConsoleColor.Blue;
+					Console.BackgroundColor = ConsoleColor.White;
+					break;
+
+				default:
+					ShowMessage(EffectiveField.Global, MessageType.Error, "Invalid Command", false);
+					break;
+			}
+
+			Console.Write(message);
+
+			Console.ForegroundColor = ConsoleColor.Black;
+			Console.BackgroundColor = ConsoleColor.White;
+		}
+		
+		public enum EffectiveField
+		{
+			Global, local, Toast, Hint
+		}
+
+		public enum MessageType
+		{
+			Error, Warning, Information
 		}
 	}
 
@@ -322,12 +462,42 @@ namespace VirtualDesktopApps_Console
 		{
 			get
 			{
-				return collection[index];
+				try
+				{
+					return collection[index];
+				}
+				catch (IndexOutOfRangeException indexOutOfRangeException)
+				{
+					Launcher.ShowMessage(Launcher.EffectiveField.Global, Launcher.MessageType.Error, "", true, indexOutOfRangeException);
+
+					throw indexOutOfRangeException;
+				}
 			}
 
 			set
 			{
 				collection[index] = value;
+			}
+		}
+
+		public T this[string name]
+		{
+			get
+			{
+				return (from element in collection
+						where element.Name.Equals(name)
+						select element).Single();
+			}
+
+			set
+			{
+				for (int i = 0; i < collection.Count; i++)
+				{
+					if (collection[i].Name.Equals(name))
+					{
+						collection[i] = value;
+					}
+				}
 			}
 		}
 
