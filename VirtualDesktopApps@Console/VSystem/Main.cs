@@ -458,15 +458,15 @@ namespace VirtualDesktopApps_Console
 	{
 		protected List<T> collection = new List<T>();
 
-		public delegate void moreAddActionDelegate();
-
+		public delegate void moreAddActionDelegate(T element/*, object parent*/);
+		/*
 		protected moreAddActionDelegate moreAddActionHandler { get; set; }
 
-		public AbstractCollection(moreAddActionDelegate method = null)
+		public AbstractCollection(moreAddActionDelegate method = null, object parent = null)
 		{
 			moreAddActionHandler = method;
 		}
-
+		*/
 		public T this[int index]
 		{
 			get
@@ -518,11 +518,12 @@ namespace VirtualDesktopApps_Console
 			}
 		}
 
-		public void Add(T element, string name = "")
+		public void Add(T element, string name = "", object parent = null)
 		{
 			element.Name = name.Equals("") ? $"{element.GetType().ToString()}{collection.Count}" : name;
 			collection.Add(element);
-			moreAddActionHandler();
+
+			/*moreAddActionHandler?.Invoke(element, parent);*/
 		}
 	}
 

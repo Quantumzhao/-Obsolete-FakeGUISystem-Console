@@ -11,6 +11,8 @@ namespace VirtualDesktopApps_Console
 
 	public class ComponentCollection<T> : AbstractCollection<T> where T : IEntity
 	{
+		/*public ComponentCollection(moreAddActionDelegate method, object parent) : base(method, parent) { }*/
+
 		public T GetHighlighted()
 		{
 			return (from element in collection
@@ -66,6 +68,17 @@ namespace VirtualDesktopApps_Console
 			if (invoker is IEntity)
 			{
 				return parent;
+			}
+			else
+			{
+				throw new InvalidOperationException();
+			}
+		}
+		public void SetParent(IEntity target)
+		{
+			if (parent == null)
+			{
+				parent = target;
 			}
 			else
 			{
