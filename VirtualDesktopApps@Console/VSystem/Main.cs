@@ -29,7 +29,7 @@ namespace VirtualDesktopApps_Console
 					VSystem.RenderAll();
 
 					KeyPressed = Console.ReadKey();
-					Console.Clear();
+					Console.SetCursorPosition(0, 0);
 
 					VSystem.ParseAndExecute(KeyPressed);
 				}
@@ -131,13 +131,13 @@ namespace VirtualDesktopApps_Console
 
 							showErrorHandler(
 								message,
-								exception.Message,
-								exception.InnerException.Message,
-								exception.TargetSite.ToString(),
-								exception.StackTrace,
-								exception.Source, 
-								exception.HResult.ToString(), 
-								exception.HelpLink);
+								exception?.Message,
+								exception?.InnerException.Message,
+								exception?.TargetSite.ToString(),
+								exception?.StackTrace,
+								exception?.Source, 
+								exception?.HResult.ToString(), 
+								exception?.HelpLink);
 						}
 						catch (ArgumentNullException argumentNullException)
 						{
@@ -458,6 +458,15 @@ namespace VirtualDesktopApps_Console
 	{
 		protected List<T> collection = new List<T>();
 
+		public delegate void moreAddActionDelegate();
+
+		protected moreAddActionDelegate moreAddActionHandler { get; set; }
+
+		public AbstractCollection(moreAddActionDelegate method = null)
+		{
+			moreAddActionHandler = method;
+		}
+
 		public T this[int index]
 		{
 			get
@@ -513,6 +522,7 @@ namespace VirtualDesktopApps_Console
 		{
 			element.Name = name.Equals("") ? $"{element.GetType().ToString()}{collection.Count}" : name;
 			collection.Add(element);
+			moreAddActionHandler();
 		}
 	}
 
@@ -527,11 +537,14 @@ namespace VirtualDesktopApps_Console
 		public int X { get; set; }
 		public int Y { get; set; }
 	}
+
+	public interface IComponent : IEntity
+	{
+		IEntity GetParent(ref object invoker);
+	}
 	
 	public interface IEntity : IKeyEvent, INameable, IFocusable
 	{
-		// All interactive units must implement the following properties in order to function
-
 		Coordinates Anchor { get; set; }
 		int Width { get; set; }
 		int Height { get; set; }

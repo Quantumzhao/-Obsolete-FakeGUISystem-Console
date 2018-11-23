@@ -9,7 +9,7 @@ namespace VirtualDesktopApps_Console
 {
 	delegate void ChangeHighLightDelegate();
 
-	public class EntityCollection<T> : AbstractCollection<T> where T : IEntity
+	public class ComponentCollection<T> : AbstractCollection<T> where T : IEntity
 	{
 		public T GetHighlighted()
 		{
@@ -49,7 +49,7 @@ namespace VirtualDesktopApps_Console
 		}
 	}
 
-	public abstract class Button : IEntity
+	public abstract class Button : IComponent
 	{
 		public Coordinates Anchor { get; set; } = new Coordinates();
 
@@ -59,6 +59,19 @@ namespace VirtualDesktopApps_Console
 		public string Name { get; set; }
 
 		private ChangeHighLightDelegate changeHighLightHandler;
+
+		private IEntity parent;
+		public IEntity GetParent(ref object invoker)
+		{
+			if (invoker is IEntity)
+			{
+				return parent;
+			}
+			else
+			{
+				throw new InvalidOperationException();
+			}
+		}
 
 		bool isHighLighted;
 		public bool IsHighlighted
@@ -71,8 +84,6 @@ namespace VirtualDesktopApps_Console
 			{
 				if (value)
 				{
-					//changeHighLightHandler();
-
 					IsFocused = true;
 					isHighLighted = true;
 				}

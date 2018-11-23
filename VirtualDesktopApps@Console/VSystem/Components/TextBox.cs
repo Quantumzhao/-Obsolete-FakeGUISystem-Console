@@ -52,6 +52,7 @@ namespace VirtualDesktopApps_Console
 			else
 			{
 				MergeLine();
+				return;
 			}
 
 			// Deprecated
@@ -69,15 +70,21 @@ namespace VirtualDesktopApps_Console
 		{
 			TextboxPointer p = DisplayArea_Component.Pointer_Component;
 
-			List<char?> targetLine = CharacterMap[p.Anchor.Y - 1];
+			p.MoveLeft(DisplayArea_Component, CharacterMap);
 
-			p.Anchor.X = targetLine.Count;
+			List<char?> targetLine = CharacterMap[p.Anchor.Y];
 
-			targetLine.AddRange(CharacterMap[p.Anchor.Y]);
+			//p.Anchor.X = targetLine.Count;			
 
-			CharacterMap.RemoveAt(p.Anchor.Y);
+			try
+			{
+				targetLine.AddRange(CharacterMap[p.Anchor.Y + 1]);
 
-			p.Anchor.Y--;
+				CharacterMap.RemoveAt(p.Anchor.Y + 1);
+			}
+			catch (ArgumentOutOfRangeException) { }
+
+			//p.Anchor.Y--;
 		}
 
 		public void NewLine()
@@ -98,13 +105,7 @@ namespace VirtualDesktopApps_Console
 
 		public void DeleteAll()
 		{
-			for (int j = 0; j < CharacterMap.Count; j++)
-			{
-				for (int i = 0; i < CharacterMap[j].Count; i++)
-				{
-					CharacterMap[j][i] = null;
-				}
-			}
+			CharacterMap = new List<List<char?>>();
 		}
 
 		public void Select(int start, int end)
@@ -198,7 +199,7 @@ namespace VirtualDesktopApps_Console
 
 			for (int j = 0; j < Height; j++)
 			{
-				if (CharacterMap.Count > Anchor.Y + j)
+				if (Anchor.Y + j < CharacterMap.Count)
 				{
 					int numOfChar = CharacterMap[j].Count;
 
@@ -229,6 +230,12 @@ namespace VirtualDesktopApps_Console
 						renderBuffer[i, j].DisplayCharacter = null;
 					}
 				}
+			}
+
+			if (renderBuffer[0, CharacterMap.Count - Anchor.Y].BackgroundColor == ConsoleColor.Blue)
+			{
+				renderBuffer[0, CharacterMap.Count - Anchor.Y].ForegroundColor = ConsoleColor.Black;
+				renderBuffer[0, CharacterMap.Count - Anchor.Y].BackgroundColor = ConsoleColor.White;
 			}
 
 			TextboxPointer p = Pointer_Component;
@@ -389,9 +396,9 @@ namespace VirtualDesktopApps_Console
 			}
 			else
 			{
-				if (absX > characterMap[absY - 1].Count - 1)
+				if (absX > characterMap[absY - 1].Count)
 				{
-					absX = characterMap[absY].Count - 1;
+					absX = characterMap[absY - 1].Count;
 				}
 
 				absY--;
@@ -421,9 +428,9 @@ namespace VirtualDesktopApps_Console
 			}
 			else
 			{
-				if (absX > characterMap[absY + 1].Count - 1)
+				if (absX > characterMap[absY + 1].Count)
 				{
-					absX = characterMap[absY].Count;
+					absX = characterMap[absY + 1].Count;
 				}
 
 				absY++;

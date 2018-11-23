@@ -10,7 +10,7 @@ namespace VirtualDesktopApps_Console
 	{
 		public int ProgramID { get; set; }
 
-		public EntityCollection<Window> Windows { get; set; } = new EntityCollection<Window>();
+		public ComponentCollection<Window> Windows { get; set; } = new ComponentCollection<Window>();
 
 		public string Name { get; set; }
 
