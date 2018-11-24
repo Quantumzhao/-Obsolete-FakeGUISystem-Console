@@ -25,8 +25,7 @@ namespace VirtualDesktopApps_Console
 			{
 				while (true)
 				{
-					VSystem.Layers[VSystem.GetFocusedSubProgram().ProgramID].Update();
-					VSystem.RenderAll();
+					RenderGraphics(false);
 
 					KeyPressed = Console.ReadKey();
 					Console.SetCursorPosition(0, 0);
@@ -60,6 +59,40 @@ namespace VirtualDesktopApps_Console
 			catch (Exception exception)
 			{
 				ShowMessage(EffectiveField.Global, MessageType.Error, "Initiation Failed", true, exception);
+			}
+		}
+
+		private static void RenderGraphics(bool isRenderAll = true)
+		{
+			Layer tempLayer = new Layer(VSystem.Layers[VSystem.GetFocusedSubProgram().ProgramID]);
+
+			VSystem.Layers[VSystem.GetFocusedSubProgram().ProgramID].Update();
+
+			if (isRenderAll)
+			{
+				VSystem.RenderAll();
+			}
+			else
+			{
+				//loadRenderQueue(VSystem.Layers[VSystem.GetFocusedSubProgram().ProgramID], tempLayer);
+
+				VSystem.TestRenderPartially();
+			}
+		}
+
+		private static void loadRenderQueue(Layer original, Layer comparedLayer)
+		{
+			VSystem.RenderBufferModificationQueue.Add(new int[4] { 0, 0, VSystem.Width, VSystem.Height});
+
+			for (int j = 0; j < VSystem.Height; j++)
+			{
+				for (int i = 0; i < VSystem.Width; i++)
+				{
+					if (original[i, j] != comparedLayer[i, j])
+					{
+						Console.SetCursorPosition(i, j);
+					}
+				}
 			}
 		}
 
@@ -195,6 +228,8 @@ namespace VirtualDesktopApps_Console
 
 		public static List<int[]> RenderBufferModificationQueue = new List<int[]>();
 
+		public static Layer TestFinalBuffer = new Layer();
+
 		public static void RenderAll()
 		{
 			for (int j = 0; j < Height; j++)
@@ -245,7 +280,74 @@ namespace VirtualDesktopApps_Console
 			Console.Write("╝");
 		}
 
-		public void RenderPartially()
+		public static void TestRenderPartially()
+		{
+			Layer TestFinalBufferCopy = new Layer(TestFinalBuffer);
+
+			for (int j = 0; j < Height; j++)
+			{
+				for (int i = 0; i < Width; i++)
+				{
+					int k = 0;
+
+					while
+					(
+						(Layers[k][i, j].DisplayCharacter == null) &&
+						(Layers[k][i, j].ForegroundColor == ConsoleColor.Black) &&
+						(Layers[k][i, j].BackgroundColor == ConsoleColor.White)
+					)
+					{
+						if (k != Layers.Count - 1)
+						{
+							k++;
+						}
+						else
+						{
+							break;
+						}
+					}
+
+					TestFinalBuffer[i, j].BackgroundColor = Layers[k][i, j].BackgroundColor;
+					TestFinalBuffer[i, j].ForegroundColor = Layers[k][i, j].ForegroundColor;
+					if (Layers[k][i, j].DisplayCharacter != null)
+					{
+						TestFinalBuffer[i, j].DisplayCharacter = Layers[k][i, j].DisplayCharacter;
+					}
+					else
+					{
+						TestFinalBuffer[i, j].DisplayCharacter = ' ';
+					}
+				}
+
+				//Console.BackgroundColor = ConsoleColor.White;
+				//Console.ForegroundColor = ConsoleColor.Black;
+				//Console.Write("║");
+				//Console.WriteLine();
+			}
+			/*
+			for (int i = 0; i < Width; i++)
+			{
+				Console.Write("═");
+			}
+			Console.Write("╝");*/
+
+			for (int j = 0; j < Height; j++)
+			{
+				for (int i = 0; i < Width; i++)
+				{
+					if (!TestFinalBufferCopy[i, j].Equals(TestFinalBuffer[i, j]))
+					{
+						Console.SetCursorPosition(i, j);
+
+						Console.BackgroundColor = TestFinalBuffer[i, j].BackgroundColor;
+						Console.ForegroundColor = TestFinalBuffer[i, j].ForegroundColor;
+						Console.Write(TestFinalBuffer[i, j].DisplayCharacter);
+					}
+				}
+			}
+		}
+
+		public static void RenderPartially()
 		{
 			for (int index = 0; index < RenderBufferModificationQueue.Count; index++)
 			{
@@ -355,21 +457,23 @@ namespace VirtualDesktopApps_Console
 			return null;
 		}
 
-		public void Start()
+		/*public void Start()
 		{
 			// For placeholder temporarily
-		}
+		}*/
 	}
 	
 	public class Layer : INameable
 	{
-		public Layer()
+		public Layer(Layer anotherLayer = null)
 		{
+			bool isCloning = anotherLayer != null;
+
 			for (int j = 0; j < VSystem.Height; j++)
 			{
 				for (int i = 0; i < VSystem.Width; i++)
 				{
-					programLayer[i, j] = new Pixel();
+					programLayer[i, j] = isCloning ? new Pixel(anotherLayer[i, j]) : new Pixel();
 				}
 			}
 		}
@@ -378,7 +482,7 @@ namespace VirtualDesktopApps_Console
 
 		public int Index { get; set; }
 
-		private Pixel[,] programLayer= new Pixel[VSystem.Width, VSystem.Height];
+		private Pixel[,] programLayer = new Pixel[VSystem.Width, VSystem.Height];
 
 		public Pixel this[int x, int y]
 		{
@@ -422,11 +526,69 @@ namespace VirtualDesktopApps_Console
 
 	public class Pixel
 	{
+		public Pixel(Pixel anotherPixel = null)
+		{
+			if (anotherPixel != null)
+			{
+				DisplayCharacter = anotherPixel.DisplayCharacter;
+				ForegroundColor = anotherPixel.ForegroundColor;
+				BackgroundColor = anotherPixel.BackgroundColor;
+			}
+		}
+
 		public char? DisplayCharacter { get; set; } = null;
 
 		public ConsoleColor ForegroundColor { get; set; } = ConsoleColor.Black;
 
 		public ConsoleColor BackgroundColor { get; set; } = ConsoleColor.White;
+
+		public bool Equals(Pixel another)
+		{
+			if (DisplayCharacter == null)
+			{
+				if (another == null)
+				{
+					return true;
+				}
+				else
+				{
+					return false;
+				}
+			}
+			else if (another.DisplayCharacter == null)
+			{
+				return false;
+			}
+
+			return
+				DisplayCharacter.Value == another.DisplayCharacter.Value &&
+				ForegroundColor == another.ForegroundColor &&
+				BackgroundColor == another.BackgroundColor;
+				
+		}
+/*
+		public static bool operator == (Pixel pixel1, Pixel pixel2) => 
+			pixel1.BackgroundColor == pixel2.BackgroundColor &&
+			pixel1.ForegroundColor == pixel2.ForegroundColor &&
+			pixel1.DisplayCharacter.Value == pixel2.DisplayCharacter.Value;
+
+		public static bool operator != (Pixel pixel1, Pixel pixel2) =>
+			pixel1.BackgroundColor != pixel2.BackgroundColor ||
+			pixel1.ForegroundColor != pixel2.ForegroundColor ||
+			pixel1.DisplayCharacter.Value != pixel2.DisplayCharacter.Value;
+		
+		public override bool Equals(object obj)
+		{
+			return
+			BackgroundColor == ((Pixel)obj).BackgroundColor &&
+			ForegroundColor == ((Pixel)obj).ForegroundColor &&
+			DisplayCharacter.Value == ((Pixel)obj).DisplayCharacter.Value;
+		}
+		
+		public override int GetHashCode()
+		{
+			return base.GetHashCode();
+		}*/
 	}
 
 	public class FocusCursor

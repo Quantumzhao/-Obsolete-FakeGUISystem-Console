@@ -60,7 +60,7 @@ namespace VirtualDesktopApps_Console
 
 		public string Name { get; set; }
 
-		private ChangeHighLightDelegate changeHighLightHandler;
+		//private ChangeHighLightDelegate changeHighLightHandler;
 
 		private IEntity parent;
 		public IEntity GetParent(ref object invoker)
@@ -129,7 +129,7 @@ namespace VirtualDesktopApps_Console
 			}
 		}
 
-		private Pixel[,] renderBuffer;
+		//private Pixel[,] renderBuffer;
 		public virtual Pixel[,] GetRenderBuffer()
 		{
 			return new Pixel[Width, Height];
@@ -153,7 +153,7 @@ namespace VirtualDesktopApps_Console
 
 		public bool IsVisible { get; set; }
 
-		private Pixel[,] renderBuffer;
+		//private Pixel[,] renderBuffer;
 		public Pixel[,] GetRenderBuffer()
 		{
 			return new Pixel[Width, Height];

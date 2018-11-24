@@ -11,9 +11,9 @@ namespace ExteriorSealedCode
 	{
 		static void Main(string[] args)
 		{
-			VSystem newSystemInstance = new VSystem();
+			//VSystem newSystemInstance = new VSystem();
 
-			newSystemInstance.Start();
+			//newSystemInstance.Start();
 
 
 		}
