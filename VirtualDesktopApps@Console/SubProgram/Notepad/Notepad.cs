@@ -21,13 +21,13 @@ namespace VirtualDesktopApps_Console
 			Windows[0].Components.Add(new MenuItem_Help<Notepad>(), "Help");
 			Windows[0].Components.Add(new TextBox(1, 3),         "TextBox");
 
-			Windows[0].IsHighlighted = true;
+			Windows[0].IsFocused = Focus.Focused;
 			Windows[0].SetRenderBuffer();
 
 			IsComponentSelected = true;
 
 			// This refers to the "TextBox" component ▼
-			Windows[0].Components.SetHighlighted(4);			
+			Windows[0].Components.SetFocusing(4);			
 		}
 
 		public override Pixel[,] GetRenderBuffer()

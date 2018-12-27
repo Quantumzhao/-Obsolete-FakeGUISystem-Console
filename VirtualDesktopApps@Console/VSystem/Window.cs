@@ -13,8 +13,7 @@ namespace VirtualDesktopApps_Console
 		public int Width { get; set; }
 		public int Height { get; set; }
 		public string Name { get; set; }
-		public bool IsHighlighted { get; set; }
-		public bool IsFocused { get; set; }
+		public Focus IsFocused { get; set; }
 		private string url;
 
 		private Pixel[,] renderBuffer;
@@ -78,7 +77,7 @@ namespace VirtualDesktopApps_Console
 		
 		public bool ParseAndExecute(ConsoleKeyInfo key)
 		{
-			Button b = Components.GetHighlighted();
+			Button b = Components.GetFocused();
 
 			if (b != null && b.ParseAndExecute(key))
 			{

@@ -150,8 +150,8 @@ namespace VirtualDesktopApps_Console
 							NewLine();
 							break;
 
-						//case ConsoleKey.Escape:
-						//break;
+						case ConsoleKey.Escape:
+							break;
 
 						default:
 							return false;

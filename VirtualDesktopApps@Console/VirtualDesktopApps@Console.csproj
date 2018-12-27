@@ -66,6 +66,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="VSystem\InteractiveUnit.cs" />
     <Compile Include="VSystem\Main.cs" />
     <Compile Include="SubProgram\Notepad\Notepad.cs" />

@@ -12,11 +12,13 @@ namespace VirtualDesktopApps_Console
 		public static ConsoleKeyInfo KeyPressed { get; set; }
 		public static void Main(string[] args)
 		{
-			initiation();
+			initialization();
 
 			#region TestAddNotepadInstanceToRuntime
 
 			VSystem.SubPrograms.Add(new Notepad());
+			VSystem.IsFocused = Focus.Focused;
+
 			VSystem.Layers.Add(new Layer());
 
 			#endregion
@@ -25,9 +27,13 @@ namespace VirtualDesktopApps_Console
 			{
 				while (true)
 				{
-					RenderGraphics(false);
+					RenderGraphics(true);
 
 					KeyPressed = Console.ReadKey();
+					// Try this remedy
+					Console.CursorLeft--;
+					Console.Write(' ');
+
 					Console.SetCursorPosition(0, 0);
 
 					VSystem.ParseAndExecute(KeyPressed);
@@ -35,33 +41,31 @@ namespace VirtualDesktopApps_Console
 			}
 			catch (Exception exception)
 			{
-				ShowMessage(EffectiveField.Global, MessageType.Error, "Unknown Error", true, exception);
+				//ShowMessage(EffectiveField.Global, MessageType.Error, "Unknown Error", true, exception);
 
 				throw exception;
 			}
 		}
 
-		private static void initiation()
+		/// <summary>
+		/// Initializes the environment
+		/// </summary>
+		private static void initialization()
 		{
-			try
-			{
-				Console.BackgroundColor = ConsoleColor.White;
-				Console.ForegroundColor = ConsoleColor.Black;
-				Console.WindowWidth = Console.LargestWindowWidth;
-				Console.WindowHeight = Console.LargestWindowHeight;
-				Console.CursorVisible = false;
+			Console.BackgroundColor = ConsoleColor.White;
+			Console.ForegroundColor = ConsoleColor.Black;
+			Console.WindowWidth = Console.LargestWindowWidth;
+			Console.WindowHeight = Console.LargestWindowHeight;
+			Console.CursorVisible = false;
 
-				// | I might intend to apply the same "Select & Focus" action to VSystem
-				// | Anyway, this will be fixed in the future. 
-				// V Just leave it untouched by now
-				VSystem.IsFocused = true;
-			}
-			catch (Exception exception)
-			{
-				ShowMessage(EffectiveField.Global, MessageType.Error, "Initiation Failed", true, exception);
-			}
+			VSystem.IsFocused = Focus.Focusing;
 		}
 
+		/// <summary>
+		///		Render all of the stored graphics to console output
+		/// </summary>
+		/// <param name="isRenderAll">
+		/// </param>
 		private static void RenderGraphics(bool isRenderAll = true)
 		{
 			Layer tempLayer = new Layer(VSystem.Layers[VSystem.GetFocusedSubProgram().ProgramID]);
@@ -222,7 +226,7 @@ namespace VirtualDesktopApps_Console
 		public const int Width  = 125;
 		public const int Height = 50;
 
-		public static bool IsFocused { get; set; } = false;
+		public static Focus IsFocused { get; set; } = Focus.NoFocus;
 		public static AbstractCollection<Layer> Layers { get; set; } = new AbstractCollection<Layer>();
 		public static AbstractCollection<SubProgram> SubPrograms { get; set; } = new AbstractCollection<SubProgram>();
 
@@ -238,7 +242,7 @@ namespace VirtualDesktopApps_Console
 				{
 					int k = 0;
 					
-					while 
+					while
 					(
 						(Layers[k][i, j].DisplayCharacter == null) && 
 						(Layers[k][i, j].ForegroundColor == ConsoleColor.Black) &&
@@ -346,7 +350,7 @@ namespace VirtualDesktopApps_Console
 				}
 			}
 		}
-
+		/*
 		public static void RenderPartially()
 		{
 			for (int index = 0; index < RenderBufferModificationQueue.Count; index++)
@@ -394,7 +398,11 @@ namespace VirtualDesktopApps_Console
 			Console.CursorLeft = 0;
 			Console.CursorTop  = 0;
 		}
-		
+		*/
+		/// <summary>
+		/// test
+		/// </summary>
+		/// <param name="keyPressed"></param>
 		public static bool ParseAndExecute(ConsoleKeyInfo keyPressed)
 		{
 			if (GetFocusedSubProgram() != null)
@@ -499,7 +507,7 @@ namespace VirtualDesktopApps_Console
 
 		public void Update()
 		{
-			Window tempWindow = VSystem.SubPrograms[Index].Windows.GetHighlighted();
+			Window tempWindow = VSystem.SubPrograms[Index].Windows.GetFocused();
 
 			Pixel[,] graphBuffer = tempWindow.GetRenderBuffer();
 
@@ -618,6 +626,8 @@ namespace VirtualDesktopApps_Console
 
 	public class AbstractCollection<T> where T : INameable
 	{
+		//public 
+
 		protected List<T> collection = new List<T>();
 
 		public delegate void moreAddActionDelegate(T element/*, object parent*/);
@@ -680,7 +690,7 @@ namespace VirtualDesktopApps_Console
 			}
 		}
 
-		public void Add(T element, string name = "", object parent = null)
+		public void Add(T element, string name = "", object host = null)
 		{
 			element.Name = name.Equals("") ? $"{element.GetType().ToString()}{collection.Count}" : name;
 			collection.Add(element);
@@ -727,8 +737,14 @@ namespace VirtualDesktopApps_Console
 
 	public interface IFocusable
 	{
-		bool IsHighlighted { get; set; }
-		bool IsFocused { get; set; }
+		Focus IsFocused { get; set; }
+	}
+
+	public enum Focus
+	{
+		Focusing,
+		Focused,
+		NoFocus
 	}
 
 	enum AvailableProgs

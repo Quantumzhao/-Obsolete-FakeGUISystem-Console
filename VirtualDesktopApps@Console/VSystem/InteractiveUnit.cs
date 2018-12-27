@@ -13,23 +13,23 @@ namespace VirtualDesktopApps_Console
 	{
 		/*public ComponentCollection(moreAddActionDelegate method, object parent) : base(method, parent) { }*/
 
-		public T GetHighlighted()
+		public T GetFocused()
 		{
 			return (from element in collection
-					where element.IsHighlighted
+					where element.IsFocused == Focus.Focused
 					select element).Single();
 		}
-		public void SetHighlighted(int index)
+		public void SetFocusing(int index)
 		{
 			for (int i = 0; i < collection.Count; i++)
 			{
 				if (i == index)
 				{
-					collection[i].IsHighlighted = true;
+					collection[i].IsFocused = Focus.Focused;
 				}
 				else
 				{
-					collection[i].IsHighlighted = false;
+					collection[i].IsFocused = Focus.NoFocus;
 				}
 			}
 		}
@@ -41,11 +41,11 @@ namespace VirtualDesktopApps_Console
 			{
 				if (element.Name.Equals(name))
 				{
-					element.IsHighlighted = true;
+					element.IsFocused = Focus.Focused;
 				}
 				else
 				{
-					element.IsHighlighted = false;
+					element.IsFocused = Focus.NoFocus;
 				}
 			}
 		}
@@ -86,29 +86,8 @@ namespace VirtualDesktopApps_Console
 			}
 		}
 
-		bool isHighLighted;
-		public bool IsHighlighted
-		{
-			get
-			{
-				return isHighLighted;
-			}
-			set
-			{
-				if (value)
-				{
-					IsFocused = true;
-					isHighLighted = true;
-				}
-				else
-				{
-					isHighLighted = false;
-				}
-			}
-		}
-
-		private bool isFocused;
-		public bool IsFocused
+		private Focus isFocused;
+		public Focus IsFocused
 		{
 			get
 			{
@@ -117,14 +96,13 @@ namespace VirtualDesktopApps_Console
 
 			set
 			{
-				if (!value)
+				switch (isFocused)
 				{
-					IsHighlighted = false;
-					isFocused = false;
-				}
-				else
-				{
-					isFocused = true;
+					case Focus.Focusing:
+					case Focus.Focused:
+					case Focus.NoFocus:
+						isFocused = value;
+						break;
 				}
 			}
 		}
@@ -147,9 +125,7 @@ namespace VirtualDesktopApps_Console
 
 		public string Name { get; set; }
 
-		public bool IsHighlighted { get; set; }
-		public bool IsFocused { get; set; }
-		public bool IsComponentFocused { get; set; }
+		public Focus IsFocused { get; set; }
 
 		public bool IsVisible { get; set; }
 
@@ -210,10 +186,8 @@ namespace VirtualDesktopApps_Console
 
 	}
 
-	
-
 	class PopUpMenu_Files : PopUpMenu
 	{
-
+		
 	}
 }

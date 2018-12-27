@@ -26,7 +26,7 @@ namespace VirtualDesktopApps_Console
 			{
 				if (value == true)
 				{
-					VSystem.IsFocused = false;
+					VSystem.IsFocused = Focus.Focused;
 
 					if (VSystem.GetFocusedSubProgram() != null)
 					{
@@ -45,6 +45,10 @@ namespace VirtualDesktopApps_Console
 			}
 		}
 
+		public void Add(Window window)
+		{
+			
+		}
 
 		public abstract bool ParseAndExecute(ConsoleKeyInfo keyPressed);
 
