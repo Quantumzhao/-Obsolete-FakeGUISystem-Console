@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static VirtualDesktopApps_Console.TextBox.TextboxDisplayArea;
 
 namespace VirtualDesktopApps_Console
 {
@@ -163,359 +164,361 @@ namespace VirtualDesktopApps_Console
 
 			return true;
 		}
-	}
 
-	class TextboxDisplayArea
-	{
-		public TextboxDisplayArea(int width, int height)
+		public class TextboxDisplayArea
 		{
-			Width = width;
-			Height = height;
-			renderBuffer = new Pixel[Width, Height];
-
-			for (int j = 0; j < height; j++)
+			public TextboxDisplayArea(int width, int height)
 			{
-				for (int i = 0; i < width; i++)
+				Width = width;
+				Height = height;
+				renderBuffer = new Pixel[Width, Height];
+
+				for (int j = 0; j < height; j++)
 				{
-					renderBuffer[i, j] = new Pixel();
+					for (int i = 0; i < width; i++)
+					{
+						renderBuffer[i, j] = new Pixel();
+					}
 				}
 			}
-		}
 
-		public int Width { get; set; }
-		public int Height { get; set; }
+			public int Width { get; set; }
+			public int Height { get; set; }
 
-		public Coordinates Anchor { get; set; } = new Coordinates();
-		public TextboxPointer Pointer_Component { get; set; } = new TextboxPointer();
+			public Coordinates Anchor { get; set; } = new Coordinates();
+			public TextboxPointer Pointer_Component { get; set; } = new TextboxPointer();
 
-		private Pixel[,] renderBuffer;
-		public Pixel[,] GetRenderBuffer()
-		{
-			return renderBuffer;
-		}
-		public void SetRenderBuffer(List<List<char?>> CharacterMap)
-		{
-			int numOfLine = CharacterMap.Count;
-
-			for (int j = 0; j < Height; j++)
+			private Pixel[,] renderBuffer;
+			public Pixel[,] GetRenderBuffer()
 			{
-				if (Anchor.Y + j < CharacterMap.Count)
+				return renderBuffer;
+			}
+			public void SetRenderBuffer(List<List<char?>> CharacterMap)
+			{
+				int numOfLine = CharacterMap.Count;
+
+				for (int j = 0; j < Height; j++)
 				{
-					int numOfChar = CharacterMap[j].Count;
-
-					for (int i = 0; i < Width; i++)
+					if (Anchor.Y + j < CharacterMap.Count)
 					{
+						int numOfChar = CharacterMap[j].Count;
 
-						if (numOfChar > Anchor.X + i)
+						for (int i = 0; i < Width; i++)
 						{
-							renderBuffer[i, j].DisplayCharacter = CharacterMap[j + Anchor.Y][i + Anchor.X];
+
+							if (numOfChar > Anchor.X + i)
+							{
+								renderBuffer[i, j].DisplayCharacter = CharacterMap[j + Anchor.Y][i + Anchor.X];
+							}
+							else
+							{
+								renderBuffer[i, j].DisplayCharacter = null;
+							}
+
+							// Find the Pixel that the pointer WAS at and reset it
+							if (renderBuffer[i, j].BackgroundColor == ConsoleColor.Blue)
+							{
+								renderBuffer[i, j].ForegroundColor = ConsoleColor.Black;
+								renderBuffer[i, j].BackgroundColor = ConsoleColor.White;
+							}
 						}
-						else
+					}
+					else
+					{
+						for (int i = 0; i < Width; i++)
 						{
 							renderBuffer[i, j].DisplayCharacter = null;
 						}
+					}
+				}
 
-						// Find the Pixel that the pointer WAS at and reset it
-						if (renderBuffer[i, j].BackgroundColor == ConsoleColor.Blue)
+				if (renderBuffer[0, CharacterMap.Count - Anchor.Y].BackgroundColor == ConsoleColor.Blue)
+				{
+					renderBuffer[0, CharacterMap.Count - Anchor.Y].ForegroundColor = ConsoleColor.Black;
+					renderBuffer[0, CharacterMap.Count - Anchor.Y].BackgroundColor = ConsoleColor.White;
+				}
+
+				TextboxPointer p = Pointer_Component;
+
+				renderBuffer[p.Anchor.X, p.Anchor.Y].BackgroundColor = p.PointerBackColor;
+				renderBuffer[p.Anchor.X, p.Anchor.Y].ForegroundColor = p.PointerForeColor;
+			}
+			const int っ = 1; const int c = 1;
+			
+			public bool ParseAndExecute(ConsoleKeyInfo keyPressed, ref List<List<char?>> characterMap)
+			{
+				switch (Pointer_Component.ParseAndExecute(keyPressed, this, ref characterMap))
+				{
+					case 'w':
+						MoveUp();
+						break;
+
+					case 's':
+						MoveDown(ref characterMap);
+						break;
+
+					case 'a':
+						MoveLeft();
+						break;
+
+					case 'd':
+						MoveRight(ref characterMap);
+						break;
+
+					case 'n':
+						break;
+
+					case '0':
+						return false;
+				}
+
+				return true;
+			}
+
+			public bool MoveUp()
+			{
+				if (Anchor.Y > 0)
+				{
+					Anchor.Y--;
+
+					return true;
+				}
+
+				return false;
+			}
+
+			public bool MoveDown(ref List<List<char?>> characterMap)
+			{
+				if (Anchor.Y < characterMap.Count - 1)
+				{
+					Anchor.Y++;
+
+					return true;
+				}
+
+				return false;
+			}
+
+			public bool MoveLeft()
+			{
+				if (Anchor.X > 0)
+				{
+					Anchor.X--;
+
+					return true;
+				}
+
+				return false;
+			}
+
+			public bool MoveRight(ref List<List<char?>> characterMap)
+			{
+				int maxWidth = 0;
+				foreach (var line in characterMap)
+				{
+					if (line.Count > maxWidth)
+					{
+						maxWidth = line.Count;
+					}
+				}
+
+				if (Anchor.X < maxWidth - 1)
+				{
+					Anchor.X++;
+
+					return true;
+				}
+
+				return false;
+			}
+		
+
+			public class TextboxPointer
+			{
+				public Coordinates Anchor { get; set; } = new Coordinates();
+
+				public ConsoleColor PointerBackColor { get; set; } = ConsoleColor.Blue;
+				public ConsoleColor PointerForeColor { get; set; } = ConsoleColor.White;
+
+				public char ParseAndExecute(ConsoleKeyInfo keyPressed, 
+					TextboxDisplayArea parentComponent, ref List<List<char?>> characterMap)
+				{
+					switch (keyPressed.Key)
+					{
+						/*
+						 * If pointer succeed in moving in whatever direction, it gives no feedback
+						 * If fail, then pass out the reason
+						 * "w" for up; "s" for down; "a" for left; "d" for right; "n" for "NO CHANGE"
+						 * "0" for not using the key
+						*/
+
+						case ConsoleKey.UpArrow:
+							if (MoveUp(parentComponent, characterMap))
+								return 'w';
+							break;
+
+						case ConsoleKey.DownArrow:
+							if (MoveDown(parentComponent, characterMap))
+								return 's';
+							break;
+
+						case ConsoleKey.LeftArrow:
+							if (MoveLeft(parentComponent, characterMap))
+								return 'a';
+							break;
+
+						case ConsoleKey.RightArrow:
+							if (MoveRight(parentComponent, characterMap))
+								return 'd';
+							break;
+
+						default:
+							return '0';
+					}
+
+					return 'n';
+				}
+
+				/*                         --IMPORTANT NOTE--
+				 *              If any of the following returns a FALSE, 
+				 * it means that there is NO NEED to MOVE the display area component
+				 * 
+				 *        Otherwise DO MOVE it, in the direction of the pointer
+				 */
+
+				public bool MoveUp(TextboxDisplayArea displayArea, List<List<char?>> characterMap)
+				{
+					int absX = Anchor.X + displayArea.Anchor.X;
+					int absY = Anchor.Y + displayArea.Anchor.Y;
+
+					if (absY == 0)
+					{
+						return false;
+					}
+					else
+					{
+						if (absX > characterMap[absY - 1].Count)
 						{
-							renderBuffer[i, j].ForegroundColor = ConsoleColor.Black;
-							renderBuffer[i, j].BackgroundColor = ConsoleColor.White;
+							absX = characterMap[absY - 1].Count;
+						}
+
+						absY--;
+					}
+
+					Anchor.X = absX - displayArea.Anchor.X;
+					Anchor.Y = absY - displayArea.Anchor.Y;
+
+					if (Anchor.X < displayArea.Width && Anchor.Y < displayArea.Height)
+					{
+						return false;
+					}
+					else
+					{
+						return true;
+					}
+				}
+
+				public bool MoveDown(TextboxDisplayArea displayArea, List<List<char?>> characterMap)
+				{
+					int absX = Anchor.X + displayArea.Anchor.X;
+					int absY = Anchor.Y + displayArea.Anchor.Y;
+
+					if (absY == characterMap.Count - 1)
+					{
+						return false;
+					}
+					else
+					{
+						if (absX > characterMap[absY + 1].Count)
+						{
+							absX = characterMap[absY + 1].Count;
+						}
+
+						absY++;
+					}
+
+					Anchor.X = absX - displayArea.Anchor.X;
+					Anchor.Y = absY - displayArea.Anchor.Y;
+
+					if (Anchor.X < displayArea.Width && Anchor.Y < displayArea.Height)
+					{
+						return false;
+					}
+					else
+					{
+						return true;
+					}
+				}
+
+				public bool MoveLeft(TextboxDisplayArea displayArea, List<List<char?>> characterMap)
+				{
+					int absX = Anchor.X + displayArea.Anchor.X;
+					int absY = Anchor.Y + displayArea.Anchor.Y;
+
+					if (absX == 0)
+					{
+						if (absY == 0)
+						{
+							return false;
+						}
+						else
+						{
+							absY--;
+							absX = characterMap[absY].Count;
 						}
 					}
-				}
-				else
-				{
-					for (int i = 0; i < Width; i++)
+					else
 					{
-						renderBuffer[i, j].DisplayCharacter = null;
+						absX--;
+					}
+
+					Anchor.X = absX - displayArea.Anchor.X;
+					Anchor.Y = absY - displayArea.Anchor.Y;
+
+					if (Anchor.X < displayArea.Width && Anchor.Y < displayArea.Height)
+					{
+						return false;
+					}
+					else
+					{
+						return true;
 					}
 				}
-			}
 
-			if (renderBuffer[0, CharacterMap.Count - Anchor.Y].BackgroundColor == ConsoleColor.Blue)
-			{
-				renderBuffer[0, CharacterMap.Count - Anchor.Y].ForegroundColor = ConsoleColor.Black;
-				renderBuffer[0, CharacterMap.Count - Anchor.Y].BackgroundColor = ConsoleColor.White;
-			}
-
-			TextboxPointer p = Pointer_Component;
-
-			renderBuffer[p.Anchor.X, p.Anchor.Y].BackgroundColor = p.PointerBackColor;
-			renderBuffer[p.Anchor.X, p.Anchor.Y].ForegroundColor = p.PointerForeColor;
-		}
-
-		public bool ParseAndExecute(ConsoleKeyInfo keyPressed, ref List<List<char?>> characterMap)
-		{
-			switch (Pointer_Component.ParseAndExecute(keyPressed, this, ref characterMap))
-			{
-				case 'w':
-					MoveUp();
-					break;
-
-				case 's':
-					MoveDown(ref characterMap);
-					break;
-
-				case 'a':
-					MoveLeft();
-					break;
-
-				case 'd':
-					MoveRight(ref characterMap);
-					break;
-
-				case 'n':
-					break;
-
-				case '0':
-					return false;
-			}
-
-			return true;
-		}
-
-		public bool MoveUp()
-		{
-			if (Anchor.Y > 0)
-			{
-				Anchor.Y--;
-
-				return true;
-			}
-
-			return false;
-		}
-
-		public bool MoveDown(ref List<List<char?>> characterMap)
-		{
-			if (Anchor.Y < characterMap.Count - 1)
-			{
-				Anchor.Y++;
-
-				return true;
-			}
-
-			return false;
-		}
-
-		public bool MoveLeft()
-		{
-			if (Anchor.X > 0)
-			{
-				Anchor.X--;
-
-				return true;
-			}
-
-			return false;
-		}
-
-		public bool MoveRight(ref List<List<char?>> characterMap)
-		{
-			int maxWidth = 0;
-			foreach (var line in characterMap)
-			{
-				if (line.Count > maxWidth)
+				public bool MoveRight(TextboxDisplayArea displayArea, List<List<char?>> characterMap)
 				{
-					maxWidth = line.Count;
+					int absX = Anchor.X + displayArea.Anchor.X;
+					int absY = Anchor.Y + displayArea.Anchor.Y;
+
+					if (absX == characterMap[absY].Count)
+					{
+						if (absY == characterMap.Count - 1)
+						{
+							return false;
+						}
+						else
+						{
+							absX = 0;
+							absY++;
+						}
+					}
+					else
+					{
+						absX++;
+					}
+
+					Anchor.X = absX - displayArea.Anchor.X;
+					Anchor.Y = absY - displayArea.Anchor.Y;
+
+					if (Anchor.X < displayArea.Width && Anchor.Y < displayArea.Height)
+					{
+						return false;
+					}
+					else
+					{
+						return true;
+					}
 				}
-			}
-
-			if (Anchor.X < maxWidth - 1)
-			{
-				Anchor.X++;
-
-				return true;
-			}
-
-			return false;
-		}
-	}
-
-	class TextboxPointer
-	{
-		public Coordinates Anchor { get; set; } = new Coordinates();
-
-		public ConsoleColor PointerBackColor { get; set; } = ConsoleColor.Blue;
-		public ConsoleColor PointerForeColor { get; set; } = ConsoleColor.White;
-
-		public char ParseAndExecute(ConsoleKeyInfo keyPressed, 
-			TextboxDisplayArea parentComponent, ref List<List<char?>> characterMap)
-		{
-			switch (keyPressed.Key)
-			{
-				/*
-				 * If pointer succeed in moving in whatever direction, it gives no feedback
-				 * If fail, then pass out the reason
-				 * "w" for up; "s" for down; "a" for left; "d" for right; "n" for "NO CHANGE"
-				 * "0" for not using the key
-				*/
-
-				case ConsoleKey.UpArrow:
-					if (MoveUp(parentComponent, characterMap))
-						return 'w';
-					break;
-
-				case ConsoleKey.DownArrow:
-					if (MoveDown(parentComponent, characterMap))
-						return 's';
-					break;
-
-				case ConsoleKey.LeftArrow:
-					if (MoveLeft(parentComponent, characterMap))
-						return 'a';
-					break;
-
-				case ConsoleKey.RightArrow:
-					if (MoveRight(parentComponent, characterMap))
-						return 'd';
-					break;
-
-				default:
-					return '0';
-			}
-
-			return 'n';
-		}
-
-		/*                         --IMPORTANT NOTE--
-		 *              If any of the following returns a FALSE, 
-		 * it means that there is NO NEED to MOVE the display area component
-		 * 
-		 *        Otherwise DO MOVE it, in the direction of the pointer
-		 */
-
-		public bool MoveUp(TextboxDisplayArea displayArea, List<List<char?>> characterMap)
-		{
-			int absX = Anchor.X + displayArea.Anchor.X;
-			int absY = Anchor.Y + displayArea.Anchor.Y;
-
-			if (absY == 0)
-			{
-				return false;
-			}
-			else
-			{
-				if (absX > characterMap[absY - 1].Count)
-				{
-					absX = characterMap[absY - 1].Count;
-				}
-
-				absY--;
-			}
-
-			Anchor.X = absX - displayArea.Anchor.X;
-			Anchor.Y = absY - displayArea.Anchor.Y;
-
-			if (Anchor.X < displayArea.Width && Anchor.Y < displayArea.Height)
-			{
-				return false;
-			}
-			else
-			{
-				return true;
-			}
-		}
-
-		public bool MoveDown(TextboxDisplayArea displayArea, List<List<char?>> characterMap)
-		{
-			int absX = Anchor.X + displayArea.Anchor.X;
-			int absY = Anchor.Y + displayArea.Anchor.Y;
-
-			if (absY == characterMap.Count - 1)
-			{
-				return false;
-			}
-			else
-			{
-				if (absX > characterMap[absY + 1].Count)
-				{
-					absX = characterMap[absY + 1].Count;
-				}
-
-				absY++;
-			}
-
-			Anchor.X = absX - displayArea.Anchor.X;
-			Anchor.Y = absY - displayArea.Anchor.Y;
-
-			if (Anchor.X < displayArea.Width && Anchor.Y < displayArea.Height)
-			{
-				return false;
-			}
-			else
-			{
-				return true;
-			}
-		}
-
-		public bool MoveLeft(TextboxDisplayArea displayArea, List<List<char?>> characterMap)
-		{
-			int absX = Anchor.X + displayArea.Anchor.X;
-			int absY = Anchor.Y + displayArea.Anchor.Y;
-
-			if (absX == 0)
-			{
-				if (absY == 0)
-				{
-					return false;
-				}
-				else
-				{
-					absY--;
-					absX = characterMap[absY].Count;
-				}
-			}
-			else
-			{
-				absX--;
-			}
-
-			Anchor.X = absX - displayArea.Anchor.X;
-			Anchor.Y = absY - displayArea.Anchor.Y;
-
-			if (Anchor.X < displayArea.Width && Anchor.Y < displayArea.Height)
-			{
-				return false;
-			}
-			else
-			{
-				return true;
-			}
-		}
-
-		public bool MoveRight(TextboxDisplayArea displayArea, List<List<char?>> characterMap)
-		{
-			int absX = Anchor.X + displayArea.Anchor.X;
-			int absY = Anchor.Y + displayArea.Anchor.Y;
-
-			if (absX == characterMap[absY].Count)
-			{
-				if (absY == characterMap.Count - 1)
-				{
-					return false;
-				}
-				else
-				{
-					absX = 0;
-					absY++;
-				}
-			}
-			else
-			{
-				absX++;
-			}
-
-			Anchor.X = absX - displayArea.Anchor.X;
-			Anchor.Y = absY - displayArea.Anchor.Y;
-
-			if (Anchor.X < displayArea.Width && Anchor.Y < displayArea.Height)
-			{
-				return false;
-			}
-			else
-			{
-				return true;
 			}
 		}
 	}
